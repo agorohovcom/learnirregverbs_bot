@@ -3,6 +3,7 @@ package com.agorohov.learnirregverbs_bot.service;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -16,7 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @PropertySource("application.yaml")
 public class TelegramBot extends TelegramLongPollingBot {
 
-    final BotConfig config;
+    private final BotConfig config;
 
     public TelegramBot(BotConfig config) {
         this.config = config;
@@ -55,12 +56,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdatesReceived(List<Update> updates) {
-        super.onUpdatesReceived(updates); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        super.onUpdatesReceived(updates);
     }
 
     @Override
     public void onRegister() {
-        super.onRegister(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        super.onRegister();
     }
 
 }
