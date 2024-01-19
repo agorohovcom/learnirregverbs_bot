@@ -1,6 +1,8 @@
 package com.agorohov.learnirregverbs_bot.service;
 
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
+import com.agorohov.learnirregverbs_bot.entity.User;
+import java.sql.Timestamp;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 //@EnableScheduling
 @PropertySource("application.yaml")
 public class TelegramBot extends TelegramLongPollingBot {
+
+    @Autowired
+    private UserService userService;
 
     private final BotConfig config;
 
@@ -35,19 +40,40 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() /**&& update.getMessage().hasText()*/) {
+        if (update.hasMessage() /**
+                 * && update.getMessage().hasText()
+                 */
+                ) {
 
-            String messageText = update.getMessage().getText();
-            long chatId = update.getMessage().getChatId();
-            
-            String textToSend = "Ку-ку! Я пока могу только так)";
+            // фиксируем время
+            var updateTime = new Timestamp(System.currentTimeMillis());
 
-            SendMessage message = new SendMessage();
-            message.setChatId(String.valueOf(chatId));
-            message.setText(textToSend);
+            log.debug("Update was recived (updateId=" + update.getUpdateId() + ").");
+
+            // получаем необходимые данные из сообщения
+            var userMessage = update.getMessage();
+            var chat = userMessage.getChat();
+            long chatId = userMessage.getChatId();
+            String userName = chat.getUserName();
+
+            User user = new User()
+                    .setChatId(chatId)
+                    .setUserName(userName)
+                    .setLastMessageAt(updateTime);
+
+            // есть ли такой юзер
+//            if (userService.findById(chatId).isEmpty()) {}
+
+            userService.save(user);
+
+            String textToSend = "Привет, " + userName + "!";
+
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(String.valueOf(chatId));
+            sendMessage.setText(textToSend);
 
             try {
-                execute(message);
+                execute(sendMessage);
             } catch (TelegramApiException ex) {
                 ex.printStackTrace();
             }

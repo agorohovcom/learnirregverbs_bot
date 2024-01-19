@@ -36,12 +36,12 @@ spring:
   h2:
     console:
       enabled: true
-    
+  
 bot:
-    name: ${IRRVERBS_BOT_NAME}
-    token: ${IRRVERBS_BOT_TOKEN}
-    owner: ${IRRVERBS_BOT_OWNER}
-    
+  name: ${IRRVERBS_BOT_NAME}
+  token: ${IRRVERBS_BOT_TOKEN}
+  owner: ${IRRVERBS_BOT_OWNER}
+
 # cron:
   # секунды / минуты / часы / день / месяц / день недели  
   # scheduler: 0 34 12 * * *
