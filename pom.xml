@@ -28,7 +28,6 @@
         <liquibase.version>4.25.1</liquibase.version>
         <h2.version>2.2.224</h2.version>
         <telegrambots-spring-boot-starter.version>6.9.0</telegrambots-spring-boot-starter.version>
-        <yaml.version>2.2</yaml.version>
     </properties>
     
     <dependencies>
@@ -78,13 +77,6 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
-        </dependency>
-        
-        <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${yaml.version}</version>
         </dependency>
         
         <dependency>

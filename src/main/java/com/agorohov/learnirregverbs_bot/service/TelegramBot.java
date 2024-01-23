@@ -21,7 +21,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     private UserService userService;
-
+    
     private final BotConfig config;
 
     public TelegramBot(BotConfig config) {

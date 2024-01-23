@@ -18,8 +18,8 @@ spring:
       # ddl-auto: validate
       ddl-auto: update
 #    вывод sql в консоль
-      show-sql:
-        false
+#      show-sql:
+#        false
     properties:
       hibernate:
         # форматирование вывода запросов в консоль
@@ -38,9 +38,9 @@ spring:
       enabled: true
   
 bot:
-  name: ${IRRVERBS_BOT_NAME}
-  token: ${IRRVERBS_BOT_TOKEN}
-  owner: ${IRRVERBS_BOT_OWNER}
+  name: ${IRRVERBSBOTNAME}
+  token: ${IRRVERBSBOTTOKEN}
+  owner: ${IRRVERBSBOTOWNER}
 
 # cron:
   # секунды / минуты / часы / день / месяц / день недели  
