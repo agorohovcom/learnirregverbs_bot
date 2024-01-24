@@ -12,7 +12,7 @@ public class VerbService {
     
     private final VerbRepository verbRepository;
     
-    public Optional<Verb> findById(Long id){
+    public Optional<Verb> findById(Integer id){
         return verbRepository.findById(id);
     }
 }
