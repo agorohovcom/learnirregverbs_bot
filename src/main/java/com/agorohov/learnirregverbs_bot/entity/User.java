@@ -1,10 +1,13 @@
 package com.agorohov.learnirregverbs_bot.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -25,5 +28,8 @@ public class User {
     private Timestamp lastMessageAt;
     
     @Column(name = "is_deleted")
-    private Boolean isDelele = false;
+    private Boolean isDeleled = false;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<LearningStatistics> statistics;
 }
