@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-users-table
+      author: agorohov
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: chat_id
+                  type: bigint
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_users
+              - column:
+                  name: user_name
+                  type: varchar(100)
+              - column:
+                  name: first_message_at
+                  type: timestamp
+              - column:
+                  name: last_message_at
+                  type: timestamp
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false

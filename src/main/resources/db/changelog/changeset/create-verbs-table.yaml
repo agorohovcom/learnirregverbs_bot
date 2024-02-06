@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-verbs-table
+      author: agorohov
+      changes:
+        - createTable:
+            tableName: verbs
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_verbs
+              - column:
+                  name: infinitive
+                  type: varchar(50)
+              - column:
+                  name: past
+                  type: varchar(50)
+              - column:
+                  name: past_participle
+                  type: varchar(50)
+              - column:
+                  name: translation
+                  type: varchar(50)

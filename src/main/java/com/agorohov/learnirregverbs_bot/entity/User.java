@@ -23,6 +23,9 @@ public class User {
 
     @Column(name = "user_name")
     private String userName;
+    
+    @Column(name = "first_message_at")
+    private Timestamp firstMessageAt;
 
     @Column(name = "last_message_at")
     private Timestamp lastMessageAt;

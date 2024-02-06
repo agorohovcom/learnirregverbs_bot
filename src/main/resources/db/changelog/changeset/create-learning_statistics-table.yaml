@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-learning_statistics-table
+      author: agorohov
+      changes:
+        - createTable:
+            tableName: learning_statistics
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_learning_statistics
+              - column:
+                  name: attempts
+                  type: int
+                  defaultValue: 0
+              - column:
+                  name: result
+                  type: int
+                  defaultValue: 0
+              - column:
+                  name: correct_series
+                  type: int
+                  defaultValue: 0
+              - column:
+                  name: user_chat_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_users
+                    references: users(chat_id)
+              - column:
+                  name: verb_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_verbs
+                    references: verbs(id)

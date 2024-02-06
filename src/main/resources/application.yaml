@@ -5,7 +5,7 @@ spring:
   mvc:
     log-request-details: true
   liquibase:
-    enabled: false
+    enabled: true
   datasource:
     url: jdbc:h2:file:./db/db
     # url: jdbc:h2:file:/app/db/db
@@ -13,10 +13,15 @@ spring:
     username: u
     password:
   jpa:
+    # По умолчанию сценарии data.sql выполняются до инициализации Hibernate.
+    # Нам нужен Hibernate для создания таблиц перед вставкой в ​​них данных.
+    # Чтобы добиться этого, нам нужно отложить инициализацию нашего источника данных.
+    # Для этого мы воспользуемся свойством spring.jpa.defer-datasource-initialization=true
+    #defer-datasource-initialization: true
     open-in-view: true
     hibernate:
-      # ddl-auto: validate
-      ddl-auto: update
+      # ddl-auto: create, update, create-drop, validate, none
+      ddl-auto: validate
 #    вывод sql в консоль
 #      show-sql:
 #        false
@@ -32,6 +37,12 @@ spring:
         # order_inserts: true
         # jdbc.batch_size: 1000
         # enable_lazy_load_no_trans: true
+  # Обратите внимание, что для любой инициализации на основе сценария,
+  # то есть для вставки данных через data.sql или создания схемы через Schema.sql,
+  # нам необходимо установить свойство spring.sql.init.mode=always
+  #sql:
+    #init:
+      #mode: always
 
   h2:
     console:

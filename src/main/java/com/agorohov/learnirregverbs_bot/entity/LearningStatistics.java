@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 public class LearningStatistics {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     
@@ -29,7 +29,7 @@ public class LearningStatistics {
     private Integer result = 0;
     
     @Column(name = "correct_series")
-    private Short correctSeries = 0;
+    private Integer correctSeries = 0;
     
     @ManyToOne
     @JoinColumn(name = "user_chat_id", nullable = false)

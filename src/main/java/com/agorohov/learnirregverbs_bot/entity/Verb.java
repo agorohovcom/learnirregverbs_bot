@@ -20,7 +20,7 @@ public class Verb {
     
     @Id
     // автоген или вручную?
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -37,5 +37,5 @@ public class Verb {
     private String translation;
     
     @OneToMany(mappedBy = "verb", cascade = CascadeType.ALL)
-    List<Verb> verbs;
+    List<LearningStatistics> statistics;
 }

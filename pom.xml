@@ -16,7 +16,7 @@
     <description>AGorohov's Telegram bot for learning irregular verbs</description>
     
     <properties>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
         
         <start-class>com.agorohov.learnirregverbs_bot.IrregularverbsApplication</start-class>
         
