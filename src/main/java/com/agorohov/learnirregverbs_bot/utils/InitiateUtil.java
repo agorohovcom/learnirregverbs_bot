@@ -1,5 +1,6 @@
 package com.agorohov.learnirregverbs_bot.utils;
 
+import com.agorohov.learnirregverbs_bot.config.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -12,7 +13,7 @@ public class InitiateUtil implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("Hi! Telegram-bot started! =)");
+        log.info(Constants.WECLOME_APP_MSG_TO_LOG);
     }
 
 }
