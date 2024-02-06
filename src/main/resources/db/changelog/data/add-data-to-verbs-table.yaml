@@ -1,0 +1,34 @@
+databaseChangeLog:
+    - changeSet:
+        id: add-data-to-verbs-table
+        author: agorohov
+        changes:
+            - loadData:
+                columns:
+                    - column:
+                        header: id
+                        name: id
+                        type: int
+                    - column:
+                        header: infinitive
+                        name: infinitive
+                        type: string
+                    - column:
+                        header: past
+                        name: past
+                        type: string
+                    - column:
+                        header: past_participle
+                        name: past_participle
+                        type: string
+                    - column:
+                        header: translation
+                        name: translation
+                        type: string
+                commentLineStartsWith: '#'
+                encoding: UTF-8
+                file: data/verbs-data.csv
+                quotchar: '"'
+                separator: ','
+                relativeToChangelogFile: true
+                tableName: verbs
