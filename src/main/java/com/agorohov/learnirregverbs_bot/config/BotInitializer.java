@@ -1,6 +1,6 @@
 package com.agorohov.learnirregverbs_bot.config;
 
-import com.agorohov.learnirregverbs_bot.service.TelegramBot;
+import com.agorohov.learnirregverbs_bot.component.TelegramBot;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;

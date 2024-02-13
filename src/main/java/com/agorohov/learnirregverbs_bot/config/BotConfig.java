@@ -15,5 +15,5 @@ public class BotConfig {
     @Value("${bot.token}")
     private String botToken;
     @Value("${bot.owner}")
-    private Long botOwner;
+    private String botOwner;
 }
