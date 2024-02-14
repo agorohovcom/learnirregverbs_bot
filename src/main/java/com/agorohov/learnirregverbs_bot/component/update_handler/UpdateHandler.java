@@ -1,17 +1,19 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler;
 
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Configuration
-@Data
+@Getter
 @PropertySource("application.yaml")
 public abstract class UpdateHandler {
     
-    private UpdateProcessingStrategy processingStrategy;
+    protected Update update;
+    
+    protected UpdateProcessingStrategy processingStrategy;
     
     public void doWork() {
         processingStrategy.processUpdate();

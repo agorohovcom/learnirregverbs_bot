@@ -1,7 +1,7 @@
 package com.agorohov.learnirregverbs_bot.component;
 
-import com.agorohov.learnirregverbs_bot.component.BotCommands;
-import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
+import com.agorohov.learnirregverbs_bot.component.update_handler.*;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_updates.*;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
 import com.agorohov.learnirregverbs_bot.entity.User;
 import com.agorohov.learnirregverbs_bot.service.UserService;
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -51,17 +50,26 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-        
-        /** Нужно продумать структуру для обработки апдейтов:
-         * 1. Приходит апдейт
-         * 2. Обрабатывается классами дял работы с таблитами (пока нету)
-         * 3. Устанавливаем тип апдейта - текст, коллбэкдата и так далее (пока только эти 2)
-         * 4. Начинается ли апдейт с "/admin" (не знаю, надо ли отдельный класс для этого)
-         * 5. ... хз, я пошел в зал, сегодня спина и трицепсы
+
+        /**
+         * Нужно продумать структуру для обработки апдейтов: 
+         * 1. ✔ Приходит апдейт 
+         * 2. - Обрабатывается классом для работы с таблицами 
+         * 3. ✔ Устанавливаем тип апдейта - текст или коллбэкдата (в противном случае null) 
+         * 4. ✔ Начинается ли апдейт с "/admin" (для каждого сообщение отдельная реализация поведения) 
+         * 5. ✔ ... хз, я пошел в зал, сегодня спина и трицепсы
          */
         
-        UpdateHandler updateHandler;
-        
+        // updateHandler получает ссылку на TextUpdate или CallbackQueryUpdate, смотся какой update,
+        // далее в конструкторе выбирает реализацию UpdateProcessingStrategy
+        UpdateHandler updateHandler = new UpdateTypeDistributor().distribute(update);
+
+        // продумываю работу с БД (потом убрать в отдельный класс!!!)
+        // ...
+
+        // update обрабатывается согласно установленному поведению
+        updateHandler.doWork();
+
         /** ниже тестовый код, здоровается на любой апдейт и добавляет юзера в БД
         if (update.hasMessage()) {
             
