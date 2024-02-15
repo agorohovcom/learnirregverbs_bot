@@ -18,12 +18,11 @@ public class TextUpdate extends UpdateHandler {
     }
 
     private void choiseStrategy(Update update) {
-        this.update = update;
         switch (update.getMessage().getText()) {
             case "/start" ->
                 processingStrategy = new StartTextUpdate(update);
             default ->
-                processingStrategy = new DefaultTextUpdate();
+                processingStrategy = new DefaultTextUpdate(update);
         }
     }
 

@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class StartTextUpdate implements UpdateProcessingStrategy {
 
+    // убрать лишние поля для этого класса
     private Message userMessage;
     private Chat chat;
     private long chatId;
