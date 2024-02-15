@@ -1,29 +1,43 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler;
 
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_updates.*;
-import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.api.objects.Message;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update_strategy.DefaultTextUpdate;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update_strategy.StartTextUpdate;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@Slf4j
+@Setter
+@Accessors(chain = true)
 public class TextUpdate extends UpdateHandler {
-
-    // получаем необходимые данные из сообщения
-    private Message userMessage = update.getMessage();
-    private Chat chat = userMessage.getChat();
-    private long chatId = userMessage.getChatId();
-    private String userName = chat.getUserName();
-    private String msgBody = userMessage.getText();
 
     public TextUpdate(Update update) {
         this.update = update;
+        choiseStrategy(update);
+    }
 
-        switch(msgBody){
-            case "/start":
-                processingStrategy = new StartTextUpdate();
-                break;
-            default:
-                break;
+    private void choiseStrategy(Update update) {
+        this.update = update;
+        switch (update.getMessage().getText()) {
+            case "/start" ->
+                processingStrategy = new StartTextUpdate(update);
+            default ->
+                processingStrategy = new DefaultTextUpdate();
         }
     }
 
+//    @Override
+//    public void workWithDB(){
+//        User user =  new User()
+//                    .setChatId(chatId)
+//                    .setUserName(userName)
+//                    .setLastMessageAt(lastUpdateTime);
+//        try{
+//            userService.save(user);
+//        }catch(DataAccessException e){
+//            log.error(e.getMessage());
+//        }
+//        
+//    }
 }
