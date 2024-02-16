@@ -4,6 +4,7 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.*;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
 import com.agorohov.learnirregverbs_bot.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -17,13 +18,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @PropertySource("application.yaml")
 public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
-//    @Autowired
+    @Autowired
     private UserService userService;
 
     private final BotConfig config;
 
-    public TelegramBot(BotConfig config, UserService userService) {
-        this.userService = userService;
+    public TelegramBot(BotConfig config) {
         this.config = config;
         try {
             this.execute(new SetMyCommands(LIST_OF_COMMANDS, new BotCommandScopeDefault(), null));
@@ -34,21 +34,16 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-        // проверяем, от админа сообщение или нет
-        boolean isAdmin = update.getMessage().getChatId().toString().equals(config.getBotOwner());
 
-        // updateHandler получает ссылку на TextUpdate или CallbackQueryUpdate, смотря какой update,
-        // далее в конструкторе выбирается реализация UpdateProcessingStrategy,
-        // затем устанавливаем значение поля isAdmin
-        // !!! не очень красивое решение, пришлось добавить булевый параметр в конструктор каждому насленднику UpdateHandler 
-        UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update, isAdmin);
+        // updateHandler получает ссылку на TextUpdate или другой класс, смотря какой тип update,
+        // далее UpdateTypeDistributor выбирает реализацию UpdateProcessingStrategy,
+        // с помощью метода isUpdateFromAdmin() устанавливаем значение поля isAdmin
+        UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update, isUpdateFromAdmin(update));
 
         log.info("Update was recived (type = "
                 + updateHandler.getUpdateType()
                 + ", id = "
                 + update.getUpdateId()
-                + ", user ID = "
-                + updateHandler.getUserId()
                 + ", strategy = " + updateHandler.getProcessingStrategy().getClass().getSimpleName()
                 + ").");
 
@@ -62,7 +57,6 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 //        }catch(DataAccessException e){
 //            log.error(e.getMessage());
 //        }
-        // ...
         // update обрабатывается согласно установленной стратегии
         try {
             execute(updateHandler.doWork());
@@ -79,6 +73,17 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     @Override
     public String getBotToken() {
         return config.getBotToken();
+    }
+
+    // проверяем, от админа Update или нет
+    private boolean isUpdateFromAdmin(Update update) {
+        if (update.hasMessage()) {
+            return update.getMessage().getChatId().toString().equals(config.getBotOwner());
+        } else if (update.hasCallbackQuery()) {
+            return update.getCallbackQuery().getMessage().getChatId().toString().equals(config.getBotOwner());
+        } else {
+            return false;
+        }
     }
 
 }

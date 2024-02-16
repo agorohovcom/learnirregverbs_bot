@@ -2,31 +2,32 @@ package com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_
 
 import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
-import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethodMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class DismissCallbackQueryUpdateStrategy implements UpdateProcessingStrategy{
     
-    private long chatId;
-    private String userName;
+    private final long userId;
+    private final int messageId;
 
     public DismissCallbackQueryUpdateStrategy(Update update){
-        chatId = update.getMessage().getChatId();
-        userName = update.getMessage().getChat().getUserName();
+        this.userId = update.getCallbackQuery().getMessage().getChatId();
+        this.messageId = update.getCallbackQuery().getMessage().getMessageId();
     }
     
     @Override
-    public BotApiMethodMessage processUpdate() {
-        String textToSend = userName + ", нет такой команды.\n"
-                + "Если нужна помощь, загляни в раздел /help";
+    public BotApiMethod processUpdate() {
+        String textToSend = "Действие отменено";
         
-        SendMessage sendMessage = new MessageBuilder()
-                .setChatId(chatId)
+        EditMessageText message = MessageBuilder
+                .create()
+                .setChatId(userId)
                 .setText(textToSend)
-                .buildNewMessage();
+                .setMessageId(messageId)
+                .buildUpdateMessage();
         
-        return sendMessage;
+        return message;
     }
     
 }

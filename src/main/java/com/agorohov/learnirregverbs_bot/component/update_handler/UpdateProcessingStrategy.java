@@ -1,8 +1,7 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler;
 
-import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethodMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 public interface UpdateProcessingStrategy {
-    BotApiMethodMessage processUpdate();
-//    String getStrategyName();
+    BotApiMethod processUpdate();
 }

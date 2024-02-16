@@ -20,7 +20,7 @@ public class MessageBuilder {
     private List<List<InlineKeyboardButton>> underMessageKeyboard = new ArrayList<>();
     private List<InlineKeyboardButton> row = null;
     
-    public MessageBuilder(){}
+    private MessageBuilder(){}
     
     public static MessageBuilder create(){
         return new MessageBuilder();

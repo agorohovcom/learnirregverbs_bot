@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class UpdateTypeDistributor {
 
     public static UpdateHandler distribute(Update update, boolean isAdmin) {
-        if (/** update.hasMessage() && */update.getMessage().hasText()) {
+        if (update.hasMessage()) {
             return new TextUpdate(update, isAdmin);
         } else if (update.hasCallbackQuery()) {
             return new CallbackQueryUpdate(update, isAdmin);

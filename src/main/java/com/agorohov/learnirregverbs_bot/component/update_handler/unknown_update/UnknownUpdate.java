@@ -5,11 +5,26 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.unknown_update.
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UnknownUpdate extends UpdateHandler{
-
+    
     public UnknownUpdate(Update update, boolean isAdmin){
-        this.update = update;
+        updateHundlerFieldInitializer(update, isAdmin);
+        this.updateType = "Unknow";
+        choiseStrategy(update);
+    }
+    
+    private void choiseStrategy(Update update){
+        processingStrategy = new UnknownUpdateStrategy(userId);
+    }
+
+    @Override
+    protected void updateHundlerFieldInitializer(Update update, boolean isAdmin) {
+        if (update.hasMessage()){
+            this.userId = update.getMessage().getChatId();
+        }
+        if (update.hasCallbackQuery()){
+            this.userId = update.getCallbackQuery().getMessage().getChatId();
+        }
+        
         this.isAdmin = isAdmin;
-        updateType = "Unknown type";
-        processingStrategy = new UnknownUpdateStrategy(update);
     }
 }
