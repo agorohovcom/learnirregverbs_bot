@@ -34,11 +34,23 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
+        // проверяем, от админа сообщение или нет
+        boolean isAdmin = update.getMessage().getChatId().toString().equals(config.getBotOwner());
+
         // updateHandler получает ссылку на TextUpdate или CallbackQueryUpdate, смотря какой update,
-        // далее в конструкторе выбирается реализация UpdateProcessingStrategy
-        UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update);
-        
-        log.info(updateHandler.getUpdateType() + " update was recived (updateId=" + update.getUpdateId() + ").");
+        // далее в конструкторе выбирается реализация UpdateProcessingStrategy,
+        // затем устанавливаем значение поля isAdmin
+        // !!! не очень красивое решение, пришлось добавить булевый параметр в конструктор каждому насленднику UpdateHandler 
+        UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update, isAdmin);
+
+        log.info("Update was recived (type = "
+                + updateHandler.getUpdateType()
+                + ", id = "
+                + update.getUpdateId()
+                + ", user ID = "
+                + updateHandler.getUserId()
+                + ", strategy = " + updateHandler.getProcessingStrategy().getClass().getSimpleName()
+                + ").");
 
         // продумываю работу с БД (потом убрать в отдельный класс!!!)
 //        User user = new User()
@@ -51,8 +63,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 //            log.error(e.getMessage());
 //        }
         // ...
-        
-        // update обрабатывается согласно установленной стратегии и в виде
+        // update обрабатывается согласно установленной стратегии
         try {
             execute(updateHandler.doWork());
         } catch (TelegramApiException ex) {

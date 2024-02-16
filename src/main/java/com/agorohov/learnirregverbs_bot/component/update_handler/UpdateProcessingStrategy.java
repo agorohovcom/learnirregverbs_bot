@@ -4,4 +4,5 @@ import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethodMess
 
 public interface UpdateProcessingStrategy {
     BotApiMethodMessage processUpdate();
+//    String getStrategyName();
 }

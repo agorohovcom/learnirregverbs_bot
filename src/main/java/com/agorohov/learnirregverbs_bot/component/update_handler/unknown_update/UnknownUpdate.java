@@ -6,8 +6,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UnknownUpdate extends UpdateHandler{
 
-    public UnknownUpdate(Update update){
+    public UnknownUpdate(Update update, boolean isAdmin){
         this.update = update;
+        this.isAdmin = isAdmin;
         updateType = "Unknown type";
         processingStrategy = new UnknownUpdateStrategy(update);
     }
