@@ -24,5 +24,8 @@ public abstract class UpdateHandler {
     @Value("${bot.owner}")
     protected String botOwner;
     
+    protected String updateType;
+//    protected String msgToLog = updateType + " update was recived (updateId=" + update.getUpdateId() + ").";
+    
     public UpdateHandler(){}
 }

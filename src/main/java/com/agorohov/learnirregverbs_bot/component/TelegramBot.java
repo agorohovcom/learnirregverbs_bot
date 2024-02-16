@@ -34,11 +34,11 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-        log.info("Update was recived (updateId=" + update.getUpdateId() + ").");
-
         // updateHandler получает ссылку на TextUpdate или CallbackQueryUpdate, смотря какой update,
         // далее в конструкторе выбирается реализация UpdateProcessingStrategy
         UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update);
+        
+        log.info(updateHandler.getUpdateType() + " update was recived (updateId=" + update.getUpdateId() + ").");
 
         // продумываю работу с БД (потом убрать в отдельный класс!!!)
 //        User user = new User()
