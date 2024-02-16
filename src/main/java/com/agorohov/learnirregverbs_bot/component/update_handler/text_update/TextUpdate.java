@@ -1,11 +1,12 @@
-package com.agorohov.learnirregverbs_bot.component.update_handler;
+package com.agorohov.learnirregverbs_bot.component.update_handler.text_update;
 
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_update_strategy.DefaultTextUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_update_strategy.StartTextUpdateStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.DefaultTextUpdateStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.StartTextUpdateStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@Slf4j
+//@Slf4j
 //@Setter
 //@Accessors(chain = true)
 public class TextUpdate extends UpdateHandler {

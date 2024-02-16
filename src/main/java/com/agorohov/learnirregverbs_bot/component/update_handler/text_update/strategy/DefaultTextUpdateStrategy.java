@@ -1,4 +1,4 @@
-package com.agorohov.learnirregverbs_bot.component.update_handler.text_update_strategy;
+package com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy;
 
 import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;

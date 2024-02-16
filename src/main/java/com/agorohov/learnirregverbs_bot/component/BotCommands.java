@@ -7,6 +7,7 @@ public interface BotCommands {
     List<BotCommand> LIST_OF_COMMANDS = List.of(
             new BotCommand("/start", "сообщение-приветствие"),
             new BotCommand("/about", "информация о боте"),
+            new BotCommand("/help", "помощь"),
             new BotCommand("/delete", "удалить мои данные и остановить бота")
     );
 

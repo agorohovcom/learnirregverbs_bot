@@ -1,6 +1,7 @@
-package com.agorohov.learnirregverbs_bot.component.update_handler;
+package com.agorohov.learnirregverbs_bot.component.update_handler.unknown_update;
 
-import com.agorohov.learnirregverbs_bot.component.update_handler.unknown_update_strategy.UnknownUpdateStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
+import com.agorohov.learnirregverbs_bot.component.update_handler.unknown_update.strategy.UnknownUpdateStrategy;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UnknownUpdate extends UpdateHandler{
