@@ -16,6 +16,7 @@ public class TextUpdate extends UpdateHandler {
         updateHundlerFieldInitializer(update, isAdmin);
         this.updateType = "Text";
         choiseStrategy(update);
+        
     }
 
     private void choiseStrategy(Update update) {

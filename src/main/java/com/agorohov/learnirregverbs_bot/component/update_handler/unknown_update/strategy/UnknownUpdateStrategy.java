@@ -4,10 +4,11 @@ import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UnknownUpdateStrategy implements UpdateProcessingStrategy {
 
-    private long userId;
+    private final long userId;
     
     public UnknownUpdateStrategy(long userId) {
         this.userId = userId;

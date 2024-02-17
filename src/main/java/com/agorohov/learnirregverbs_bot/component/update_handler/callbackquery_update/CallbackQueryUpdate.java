@@ -14,6 +14,7 @@ public class CallbackQueryUpdate extends UpdateHandler {
         updateHundlerFieldInitializer(update, isAdmin);
         this.updateType = "CallbackQuery";
         choiseStrategy(update);
+        
     }
 
     private void choiseStrategy(Update update) {
