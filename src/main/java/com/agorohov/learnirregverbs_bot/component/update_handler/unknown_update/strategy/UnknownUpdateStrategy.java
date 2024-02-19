@@ -1,17 +1,17 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.unknown_update.strategy;
 
 import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UnknownUpdateStrategy implements UpdateProcessingStrategy {
 
-    private final long userId;
+    private final UpdateHandler uh;
     
-    public UnknownUpdateStrategy(long userId) {
-        this.userId = userId;
+    public UnknownUpdateStrategy(UpdateHandler uh) {
+        this.uh = uh;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class UnknownUpdateStrategy implements UpdateProcessingStrategy {
 
         SendMessage sendMessage = MessageBuilder
                 .create()
-                .setChatId(userId)
+                .setChatId(uh.getUserId())
                 .setText(textToSend)
                 .buildNewMessage();
         

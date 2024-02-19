@@ -7,28 +7,15 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Getter
 public class UnknownUpdate extends UpdateHandler {
+    
+    private final String updateType = "Unknown";
 
-    public UnknownUpdate(Update update, boolean isAdmin) {
-        updateHundlerFieldInitializer(update, isAdmin);
-        this.updateType = "Unknow";
-        choiseStrategy(userId);
-        
+    public UnknownUpdate(Update update, String botOwner) {
+        updateHandlerFieldsInitializer(update, updateType, botOwner);
+        choiseStrategy();
     }
 
-    private void choiseStrategy(long userId) {
-        processingStrategy = new UnknownUpdateStrategy(userId);
-    }
-
-    @Override
-    protected void updateHundlerFieldInitializer(Update update, boolean isAdmin) {
-        this.userId = update.hasMessage() 
-                ? update.getMessage().getChatId() 
-                : update.getCallbackQuery().getMessage().getChatId();
-        
-        this.msgId = update.hasMessage() 
-                ? update.getMessage().getMessageId() 
-                : update.getCallbackQuery().getMessage().getMessageId();
-        
-        this.isAdmin = isAdmin;
+    private void choiseStrategy() {
+        processingStrategy = new UnknownUpdateStrategy(this);
     }
 }

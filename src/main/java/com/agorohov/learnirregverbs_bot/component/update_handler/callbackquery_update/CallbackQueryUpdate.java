@@ -8,29 +8,17 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Getter
 public class CallbackQueryUpdate extends UpdateHandler {
     
-    protected String callBaclQueryData;
+    private final String updateType = "CallbackQuery";
     
-    public CallbackQueryUpdate(Update update, boolean isAdmin) {
-        updateHundlerFieldInitializer(update, isAdmin);
-        this.updateType = "CallbackQuery";
-        choiseStrategy(update);
-        
+    public CallbackQueryUpdate(Update update, String botOwner) {
+        updateHandlerFieldsInitializer(update, updateType, botOwner);
+        choiseStrategy();
     }
 
-    private void choiseStrategy(Update update) {
-        switch (callBaclQueryData) {
-            // отрицательный ответ
+    private void choiseStrategy() {
+        switch (msgCallbackData) {
             case "dismiss" ->
-                processingStrategy = new DismissCallbackQueryUpdateStrategy(update);
+                processingStrategy = new DismissCallbackQueryUpdateStrategy(this);
         }
-    }
-
-    @Override
-    protected void updateHundlerFieldInitializer(Update update, boolean isAdmin) {
-        this.callBaclQueryData = update.getCallbackQuery().getData();
-        this.msgId = update.getCallbackQuery().getMessage().getMessageId();
-        this.userId = update.getCallbackQuery().getMessage().getChatId();
-
-        this.isAdmin = isAdmin;
     }
 }

@@ -2,10 +2,14 @@ package com.agorohov.learnirregverbs_bot.component;
 
 import com.agorohov.learnirregverbs_bot.component.update_handler.*;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
+import com.agorohov.learnirregverbs_bot.entity.User;
 import com.agorohov.learnirregverbs_bot.service.UserService;
+import java.sql.Timestamp;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -23,6 +27,8 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     private final BotConfig config;
 
+    private long botStartsAt;
+
     public TelegramBot(BotConfig config) {
         this.config = config;
         try {
@@ -30,33 +36,57 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
         } catch (TelegramApiException e) {
             log.error("Error setting bot's command list: " + e.getMessage());
         }
+        botStartsAt = System.currentTimeMillis();
     }
 
     @Override
     public void onUpdateReceived(Update update) {
 
+        long updateWasReceivedAt = System.currentTimeMillis();
+
         // updateHandler получает ссылку на TextUpdate или другой класс, смотря какой тип update,
         // далее UpdateTypeDistributor выбирает реализацию UpdateProcessingStrategy,
-        // с помощью метода isUpdateFromAdmin() устанавливаем значение поля isAdmin
-        UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update, isUpdateFromAdmin(update));
+        // передаем botOwner, чтобы сравнить с id пользователя и понять, от админа ли update
+        UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update, config.getBotOwner());
+        
+//        updateHandler.printInfo();
 
-        log.info("Update was recived (type = "
-                + updateHandler.getUpdateType()
-                + ", id = "
+        log.info("Update was recived ("
+                + "id = "
                 + update.getUpdateId()
-                + ", strategy = " + updateHandler.getProcessingStrategy().getClass().getSimpleName()
+                + ", type = "
+                + updateHandler.getUpdateType()
+                + ", strategy = "
+                + updateHandler.getProcessingStrategy().getClass().getSimpleName()
                 + ").");
 
+        /////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////
         // продумываю работу с БД (потом убрать в отдельный класс!!!)
-//        User user = new User()
+//        User user;
+//        Optional<User> optUser = userService.findById(updateHandler.getUserId());
+//        if (optUser.isEmpty()) {
+//            user = new User()
 //                    .setChatId(update.getMessage().getChatId())
 //                    .setUserName(update.getMessage().getChat().getUserName())
-//                    .setLastMessageAt(new Timestamp(System.currentTimeMillis()));
-//        try{
+//                    .setFirstMessageAt(new Timestamp(updateWasReceivedAt))
+//                    .setLastMessageAt(new Timestamp(updateWasReceivedAt));
+//        } else {
+//            user = optUser
+//                    .get()
+//                    // на случай, если у прользователя поменялся userName
+//                    .setUserName(updateHandler.getUserName())
+//                    .setLastMessageAt(new Timestamp(updateWasReceivedAt));
+//        }
+//
+//        try {
 //            userService.save(user);
-//        }catch(DataAccessException e){
+//        } catch (DataAccessException e) {
 //            log.error(e.getMessage());
 //        }
+        /////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////
+
         // update обрабатывается согласно установленной стратегии
         try {
             execute(updateHandler.doWork());
@@ -74,16 +104,4 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     public String getBotToken() {
         return config.getBotToken();
     }
-
-    // проверяем, от админа Update или нет
-    private boolean isUpdateFromAdmin(Update update) {
-        if (update.hasMessage()) {
-            return update.getMessage().getChatId().toString().equals(config.getBotOwner());
-        } else if (update.hasCallbackQuery()) {
-            return update.getCallbackQuery().getMessage().getChatId().toString().equals(config.getBotOwner());
-        } else {
-            return false;
-        }
-    }
-
 }

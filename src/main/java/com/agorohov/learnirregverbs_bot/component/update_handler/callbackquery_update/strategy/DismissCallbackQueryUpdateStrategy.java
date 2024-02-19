@@ -1,19 +1,17 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update.strategy;
 
 import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class DismissCallbackQueryUpdateStrategy implements UpdateProcessingStrategy{
     
-    private final long userId;
-    private final int messageId;
+    private final UpdateHandler uh;
 
-    public DismissCallbackQueryUpdateStrategy(Update update){
-        this.userId = update.getCallbackQuery().getMessage().getChatId();
-        this.messageId = update.getCallbackQuery().getMessage().getMessageId();
+    public DismissCallbackQueryUpdateStrategy(UpdateHandler uh){
+        this.uh = uh;
     }
     
     @Override
@@ -22,12 +20,11 @@ public class DismissCallbackQueryUpdateStrategy implements UpdateProcessingStrat
         
         EditMessageText message = MessageBuilder
                 .create()
-                .setChatId(userId)
+                .setChatId(uh.getUserId())
                 .setText(textToSend)
-                .setMessageId(messageId)
+                .setMessageId(uh.getMsgId())
                 .buildUpdateMessage();
         
         return message;
     }
-    
 }

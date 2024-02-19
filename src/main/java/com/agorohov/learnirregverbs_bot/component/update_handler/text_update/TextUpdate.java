@@ -8,44 +8,28 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Getter
 public class TextUpdate extends UpdateHandler {
     
-    protected String userName;
-    protected String userFirstName;
-    protected String msgBody;
-
-    public TextUpdate(Update update, boolean isAdmin) {
-        updateHundlerFieldInitializer(update, isAdmin);
-        this.updateType = "Text";
-        choiseStrategy(update);
-        
+    private final String updateType = "Text";
+    
+    public TextUpdate(Update update, String botOwner) {
+        updateHandlerFieldsInitializer(update, updateType, botOwner);
+        choiseStrategy();
     }
-
-    private void choiseStrategy(Update update) {
+    
+    private void choiseStrategy() {
         switch (msgBody) {
             case "/start" ->
-                processingStrategy = new StartTextUpdateStrategy(update);
+                processingStrategy = new StartTextUpdateStrategy(this);
             case "/admin" -> {
                 if (isAdmin) {
-                    processingStrategy = new AdminTextUpdateStrategy(update);
+                    processingStrategy = new AdminTextUpdateStrategy(this);
                 } else {
-                    processingStrategy = new DefaultTextUpdateStrategy(update);
+                    processingStrategy = new DefaultTextUpdateStrategy(this);
                 }
             }
             case "/buttons_test" ->
-                processingStrategy = new ButtonsTestTextUpdateStrategy(update);
+                processingStrategy = new ButtonsTestTextUpdateStrategy(this);
             default ->
-                processingStrategy = new DefaultTextUpdateStrategy(update);
+                processingStrategy = new DefaultTextUpdateStrategy(this);
         }
-    }
-
-    @Override
-    protected void updateHundlerFieldInitializer(Update update, boolean isAdmin) {
-
-        this.userId = update.getMessage().getChatId();
-        this.userName = update.getMessage().getChat().getUserName();
-        this.userFirstName = update.getMessage().getChat().getFirstName();
-        this.msgId = update.getMessage().getMessageId();
-        this.msgBody = update.getMessage().getText();
-
-        this.isAdmin = isAdmin;
     }
 }

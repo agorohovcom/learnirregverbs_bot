@@ -7,13 +7,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UpdateTypeDistributor {
 
-    public static UpdateHandler distribute(Update update, boolean isAdmin) {
+    public static UpdateHandler distribute(Update update, String botOwner) {        
         if (update.hasMessage() && update.getMessage().hasText()) {
-            return new TextUpdate(update, isAdmin);
+            return new TextUpdate(update, botOwner);
         } else if (update.hasCallbackQuery()) {
-            return new CallbackQueryUpdate(update, isAdmin);
+            return new CallbackQueryUpdate(update, botOwner);
         } else {
-            return new UnknownUpdate(update, isAdmin);
+            return new UnknownUpdate(update, botOwner);
         }
     }
 }
