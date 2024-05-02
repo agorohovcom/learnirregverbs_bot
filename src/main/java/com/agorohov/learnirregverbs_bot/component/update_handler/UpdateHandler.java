@@ -18,6 +18,8 @@ public abstract class UpdateHandler {
 
     protected boolean isAdmin;
     
+    protected long updateWasReceivedAt;
+    
     protected String updateType;
 
     protected UpdateProcessingStrategy processingStrategy;
@@ -41,6 +43,8 @@ public abstract class UpdateHandler {
         msgCallbackData = update.hasCallbackQuery() ? update.getCallbackQuery().getData() : "";
         
         isAdmin = botOwner.equals(String.valueOf(userId));
+        
+        updateWasReceivedAt = System.currentTimeMillis();
     }
     
 //        public void printInfo(){
