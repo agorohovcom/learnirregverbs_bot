@@ -19,8 +19,8 @@ import lombok.experimental.Accessors;
 public class Verb {
     
     @Id
-    // автоген или вручную?
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // автоген или вручную? сейчас добавляет из таблицы глаголов
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 

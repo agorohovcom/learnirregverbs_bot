@@ -12,67 +12,65 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 @Data
 @Accessors(chain = true)
 public class MessageBuilder {
-    
+
     private String text;
     private long chatId;
     private int messageId;
-    
+
     private List<List<InlineKeyboardButton>> underMessageKeyboard = new ArrayList<>();
     private List<InlineKeyboardButton> row = null;
-    
-    private MessageBuilder(){}
-    
-    public static MessageBuilder create(){
+
+    private MessageBuilder() {
+    }
+
+    public static MessageBuilder create() {
         return new MessageBuilder();
     }
-    
-    public static MessageBuilder create(long chatId){
-        // было так
-//        var builder = new MessageBuilder();
-//        builder.setChatId(chatId);
+
+    public static MessageBuilder create(long chatId) {
         return new MessageBuilder().setChatId(chatId);
     }
-    
-    public MessageBuilder row(){
+
+    public MessageBuilder row() {
         this.row = new ArrayList<>();
         return this;
     }
-    
-    public MessageBuilder button(String buttonText, String callBackData){
+
+    public MessageBuilder button(String buttonText, String callBackData) {
         var button = new InlineKeyboardButton();
         button.setText(buttonText);
         button.setCallbackData(callBackData);
         row.add(button);
         return this;
     }
-    
-    public MessageBuilder endRow(){
+
+    public MessageBuilder endRow() {
         this.underMessageKeyboard.add(this.row);
         this.row = null;
         return this;
     }
-    
-    public SendMessage buildNewMessage(){
+
+    public SendMessage buildNewMessage() {
         SendMessage message = new SendMessage();
-        
+
         message.setChatId(chatId);
         message.setText(text);
-        
+
         var keyboardMarkup = new InlineKeyboardMarkup();
-        
+
         keyboardMarkup.setKeyboard(underMessageKeyboard);
         message.setReplyMarkup(keyboardMarkup);
-        
+
         return message;
     }
-    
-    public EditMessageText buildUpdateMessage(){
+
+    public EditMessageText buildUpdateMessage() {
         EditMessageText message = new EditMessageText();
-        
+
         message.setChatId(chatId);
         message.setText(text);
         message.setMessageId(messageId);
-        
+
         return message;
     }
 }

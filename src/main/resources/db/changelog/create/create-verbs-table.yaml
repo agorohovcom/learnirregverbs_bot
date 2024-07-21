@@ -9,7 +9,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: int
-                  autoIncrement: true
+                  autoIncrement: false
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_verbs
