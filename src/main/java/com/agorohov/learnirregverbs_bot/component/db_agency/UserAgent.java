@@ -11,7 +11,7 @@ import org.springframework.dao.DataAccessException;
 @Slf4j
 public class UserAgent {
     
-    private UserService userService;
+    private final UserService userService;
     
     private User user;
     

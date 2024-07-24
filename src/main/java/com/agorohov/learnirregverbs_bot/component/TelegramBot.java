@@ -19,15 +19,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @PropertySource("application.yaml")
 public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
-    @Autowired
-    private UserService userService;
-
     private final BotConfig config;
-
+    private final UserService userService;
+    
     private long botStartsAt;
 
-    public TelegramBot(BotConfig config) {
+    public TelegramBot(BotConfig config, UserService userService) {
         this.config = config;
+        this.userService = userService;
         try {
             this.execute(new SetMyCommands(LIST_OF_COMMANDS, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
