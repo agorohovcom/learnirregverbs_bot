@@ -3,6 +3,7 @@ package com.agorohov.learnirregverbs_bot.component.db_agency;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.entity.User;
 import com.agorohov.learnirregverbs_bot.service.UserService;
+import com.agorohov.learnirregverbs_bot.service.UserServiceImpl;
 import java.sql.Timestamp;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;

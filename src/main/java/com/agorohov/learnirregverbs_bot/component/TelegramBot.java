@@ -4,8 +4,9 @@ import com.agorohov.learnirregverbs_bot.component.db_agency.UserAgent;
 import com.agorohov.learnirregverbs_bot.component.update_handler.*;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
 import com.agorohov.learnirregverbs_bot.service.UserService;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -17,16 +18,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 @Slf4j
 @PropertySource("application.yaml")
+@RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     private final BotConfig config;
     private final UserService userService;
     
     private long botStartsAt;
-
-    public TelegramBot(BotConfig config, UserService userService) {
-        this.config = config;
-        this.userService = userService;
+    
+    @PostConstruct
+    private void init() {
         try {
             this.execute(new SetMyCommands(LIST_OF_COMMANDS, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
