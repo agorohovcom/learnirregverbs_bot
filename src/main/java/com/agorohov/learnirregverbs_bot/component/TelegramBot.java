@@ -1,6 +1,5 @@
 package com.agorohov.learnirregverbs_bot.component;
 
-import com.agorohov.learnirregverbs_bot.component.db_agency.UserAgent;
 import com.agorohov.learnirregverbs_bot.component.update_handler.*;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
 import com.agorohov.learnirregverbs_bot.service.UserService;
@@ -23,9 +22,9 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     private final BotConfig config;
     private final UserService userService;
-    
+
     private long botStartsAt;
-    
+
     @PostConstruct
     private void init() {
         try {
@@ -45,7 +44,6 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
         UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update, config.getBotOwner());
 
 //        updateHandler.printInfo();
-
         log.info("Update was recived ("
                 + "id = "
                 + update.getUpdateId()
@@ -54,10 +52,14 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                 + ", strategy = "
                 + updateHandler.getProcessingStrategy().getClass().getSimpleName()
                 + ").");
-        
-        // обновляем даныне о пользователе в БД
-        new UserAgent(userService).saveOrUpdateUser(updateHandler);
 
+        // обновляем даныне о пользователе в БД
+        // ----------------------------------------------------------
+        
+        userService.save(updateHandler.giveMeUserDTO());
+
+        // ----------------------------------------------------------
+        
         // update обрабатывается согласно установленной стратегии
         try {
             execute(updateHandler.doWork());

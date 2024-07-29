@@ -1,7 +1,8 @@
-package com.agorohov.learnirregverbs_bot.service;
+package com.agorohov.learnirregverbs_bot.service.implementation;
 
 import com.agorohov.learnirregverbs_bot.entity.Verb;
 import com.agorohov.learnirregverbs_bot.repository.VerbRepository;
+import com.agorohov.learnirregverbs_bot.service.VerbService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

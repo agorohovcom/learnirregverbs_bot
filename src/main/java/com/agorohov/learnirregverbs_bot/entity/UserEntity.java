@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 @Table(name = "users")
 @Data
 @Accessors(chain = true)
-public class User {
+public class UserEntity {
     
     @Id
     @Column(name = "chat_id")

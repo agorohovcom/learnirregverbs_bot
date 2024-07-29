@@ -33,7 +33,7 @@ public class LearningStatistics {
     
     @ManyToOne
     @JoinColumn(name = "user_chat_id", nullable = false)
-    private User user;
+    private UserEntity user;
     
     @ManyToOne
     @JoinColumn(name = "verb_id", nullable = false)

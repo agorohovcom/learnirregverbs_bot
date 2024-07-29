@@ -1,5 +1,7 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler;
 
+import com.agorohov.learnirregverbs_bot.dto.UserDTO;
+import java.sql.Timestamp;
 import lombok.Getter;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -45,6 +47,14 @@ public abstract class UpdateHandler {
         isAdmin = botOwner.equals(String.valueOf(userId));
         
         updateWasReceivedAt = System.currentTimeMillis();
+    }
+    
+    public UserDTO giveMeUserDTO() {
+        return new UserDTO()
+                .setChatId(userId)
+                .setUserName(userName)
+                .setFirstMessageAt(new Timestamp(updateWasReceivedAt))
+                .setLastMessageAt(new Timestamp(updateWasReceivedAt));
     }
     
 //        public void printInfo(){
