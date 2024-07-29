@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Getter
 public abstract class UpdateHandler {
-    
+
     protected Message message;
     protected long userId;
     protected String userName;
@@ -19,44 +19,45 @@ public abstract class UpdateHandler {
     protected String msgCallbackData;
 
     protected boolean isAdmin;
-    
+
     protected long updateWasReceivedAt;
-    
+
     protected String updateType;
 
     protected UpdateProcessingStrategy processingStrategy;
-    
+
     // сомнительноооооо, ннно окэй (я про возвращаемый тип)
     public BotApiMethod doWork() {
         return processingStrategy.processUpdate();
     }
-    
-    protected void updateHandlerFieldsInitializer(Update update, String updateType, String botOwner){
+
+    protected void updateHandlerFieldsInitializer(Update update, String updateType, String botOwner) {
         message = update.hasMessage()
                 ? update.getMessage()
                 : update.getCallbackQuery().getMessage();
-        
+
         userId = message.getChatId();
         userName = message.getChat().getUserName();
         userFirstName = message.getChat().getFirstName();
         msgId = message.getMessageId();
         msgBody = message.getText();
-        
-        msgCallbackData = update.hasCallbackQuery() ? update.getCallbackQuery().getData() : "";
-        
+
+        msgCallbackData = update.hasCallbackQuery()
+                ? update.getCallbackQuery().getData()
+                : "";
+
         isAdmin = botOwner.equals(String.valueOf(userId));
-        
+
         updateWasReceivedAt = System.currentTimeMillis();
     }
-    
+
     public UserDTO giveMeUserDTO() {
         return new UserDTO()
                 .setChatId(userId)
                 .setUserName(userName)
-                .setFirstMessageAt(new Timestamp(updateWasReceivedAt))
                 .setLastMessageAt(new Timestamp(updateWasReceivedAt));
     }
-    
+
 //        public void printInfo(){
 //        System.out.println();
 //        System.out.println("getSimpleName() : " + this.getClass().getSimpleName());
