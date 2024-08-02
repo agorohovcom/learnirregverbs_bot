@@ -37,13 +37,13 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-
         // updateHandler получает ссылку на TextUpdate или другой класс, смотря какой тип update,
         // далее UpdateTypeDistributor выбирает реализацию UpdateProcessingStrategy,
         // передаем botOwner, чтобы сравнить с id пользователя и понять, от админа ли update
         UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update, config.getBotOwner());
 
 //        updateHandler.printInfo();
+
         log.info("Update was recived ("
                 + "id = "
                 + update.getUpdateId()
@@ -53,12 +53,8 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                 + updateHandler.getProcessingStrategy().getClass().getSimpleName()
                 + ").");
 
-        // обновляем даныне о пользователе в БД
-        // ----------------------------------------------------------
-        
+        // обновляем даныне о пользователе в БД или добавляем нового
         userService.save(updateHandler.giveMeUserDTO());
-
-        // ----------------------------------------------------------
         
         // update обрабатывается согласно установленной стратегии
         try {

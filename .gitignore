@@ -4,11 +4,9 @@
 Makefile
 Dockerfile
 .dockerignore
-# application.yaml
 mvnw
 mvnw.cmd
 secretFile
-ToDo.txt
 
 !.mvn/wrapper/maven-wrapper.jar
 

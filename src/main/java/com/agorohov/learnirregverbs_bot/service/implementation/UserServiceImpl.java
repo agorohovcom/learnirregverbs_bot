@@ -29,32 +29,12 @@ public class UserServiceImpl implements UserService {
     public boolean existsById(Long id) {
         return userRepository.existsById(id);
     }
-
-//    @Override
-//    public void save(UserDTO dto) {
-//        UserEntity entity = convertDTOtoEntity(dto);
-//        // если такого пользователя ещё нет, устанавливаем id и
-//        // время первого сообщения
-//        if (findById(dto.getChatId()).isEmpty()) {
-//            entity
-//                    .setChatId(dto.getChatId())
-//                    .setFirstMessageAt(dto.getFirstMessageAt());
-//        }
-//        // и в любом случае обновляем имя (вдруг изменилось) и
-//        // время последнего сообщения
-//        entity
-//                .setUserName(dto.getUserName())
-//                .setLastMessageAt(dto.getLastMessageAt());
-//
-//        try {
-//            userRepository.save(entity);
-//            log.info("User with id = " + entity.getChatId() + " was saved to DB");
-//        } catch (DataAccessException e) {
-//            log.error(e.getMessage());
-//        }
-//    }
+    
     @Override
     public void save(UserDTO dto) {
+        // если пользователь с таким ID уже есть, используем его,
+        // только обновляем имя (вдруг изменилось) и дату последнего сообщения.
+        // если пользователя с таким ID ещё нет, создаём нового
         UserEntity entity = existsById(dto.getChatId())
                 ? convertDTOtoEntity(findById(dto.getChatId()).get())
                         .setUserName(dto.getUserName())

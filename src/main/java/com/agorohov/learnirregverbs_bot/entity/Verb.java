@@ -22,7 +22,8 @@ public class Verb {
     // автоген или вручную? сейчас добавляет из таблицы глаголов
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+//    private Integer id;
+    private short id;
 
     @Column(name = "infinitive")
     private String infinitive;
