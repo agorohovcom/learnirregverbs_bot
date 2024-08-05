@@ -70,6 +70,11 @@ public class MessageBuilder {
         message.setChatId(chatId);
         message.setText(text);
         message.setMessageId(messageId);
+        
+        var keyboardMarkup = new InlineKeyboardMarkup();
+
+        keyboardMarkup.setKeyboard(underMessageKeyboard);
+        message.setReplyMarkup(keyboardMarkup);
 
         return message;
     }

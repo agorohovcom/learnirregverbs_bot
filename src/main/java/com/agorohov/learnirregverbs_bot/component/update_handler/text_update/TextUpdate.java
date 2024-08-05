@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Getter
 public class TextUpdate extends UpdateHandler {
     
-    private final String updateType = "Text";
+    public final String updateType = "Text";
     
     public TextUpdate(Update update, String botOwner) {
         updateHandlerFieldsInitializer(update, updateType, botOwner);
@@ -26,6 +26,8 @@ public class TextUpdate extends UpdateHandler {
                     processingStrategy = new DefaultTextUpdateStrategy(this);
                 }
             }
+            case "/learn" ->
+                processingStrategy = new LearnTextUpdateStrategy(this);
             case "/buttons_test" ->
                 processingStrategy = new ButtonsTestTextUpdateStrategy(this);
             default ->

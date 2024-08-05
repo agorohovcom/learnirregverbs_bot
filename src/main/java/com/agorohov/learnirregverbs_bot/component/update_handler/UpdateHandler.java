@@ -3,6 +3,7 @@ package com.agorohov.learnirregverbs_bot.component.update_handler;
 import com.agorohov.learnirregverbs_bot.dto.UserDTO;
 import java.sql.Timestamp;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -10,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Getter
+@Slf4j
 public abstract class UpdateHandler {
 
     protected Message message;
@@ -19,6 +21,8 @@ public abstract class UpdateHandler {
     protected int msgId;
     protected String msgBody;
     protected String msgCallbackData;
+    
+    protected Integer updateId;
 
     protected boolean isAdmin;
 
@@ -30,6 +34,14 @@ public abstract class UpdateHandler {
 
     // сомнительноооооо, ннно окэй (я про возвращаемый тип)
     public BotApiMethod doWork() {
+        log.info("Update was recived ("
+                + "id = "
+                + updateId
+                + ", type = "
+                + updateType
+                + ", strategy = "
+                + processingStrategy.getClass().getSimpleName()
+                + ").");
         return processingStrategy.processUpdate();
     }
 
@@ -43,11 +55,15 @@ public abstract class UpdateHandler {
         userFirstName = message.getChat().getFirstName();
         msgId = message.getMessageId();
         msgBody = message.getText();
+        
+        updateId = update.getUpdateId();
 
         msgCallbackData = update.hasCallbackQuery()
                 ? update.getCallbackQuery().getData()
                 : "";
 
+        this.updateType = updateType;
+        
         isAdmin = botOwner.equals(String.valueOf(userId));
 
         updateWasReceivedAt = System.currentTimeMillis();

@@ -44,14 +44,15 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
 //        updateHandler.printInfo();
 
-        log.info("Update was recived ("
-                + "id = "
-                + update.getUpdateId()
-                + ", type = "
-                + updateHandler.getUpdateType()
-                + ", strategy = "
-                + updateHandler.getProcessingStrategy().getClass().getSimpleName()
-                + ").");
+        // пока перенёс в UpdateHandler
+//        log.info("Update was recived ("
+//                + "id = "
+//                + update.getUpdateId()
+//                + ", type = "
+//                + updateHandler.getUpdateType()
+//                + ", strategy = "
+//                + updateHandler.getProcessingStrategy().getClass().getSimpleName()
+//                + ").");
 
         // обновляем даныне о пользователе в БД или добавляем нового
         userService.save(updateHandler.giveMeUserDTO());
