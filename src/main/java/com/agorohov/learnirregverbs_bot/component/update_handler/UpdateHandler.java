@@ -3,6 +3,8 @@ package com.agorohov.learnirregverbs_bot.component.update_handler;
 import com.agorohov.learnirregverbs_bot.dto.UserDTO;
 import java.sql.Timestamp;
 import lombok.Getter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;

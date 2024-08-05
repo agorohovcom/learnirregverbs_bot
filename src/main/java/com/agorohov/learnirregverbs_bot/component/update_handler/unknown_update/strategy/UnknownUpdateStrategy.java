@@ -17,6 +17,7 @@ public class UnknownUpdateStrategy implements UpdateProcessingStrategy {
     @Override
     public BotApiMethod processUpdate() {
         String textToSend = "Такой тип сообщений не поддерживается.\n"
+                + "Используй кнопки или меню бота.\n\n"
                 + "Если нужна помощь, загляни в раздел /help";
 
         SendMessage sendMessage = MessageBuilder

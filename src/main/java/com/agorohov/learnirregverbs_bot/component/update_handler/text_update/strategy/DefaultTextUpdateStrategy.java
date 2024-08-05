@@ -17,6 +17,7 @@ public class DefaultTextUpdateStrategy implements UpdateProcessingStrategy{
     @Override
     public BotApiMethodMessage processUpdate() {
         String textToSend = "Нет такой команды.\n"
+                + "Используй кнопки или меню бота.\n\n"
                 + "Если нужна помощь, загляни в раздел /help";
         
         SendMessage sendMessage = MessageBuilder
