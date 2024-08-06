@@ -14,7 +14,7 @@ public interface BotCommands {
             
             new BotCommand("/start", "начало работы"),
             new BotCommand("/learn", "учить неправильные глаголы"),
-            new BotCommand("/statistics", "статистика"),
+            new BotCommand("/stat", "статистика"),
             new BotCommand("/about", "о боте"),
             new BotCommand("/help", "помощь"),
             new BotCommand("/admin", "панель админа, !!!!удалить отсюда!!!!")

@@ -3,10 +3,11 @@ package com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update.strategy.DismissCallbackQueryUpdateStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update.strategy.FailCallbackQueryUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.TextUpdate;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.AboutTextUpdateStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.HelpTextUpdateStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.LearnTextUpdateStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.StartTextUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.exception.FailCallbackQueryException;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.StatTextUpdateStrategy;
 import lombok.Getter;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -22,12 +23,18 @@ public class CallbackQueryUpdate extends UpdateHandler {
 
     private void choiseStrategy() {
         switch (msgCallbackData) {
-            case "dismiss" ->
-                processingStrategy = new DismissCallbackQueryUpdateStrategy(this);
             case "/start" ->
                 processingStrategy = new StartTextUpdateStrategy(this);
             case "/learn" ->
                 processingStrategy = new LearnTextUpdateStrategy(this);
+            case "/stat" ->
+                processingStrategy = new StatTextUpdateStrategy(this);
+            case "/about" ->
+                processingStrategy = new AboutTextUpdateStrategy(this);
+            case "/help" ->
+                processingStrategy = new HelpTextUpdateStrategy(this);
+            case "dismiss" ->
+                processingStrategy = new DismissCallbackQueryUpdateStrategy(this);
             default ->
                 processingStrategy = new FailCallbackQueryUpdateStrategy(this);
         }

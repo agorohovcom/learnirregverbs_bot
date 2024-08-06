@@ -37,7 +37,7 @@ public abstract class UpdateHandler {
     public boolean isUpdatable() {
         // проверяем что сообщение от бота,
         // что прошло менее 47 часов (вообще максимум 48)
-        // и что сообщение имеет другое содержимое
+        // и что сообщение имеет другое содержимое (убрал эту проверку)
         return ((message.getFrom().getId().toString().equals(botToken))
                 && ((System.currentTimeMillis() - updateWasReceivedAt) < 47 * 3600000));
 //                && (!msgBody.equals(text));

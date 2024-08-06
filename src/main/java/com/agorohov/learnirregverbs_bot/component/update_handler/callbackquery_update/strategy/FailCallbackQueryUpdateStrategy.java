@@ -24,7 +24,7 @@ public class FailCallbackQueryUpdateStrategy implements UpdateProcessingStrategy
                 .setText(textToSend)
                 .setMessageId(uh.getMsgId())
                 .row()
-                .button("Перезапустить бота", "/start")
+                .button("<< главное меню", "/start")
                 .endRow()
                 .buildUpdateMessage();
         

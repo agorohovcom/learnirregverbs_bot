@@ -5,36 +5,29 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
-public class StartTextUpdateStrategy implements UpdateProcessingStrategy {
-
+public class AboutTextUpdateStrategy implements UpdateProcessingStrategy {
+    
     private final UpdateHandler uh;
 
-    public StartTextUpdateStrategy(UpdateHandler uh) {
+    public AboutTextUpdateStrategy(UpdateHandler uh) {
         this.uh = uh;
     }
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "Привет, " + uh.getUserFirstName() + "!\n\n"
-                + "Это бот для изучения неправильных глаголов английского языка.\n\n"
-                + "Ты можешь учиться и следить за прогрессом своего обучения.\n\n"
-                + "Выбери необходимый раздел:";
+        String textToSend = "Этот бот для изучения неправильных глаголов английского языка - "
+                + "проект некоего Александра Горохова.\n\n"
+                + "GitHub проекта: https://github.com/agorohovcom/learnirregverbs_bot \n"
+                + "Сайт автора: agorohov.com \n\n"
+                + "Алгоритм работы: [описание как оно работает]\n"
+                + "Какая-то ещё инфа: [я инфа]";
 
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
                 .row()
-                .button("Учить", "/learn")
-                .endRow()
-                .row()
-                .button("Статистика", "/stat")
-                .endRow()
-                .row()
-                .button("О боте", "/about")
-                .endRow()
-                .row()
-                .button("Помощь", "/help")
+                .button("<< главное меню", "/start")
                 .endRow();
 
         if (uh.isUpdatable()) {

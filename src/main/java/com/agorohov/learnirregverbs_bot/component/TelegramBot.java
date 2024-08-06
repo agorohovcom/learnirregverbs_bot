@@ -55,7 +55,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
         // обновляем даныне о пользователе в БД или добавляем нового
         userService.save(updateHandler.giveMeUserDTO());
-        
+
         // update обрабатывается согласно установленной стратегии
         try {
             execute(updateHandler.doWork());
@@ -73,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     public String getBotToken() {
         return config.getBotToken();
     }
-    
+
     public String getBotOwner() {
         return config.getBotOwner();
     }
