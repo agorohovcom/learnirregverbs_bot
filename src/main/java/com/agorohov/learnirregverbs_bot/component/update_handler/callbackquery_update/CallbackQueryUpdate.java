@@ -4,6 +4,7 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update.strategy.DismissCallbackQueryUpdateStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update.strategy.FailCallbackQueryUpdateStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.TextUpdate;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.LearnTextUpdateStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.StartTextUpdateStrategy;
 import com.agorohov.learnirregverbs_bot.exception.FailCallbackQueryException;
 import lombok.Getter;
@@ -11,11 +12,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Getter
 public class CallbackQueryUpdate extends UpdateHandler {
-    
+
     public final String updateType = "CallbackQuery";
-    
-    public CallbackQueryUpdate(Update update, String botOwner) {
-        updateHandlerFieldsInitializer(update, updateType, botOwner);
+
+    public CallbackQueryUpdate(Update update, String botToken, String botOwner) {
+        updateHandlerFieldsInitializer(update, updateType, botToken, botOwner);
         choiseStrategy();
     }
 
@@ -23,8 +24,10 @@ public class CallbackQueryUpdate extends UpdateHandler {
         switch (msgCallbackData) {
             case "dismiss" ->
                 processingStrategy = new DismissCallbackQueryUpdateStrategy(this);
-            case "/start" -> 
+            case "/start" ->
                 processingStrategy = new StartTextUpdateStrategy(this);
+            case "/learn" ->
+                processingStrategy = new LearnTextUpdateStrategy(this);
             default ->
                 processingStrategy = new FailCallbackQueryUpdateStrategy(this);
         }

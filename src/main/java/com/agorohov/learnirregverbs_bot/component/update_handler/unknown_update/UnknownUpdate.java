@@ -10,8 +10,8 @@ public class UnknownUpdate extends UpdateHandler {
     
     private final String updateType = "Unknown";
 
-    public UnknownUpdate(Update update, String botOwner) {
-        updateHandlerFieldsInitializer(update, updateType, botOwner);
+    public UnknownUpdate(Update update, String botToken, String botOwner) {
+        updateHandlerFieldsInitializer(update, updateType, botToken, botOwner);
         choiseStrategy();
     }
 

@@ -18,7 +18,7 @@ public abstract class UpdateHandler {
     protected long userId;
     protected String userName;
     protected String userFirstName;
-    protected int msgId;
+    protected Integer msgId;
     protected String msgBody;
     protected String msgCallbackData;
     
@@ -31,21 +31,24 @@ public abstract class UpdateHandler {
     protected String updateType;
 
     protected UpdateProcessingStrategy processingStrategy;
+    
+    protected String botToken;
+    
+    public boolean isUpdatable() {
+        // проверяем что сообщение от бота,
+        // что прошло менее 47 часов (вообще максимум 48)
+        // и что сообщение имеет другое содержимое
+        return ((message.getFrom().getId().toString().equals(botToken))
+                && ((System.currentTimeMillis() - updateWasReceivedAt) < 47 * 3600000));
+//                && (!msgBody.equals(text));
+    }
 
     // сомнительноооооо, ннно окэй (я про возвращаемый тип)
     public BotApiMethod doWork() {
-        log.info("Update was recived ("
-                + "id = "
-                + updateId
-                + ", type = "
-                + updateType
-                + ", strategy = "
-                + processingStrategy.getClass().getSimpleName()
-                + ").");
         return processingStrategy.processUpdate();
     }
 
-    protected void updateHandlerFieldsInitializer(Update update, String updateType, String botOwner) {
+    protected void updateHandlerFieldsInitializer(Update update, String updateType, String botToken, String botOwner) {
         message = update.hasMessage()
                 ? update.getMessage()
                 : update.getCallbackQuery().getMessage();
@@ -63,6 +66,8 @@ public abstract class UpdateHandler {
                 : "";
 
         this.updateType = updateType;
+        this.botToken = botToken;
+//        System.out.println("botToken: " + botToken);
         
         isAdmin = botOwner.equals(String.valueOf(userId));
 

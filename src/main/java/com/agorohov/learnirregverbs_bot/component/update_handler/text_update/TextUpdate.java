@@ -10,8 +10,8 @@ public class TextUpdate extends UpdateHandler {
     
     public final String updateType = "Text";
     
-    public TextUpdate(Update update, String botOwner) {
-        updateHandlerFieldsInitializer(update, updateType, botOwner);
+    public TextUpdate(Update update, String botToken, String botOwner) {
+        updateHandlerFieldsInitializer(update, updateType, botToken, botOwner);
         choiseStrategy();
     }
     
