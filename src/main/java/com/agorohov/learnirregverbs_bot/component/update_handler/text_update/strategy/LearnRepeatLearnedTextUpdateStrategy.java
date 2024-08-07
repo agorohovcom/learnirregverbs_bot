@@ -5,31 +5,28 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
-public class LearnTextUpdateStrategy implements UpdateProcessingStrategy {
+public class LearnRepeatLearnedTextUpdateStrategy implements UpdateProcessingStrategy {
 
     private final UpdateHandler uh;
 
-    public LearnTextUpdateStrategy(UpdateHandler uh) {
+    public LearnRepeatLearnedTextUpdateStrategy(UpdateHandler uh) {
         this.uh = uh;
     }
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "𝕃𝕖𝕒𝕣𝕟\n\n"
-                + uh.getUserFirstName() + ", начнём учиться!\n\n"
-                + "Перед тобой 5 случайных неправильных глаголов в трёх формах "
-                + "и с переводом. Постарайся их запомнить, чтобы пройти тест.\n\n"
-                + "Когда будешь готов, нажми \"Пройти тест\"";
+        String textToSend = "ℝ𝕖𝕡𝕖𝕒𝕥 𝕝𝕖𝕒𝕣𝕟𝕖𝕕\n\n"
+                + uh.getUserFirstName()
+                + ", тут ты можешь повторить глаголы, по которым правильно прошёл тест несколько раз подряд.\n\n"
+                + "Пока нет выученных слов, "
+                + "которые можно повторить.";
 
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
                 .row()
-                .button("Пройти тест", "/learn_test")
-                .endRow()
-                .row()
-                .button("< повторить выученные", "/learn_repeat")
+                .button("< учить", "/learn")
                 .endRow()
                 .row()
                 .button("<< главное меню", "/start")

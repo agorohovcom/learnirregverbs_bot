@@ -5,26 +5,25 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
-public class RepeatLearnedTextUpdateStrategy implements UpdateProcessingStrategy {
+public class LearnTestTextUpdateStrategy implements UpdateProcessingStrategy {
 
     private final UpdateHandler uh;
 
-    public RepeatLearnedTextUpdateStrategy(UpdateHandler uh) {
+    public LearnTestTextUpdateStrategy(UpdateHandler uh) {
         this.uh = uh;
     }
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "ℝ𝕖𝕡𝕖𝕒𝕥 𝕝𝕖𝕒𝕣𝕟𝕖𝕕\n\n"
-                + uh.getUserFirstName() + ", пока нет изученных слов, "
-                + "которые можно повторять.";
+        String textToSend = "𝕋𝕖𝕤𝕥\n\n"
+                + "Тут будет тест";
 
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
                 .row()
-                .button("< учить", "/learn")
+                .button("< учить другие слова", "/learn")
                 .endRow()
                 .row()
                 .button("<< главное меню", "/start")

@@ -1,8 +1,8 @@
 package com.agorohov.learnirregverbs_bot.service;
 
-import com.agorohov.learnirregverbs_bot.entity.Verb;
+import com.agorohov.learnirregverbs_bot.entity.VerbEntity;
 import java.util.Optional;
 
 public interface VerbService {
-    Optional<Verb> findById(Integer id);
+    Optional<VerbEntity> findById(Integer id);
 }

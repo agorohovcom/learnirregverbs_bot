@@ -22,8 +22,10 @@ public class CallbackQueryUpdate extends UpdateHandler {
                 processingStrategy = new StartTextUpdateStrategy(this);
             case "/learn" ->
                 processingStrategy = new LearnTextUpdateStrategy(this);
+            case "/learn_test" ->
+                processingStrategy = new LearnTestTextUpdateStrategy(this);
             case "/learn_repeat" ->
-                processingStrategy = new RepeatLearnedTextUpdateStrategy(this);
+                processingStrategy = new LearnRepeatLearnedTextUpdateStrategy(this);
             case "/stat" ->
                 processingStrategy = new StatTextUpdateStrategy(this);
             case "/stat_reset" ->

@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @Table(name = "verbs")
 @Data
 @Accessors(chain = true)
-public class Verb {
+public class VerbEntity {
     
     @Id
     // автоген или вручную? сейчас добавляет из таблицы глаголов
