@@ -15,7 +15,8 @@ public class StartTextUpdateStrategy implements UpdateProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "Привет, " + uh.getUserFirstName() + "!\n\n"
+        String textToSend = "𝕃𝕖𝕒𝕣𝕟 𝕀𝕣𝕣 𝕍𝕖𝕣𝕓𝕤 𝔹𝕠𝕥\n\n"
+                + "Привет, " + uh.getUserFirstName() + "!\n\n"
                 + "Это бот для изучения неправильных глаголов английского языка.\n\n"
                 + "Ты можешь учиться и следить за прогрессом своего обучения.\n\n"
                 + "Выбери необходимый раздел:";

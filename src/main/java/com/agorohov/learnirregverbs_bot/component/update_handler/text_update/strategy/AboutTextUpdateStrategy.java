@@ -15,10 +15,12 @@ public class AboutTextUpdateStrategy implements UpdateProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "Этот бот для изучения неправильных глаголов английского языка - "
+        String textToSend = "𝔸𝕓𝕠𝕦𝕥\n\n"
+                + "Этот бот для изучения неправильных глаголов английского языка - "
                 + "проект некоего Александра Горохова.\n\n"
-                + "GitHub проекта: https://github.com/agorohovcom/learnirregverbs_bot \n"
-                + "Сайт автора: agorohov.com \n\n"
+                + "GitHub: https://github.com/agorohovcom/learnirregverbs_bot \n"
+                + "Сайт автора: agorohov.com \n"
+                + "Резюме автора: [тут будет резюме]\n\n"
                 + "Алгоритм работы: [описание как оно работает]\n"
                 + "Какая-то ещё инфа: [я инфа]";
 

@@ -15,7 +15,8 @@ public class StatTextUpdateStrategy implements UpdateProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = uh.getUserFirstName() + ", а вот и твоя статистика.\n"
+        String textToSend = "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+                + uh.getUserFirstName() + ", а вот и твоя статистика.\n"
                 + "Тут вкратце объяснено по статистике. Здорово, правда?";
 
         var sendMessage = MessageBuilder

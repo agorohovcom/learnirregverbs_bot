@@ -15,7 +15,8 @@ public class LearnTextUpdateStrategy implements UpdateProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = uh.getUserFirstName() + ", начнем учиться!";
+        String textToSend = "𝕃𝕖𝕒𝕣𝕟\n\n"
+                + uh.getUserFirstName() + ", начнем учиться!";
 
         var sendMessage = MessageBuilder
                 .create()

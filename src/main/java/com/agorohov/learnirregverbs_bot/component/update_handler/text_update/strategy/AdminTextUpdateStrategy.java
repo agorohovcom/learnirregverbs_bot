@@ -16,7 +16,8 @@ public class AdminTextUpdateStrategy implements UpdateProcessingStrategy {
 
     @Override
     public BotApiMethodMessage processUpdate() {
-        String textToSend = "Приветствую, хозяин!";
+        String textToSend = "𝔸𝕕𝕞𝕚𝕟\n\n"
+                + "Приветствую, хозяин!";
 
         SendMessage sendMessage = MessageBuilder
                 .create()

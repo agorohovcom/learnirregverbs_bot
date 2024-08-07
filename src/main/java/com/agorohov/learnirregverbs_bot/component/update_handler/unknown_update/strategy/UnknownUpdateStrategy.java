@@ -16,16 +16,23 @@ public class UnknownUpdateStrategy implements UpdateProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "Такой тип сообщений не поддерживается.\n"
+        String textToSend = "𝕆𝕠𝕡𝕤\n\n"
+                + "Такой тип сообщений не поддерживается.\n"
                 + "Используй кнопки или меню бота.\n\n"
                 + "Если нужна помощь, загляни в раздел /help";
 
-        SendMessage sendMessage = MessageBuilder
+        var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
-                .buildNewMessage();
+                .row()
+                .button("<< главное меню", "/start")
+                .endRow();
         
-        return sendMessage;
+         if (uh.isUpdatable()) {
+            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+        } else {
+            return sendMessage.buildNewMessage();
+        }
     }
 }

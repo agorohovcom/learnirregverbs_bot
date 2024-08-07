@@ -16,7 +16,8 @@ public class FailCallbackQueryUpdateStrategy implements UpdateProcessingStrategy
     
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "Извини, произошла внутренняя ошибка.";
+        String textToSend = "𝕆𝕠𝕡𝕤\n\n"
+                + "Извини, произошла внутренняя ошибка.";
         
         EditMessageText message = MessageBuilder
                 .create()

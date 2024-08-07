@@ -16,7 +16,8 @@ public class DismissCallbackQueryUpdateStrategy implements UpdateProcessingStrat
     
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "Действие отменено";
+        String textToSend = "ℂ𝕒𝕟𝕔𝕖𝕝\n\n"
+                + "Действие отменено";
         
         EditMessageText message = MessageBuilder
                 .create()
