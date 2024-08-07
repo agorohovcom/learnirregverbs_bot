@@ -26,11 +26,13 @@ public class DismissCallbackQueryUpdateStrategy implements UpdateProcessingStrat
                 .row()
                 .button("<< главное меню", "/start")
                 .endRow();
+        
+        return updateOrCreateMessage(uh, sendMessage);
 
-        if (uh.isUpdatable()) {
-            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-        } else {
-            return sendMessage.buildNewMessage();
-        }
+//        if (uh.isUpdatable()) {
+//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
     }
 }

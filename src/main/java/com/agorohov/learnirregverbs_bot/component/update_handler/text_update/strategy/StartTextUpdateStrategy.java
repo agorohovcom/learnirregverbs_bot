@@ -29,9 +29,6 @@ public class StartTextUpdateStrategy implements UpdateProcessingStrategy {
                 .button("Учить неправильные глаголы", "/learn")
                 .endRow()
                 .row()
-                .button("Повторить выученные", "/learn_repeat")
-                .endRow()
-                .row()
                 .button("Статистика", "/stat")
                 .endRow()
                 .row()
@@ -40,11 +37,13 @@ public class StartTextUpdateStrategy implements UpdateProcessingStrategy {
                 .row()
                 .button("Помощь", "/help")
                 .endRow();
+        
+        return updateOrCreateMessage(uh, sendMessage);
 
-        if (uh.isUpdatable()) {
-            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-        } else {
-            return sendMessage.buildNewMessage();
-        }
+//        if (uh.isUpdatable()) {
+//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
     }
 }

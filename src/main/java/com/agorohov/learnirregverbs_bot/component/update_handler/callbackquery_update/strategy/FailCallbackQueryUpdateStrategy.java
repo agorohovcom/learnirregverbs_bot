@@ -19,16 +19,14 @@ public class FailCallbackQueryUpdateStrategy implements UpdateProcessingStrategy
         String textToSend = "𝕆𝕠𝕡𝕤\n\n"
                 + "Извини, произошла внутренняя ошибка.";
         
-        EditMessageText message = MessageBuilder
+        var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
-                .setMessageId(uh.getMsgId())
                 .row()
                 .button("<< главное меню", "/start")
-                .endRow()
-                .buildUpdateMessage();
+                .endRow();
         
-        return message;
+        return updateOrCreateMessage(uh, sendMessage);
     }
 }

@@ -29,16 +29,15 @@ public class LearnTextUpdateStrategy implements UpdateProcessingStrategy {
                 .button("Пройти тест", "/learn_test")
                 .endRow()
                 .row()
-                .button("< повторить выученные", "/learn_repeat")
-                .endRow()
-                .row()
                 .button("<< главное меню", "/start")
                 .endRow();
+        
+        return updateOrCreateMessage(uh, sendMessage);
 
-        if (uh.isUpdatable()) {
-            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-        } else {
-            return sendMessage.buildNewMessage();
-        }
+//        if (uh.isUpdatable()) {
+//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
     }
 }

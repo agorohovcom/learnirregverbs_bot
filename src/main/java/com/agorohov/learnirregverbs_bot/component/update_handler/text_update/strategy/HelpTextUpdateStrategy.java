@@ -6,7 +6,7 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessin
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 public class HelpTextUpdateStrategy implements UpdateProcessingStrategy {
-    
+
     private final UpdateHandler uh;
 
     public HelpTextUpdateStrategy(UpdateHandler uh) {
@@ -33,11 +33,13 @@ public class HelpTextUpdateStrategy implements UpdateProcessingStrategy {
                 .button("<< главное меню", "/start")
                 .endRow();
 
-        if (uh.isUpdatable()) {
-            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-        } else {
-            return sendMessage.buildNewMessage();
-        }
+        return updateOrCreateMessage(uh, sendMessage);
+
+//        if (uh.isUpdatable()) {
+//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
     }
 
 }

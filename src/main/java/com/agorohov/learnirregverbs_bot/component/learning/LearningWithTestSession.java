@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 @Data
-public class LearningTestSession {
+public class LearningWithTestSession {
         
     private final long userId;
     private final VerbDTO[] verbs;
