@@ -19,12 +19,15 @@ public class UnknownUpdateStrategy implements UpdateProcessingStrategy {
         String textToSend = "𝕆𝕠𝕡𝕤\n\n"
                 + "Такой тип сообщений не поддерживается.\n"
                 + "Используй кнопки или меню бота.\n\n"
-                + "Если нужна помощь, загляни в раздел /help";
+                + "Если нужна помощь, загляни в раздел \"Помощь\"";
 
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
+                .row()
+                .button("< помощь", "/help")
+                .endRow()
                 .row()
                 .button("<< главное меню", "/start")
                 .endRow();

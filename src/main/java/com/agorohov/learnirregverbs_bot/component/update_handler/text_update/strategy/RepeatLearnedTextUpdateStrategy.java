@@ -5,27 +5,24 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
-public class StatTextUpdateStrategy implements UpdateProcessingStrategy {
-    
+public class RepeatLearnedTextUpdateStrategy implements UpdateProcessingStrategy {
+
     private final UpdateHandler uh;
 
-    public StatTextUpdateStrategy(UpdateHandler uh) {
+    public RepeatLearnedTextUpdateStrategy(UpdateHandler uh) {
         this.uh = uh;
     }
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                + uh.getUserFirstName() + ", а вот и твоя статистика.\n"
-                + "Тут вкратце объяснено по статистике. Здорово, правда?";
+        String textToSend = "ℝ𝕖𝕡𝕖𝕒𝕥 𝕝𝕖𝕒𝕣𝕟𝕖𝕕\n\n"
+                + uh.getUserFirstName() + ", пока нет изученных слов, "
+                + "которые можно повторять.";
 
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
-                .row()
-                .button("Обнулить статистику", "/stat_reset")
-                .endRow()
                 .row()
                 .button("< учить", "/learn")
                 .endRow()

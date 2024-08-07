@@ -5,29 +5,30 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
-public class StatTextUpdateStrategy implements UpdateProcessingStrategy {
-    
+public class StatResetTextUpdateStrategy implements UpdateProcessingStrategy {
+
     private final UpdateHandler uh;
 
-    public StatTextUpdateStrategy(UpdateHandler uh) {
+    public StatResetTextUpdateStrategy(UpdateHandler uh) {
         this.uh = uh;
     }
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                + uh.getUserFirstName() + ", а вот и твоя статистика.\n"
-                + "Тут вкратце объяснено по статистике. Здорово, правда?";
+        String textToSend = "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+                + uh.getUserFirstName() + ", ты собираешься обнулить свою статистику.\n"
+                + "Это действие невозможно отменить. Продолжить?";
 
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
                 .row()
-                .button("Обнулить статистику", "/stat_reset")
+                .button("Обнулить", "/stat_reset_confirm")
+                .button("Отмена", "/dismiss")
                 .endRow()
                 .row()
-                .button("< учить", "/learn")
+                .button("< статистика", "/stat")
                 .endRow()
                 .row()
                 .button("<< главное меню", "/start")
