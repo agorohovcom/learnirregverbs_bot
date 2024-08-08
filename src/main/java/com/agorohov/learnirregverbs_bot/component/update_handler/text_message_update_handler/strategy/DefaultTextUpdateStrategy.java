@@ -1,14 +1,14 @@
-package com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy;
+package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
-import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
+import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
-import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
 
 @Component
-public class DefaultTextUpdateStrategy implements UpdateProcessingStrategy {
+public class DefaultTextUpdateStrategy implements ProcessingStrategy {
 
 //    private final UpdateHandler uh;
 //

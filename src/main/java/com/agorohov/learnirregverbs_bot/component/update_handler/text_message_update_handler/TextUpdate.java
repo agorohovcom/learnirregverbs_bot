@@ -1,3 +1,5 @@
+package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler;
+
 //package com.agorohov.learnirregverbs_bot.component.update_handler.text_update;
 //
 //import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;

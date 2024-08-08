@@ -1,17 +1,14 @@
 package com.agorohov.learnirregverbs_bot.component;
 
-import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandlerFactory;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -39,8 +36,10 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
+        long updateWasReceivedAt = System.currentTimeMillis();
+        
         try {
-            execute(updateHandlerFactory.getHandler(update).handle(update));
+            execute(updateHandlerFactory.getHandler(update).handle(update, updateWasReceivedAt));
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
         }

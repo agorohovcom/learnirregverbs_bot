@@ -1,3 +1,5 @@
+package com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update_handler;
+
 //package com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update;
 //
 //import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
