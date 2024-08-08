@@ -4,6 +4,7 @@ import com.agorohov.learnirregverbs_bot.dto.UserDTO;
 import java.sql.Timestamp;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -23,9 +24,7 @@ public abstract class UpdateHandler {
     protected Integer updateId;
 
     protected boolean isAdmin;
-
     protected long updateWasReceivedAt;
-
     protected String updateType;
 
     protected UpdateProcessingStrategy processingStrategy;

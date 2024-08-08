@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BotExceptionHandler {
 
     @ExceptionHandler({
-        FailCallbackQueryException.class,
+        VerbNotFoundByIdException.class,
     })
     public ResponseEntity<String> handleEmployeeExceptions(RuntimeException e) {
         e.printStackTrace();

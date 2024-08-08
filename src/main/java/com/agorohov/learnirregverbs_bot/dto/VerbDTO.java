@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class VerbDTO {
-    private short id;
+    private Integer id;
     private String infinitive;
     private String past;
     private String pastParticiple;

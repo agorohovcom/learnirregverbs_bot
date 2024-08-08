@@ -1,8 +1,10 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler;
 
 import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
+@Component
 public interface UpdateProcessingStrategy {
 
     BotApiMethod processUpdate();

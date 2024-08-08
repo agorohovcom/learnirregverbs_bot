@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
                         .setLastMessageAt(dto.getLastMessageAt());
 
         try {
-            userRepository.save(entity);
+            userRepository.saveAndFlush(entity);
             log.info("User with id = " + entity.getChatId() + " was saved to DB");
         } catch (DataAccessException e) {
             log.error(e.getMessage());
