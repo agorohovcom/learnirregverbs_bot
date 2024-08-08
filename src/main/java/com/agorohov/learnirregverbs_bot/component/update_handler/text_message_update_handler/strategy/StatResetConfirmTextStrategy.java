@@ -9,28 +9,23 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 @Component
 @RequiredArgsConstructor
-public class LearnTextStrategy implements ProcessingStrategy {
+public class StatResetConfirmTextStrategy implements ProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
-
-        String textToSend = "𝕃𝕖𝕒𝕣𝕟\n\n"
-                + wrapper.getMessage().getFrom().getFirstName() + ", начнём учиться!\n\n"
-                + "Перед тобой 5 случайных неправильных глаголов в трёх формах "
-                + "и с переводом. Постарайся их запомнить, чтобы пройти тест.\n\n"
-                + "Когда будешь готов, нажми \"Пройти тест\"";
+        String textToSend = "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+                + wrapper.getMessage().getFrom().getFirstName() + ", твоя статистика изучения "
+                + "неправильных глаголов удалена.\n\n"
+                + "Но ты можешь начать заново!";
 
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(wrapper.getMessage().getChatId())
                 .setText(textToSend)
                 .row()
-                .button("Пройти тест", "/learn_test")
-                .endRow()
-                .row()
                 .button("<< главное меню", "/start")
                 .endRow();
-
+        
         return updateOrCreateMessage(wrapper, sendMessage);
     }
 }

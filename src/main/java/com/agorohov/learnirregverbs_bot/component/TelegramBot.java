@@ -1,6 +1,7 @@
 package com.agorohov.learnirregverbs_bot.component;
 
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandlerFactory;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +37,17 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-        long updateWasReceivedAt = System.currentTimeMillis();
+        
+        // Добавляю к Update дополнительные данные с помощью класса-обертки
+        UpdateWrapper wrapper = new UpdateWrapper(
+                update,
+                System.currentTimeMillis(),
+                isItBotId(getIdFromUpdate(update)),
+                isAdmin(getIdFromUpdate(update))
+        );
 
         try {
-            execute(updateHandlerFactory
-                    .getHandler(update)
-                    .handle(update, updateWasReceivedAt, getBotToken().split(":")[0]));
+            execute(updateHandlerFactory.getHandler(wrapper).handle(wrapper));
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
         }
@@ -59,5 +65,19 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     public String getBotOwner() {
         return config.getBotOwner();
+    }
+
+    private boolean isItBotId(Long botId) {
+        return botId.equals(getBotToken().split(":")[0]);
+    }
+    
+    private boolean isAdmin(long id){
+        return getBotOwner().equals(String.valueOf(id));
+    }
+
+    private long getIdFromUpdate(Update update) {
+        return update.hasMessage()
+                ? update.getMessage().getFrom().getId()
+                : update.getCallbackQuery().getMessage().getFrom().getId();
     }
 }

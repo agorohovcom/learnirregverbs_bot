@@ -5,7 +5,6 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.text_message_up
 import com.agorohov.learnirregverbs_bot.component.update_handler.unknown_update_handler.UnknownUpdateHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 @RequiredArgsConstructor
@@ -15,10 +14,10 @@ public class UpdateHandlerFactory {
     private final CallbackQueryUpdateHandler callbackQueryUpdateHandler;
     private final UnknownUpdateHandler unknownUpdateHandler;
 
-    public UpdateHandler getHandler(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
+    public UpdateHandler getHandler(UpdateWrapper wrapper) {
+        if (wrapper.getUpdate().hasMessage() && wrapper.getUpdate().getMessage().hasText()) {
             return messageUpdateHandler;
-        } else if (update.hasCallbackQuery()) {
+        } else if (wrapper.getUpdate().hasCallbackQuery()) {
             return callbackQueryUpdateHandler;
         } else {
             return unknownUpdateHandler;

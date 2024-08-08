@@ -1,25 +1,25 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 @RequiredArgsConstructor
 public class StatTextStrategy implements ProcessingStrategy {
     
     @Override
-    public BotApiMethod processUpdate(Update update, long updateWasReceivedAt, String botId) {
+    public BotApiMethod processUpdate(UpdateWrapper wrapper) {
         String textToSend = "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                + update.getMessage().getFrom().getFirstName() + ", а вот и твоя статистика.\n"
+                + wrapper.getMessage().getFrom().getFirstName() + ", а вот и твоя статистика.\n"
                 + "Тут вкратце объяснено по статистике. Здорово, правда?";
 
         var sendMessage = MessageBuilder
                 .create()
-                .setChatId(update.getMessage().getChatId())
+                .setChatId(wrapper.getMessage().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("Обнулить статистику", "/stat_reset")
@@ -31,6 +31,6 @@ public class StatTextStrategy implements ProcessingStrategy {
                 .button("<< главное меню", "/start")
                 .endRow();
         
-        return updateOrCreateMessage(update, sendMessage, updateWasReceivedAt, botId);
+        return updateOrCreateMessage(wrapper, sendMessage);
     }
 }
