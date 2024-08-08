@@ -32,12 +32,6 @@ public class DefaultTextUpdateStrategy implements UpdateProcessingStrategy {
                 .endRow();
         
         return updateOrCreateMessage(uh, sendMessage);
-
-//        if (uh.isUpdatable()) {
-//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-//        } else {
-//            return sendMessage.buildNewMessage();
-//        }
     }
 
 }
