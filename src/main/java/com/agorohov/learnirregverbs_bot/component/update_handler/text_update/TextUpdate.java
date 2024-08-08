@@ -3,12 +3,14 @@ package com.agorohov.learnirregverbs_bot.component.update_handler.text_update;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Getter
+@RequiredArgsConstructor
 public class TextUpdate extends UpdateHandler {
-
-    public final String updateType = "Text";
+    
+public final String updateType = "Text";
 
     public TextUpdate(Update update, String botToken, String botOwner) {
         updateHandlerFieldsInitializer(update, updateType, botToken, botOwner);

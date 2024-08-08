@@ -2,8 +2,11 @@ package com.agorohov.learnirregverbs_bot.component;
 
 import com.agorohov.learnirregverbs_bot.component.update_handler.*;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
+import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.UserService;
+import com.agorohov.learnirregverbs_bot.service.VerbService;
 import jakarta.annotation.PostConstruct;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
@@ -22,6 +25,8 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     private final BotConfig config;
     private final UserService userService;
+//    private final VerbService verbService;
+//    private final Random random;
 
     private long botStartsAt;
 
@@ -52,6 +57,11 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                 + ", strategy = "
                 + updateHandler.getProcessingStrategy().getClass().getSimpleName()
                 + ").");
+        
+        // печатаем рандомный глагол в консоль
+//        int verbId = random.nextInt(verbService.getCount());
+//        VerbDTO verb = verbService.findById(verbId);
+//        System.out.println(verb);
 
         // обновляем даныне о пользователе в БД или добавляем нового
         userService.save(updateHandler.giveMeUserDTO());

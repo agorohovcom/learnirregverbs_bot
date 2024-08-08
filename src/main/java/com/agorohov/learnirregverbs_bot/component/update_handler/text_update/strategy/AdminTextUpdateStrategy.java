@@ -3,8 +3,7 @@ package com.agorohov.learnirregverbs_bot.component.update_handler.text_update.st
 import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
-import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethodMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 public class AdminTextUpdateStrategy implements UpdateProcessingStrategy {
 
@@ -15,16 +14,18 @@ public class AdminTextUpdateStrategy implements UpdateProcessingStrategy {
     }
 
     @Override
-    public BotApiMethodMessage processUpdate() {
+    public BotApiMethod processUpdate() {
         String textToSend = "𝔸𝕕𝕞𝕚𝕟\n\n"
                 + "Приветствую, хозяин!";
 
-        SendMessage sendMessage = MessageBuilder
+        var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
-                .buildNewMessage();
+                .row()
+                .button("<< главное меню", "/start")
+                .endRow();
 
-        return sendMessage;
+        return updateOrCreateMessage(uh, sendMessage);
     }
 }

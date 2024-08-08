@@ -37,5 +37,5 @@ public class LearningStatistics {
     
     @ManyToOne
     @JoinColumn(name = "verb_id", nullable = false)
-    private Verb verb;
+    private VerbEntity verb;
 }

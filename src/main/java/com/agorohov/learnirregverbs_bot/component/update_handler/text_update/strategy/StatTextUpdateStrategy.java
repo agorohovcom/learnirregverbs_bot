@@ -24,19 +24,21 @@ public class StatTextUpdateStrategy implements UpdateProcessingStrategy {
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
                 .row()
-                .button("Учить", "learn_start")
+                .button("Обнулить статистику", "/stat_reset")
                 .endRow()
                 .row()
-                .button("Обнулить статистику", "learn_repeat")
+                .button("< учить", "/learn")
                 .endRow()
                 .row()
                 .button("<< главное меню", "/start")
                 .endRow();
+        
+        return updateOrCreateMessage(uh, sendMessage);
 
-        if (uh.isUpdatable()) {
-            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-        } else {
-            return sendMessage.buildNewMessage();
-        }
+//        if (uh.isUpdatable()) {
+//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
     }
 }

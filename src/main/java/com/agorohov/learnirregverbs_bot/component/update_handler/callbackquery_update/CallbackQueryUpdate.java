@@ -1,13 +1,8 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update;
 
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
-import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update.strategy.DismissCallbackQueryUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update.strategy.FailCallbackQueryUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.AboutTextUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.HelpTextUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.LearnTextUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.StartTextUpdateStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.StatTextUpdateStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update.strategy.*;
+import com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy.*;
 import lombok.Getter;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -27,13 +22,19 @@ public class CallbackQueryUpdate extends UpdateHandler {
                 processingStrategy = new StartTextUpdateStrategy(this);
             case "/learn" ->
                 processingStrategy = new LearnTextUpdateStrategy(this);
+            case "/learn_test" ->
+                processingStrategy = new LearnTestTextUpdateStrategy(this);
             case "/stat" ->
                 processingStrategy = new StatTextUpdateStrategy(this);
+            case "/stat_reset" ->
+                processingStrategy = new StatResetTextUpdateStrategy(this);
+            case "/stat_reset_confirm" ->
+                processingStrategy = new StatResetConfirmTextUpdateStrategy(this);
             case "/about" ->
                 processingStrategy = new AboutTextUpdateStrategy(this);
             case "/help" ->
                 processingStrategy = new HelpTextUpdateStrategy(this);
-            case "dismiss" ->
+            case "/dismiss" ->
                 processingStrategy = new DismissCallbackQueryUpdateStrategy(this);
             default ->
                 processingStrategy = new FailCallbackQueryUpdateStrategy(this);

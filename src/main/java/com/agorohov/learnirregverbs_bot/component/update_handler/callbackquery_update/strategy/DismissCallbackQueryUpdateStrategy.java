@@ -19,13 +19,20 @@ public class DismissCallbackQueryUpdateStrategy implements UpdateProcessingStrat
         String textToSend = "ℂ𝕒𝕟𝕔𝕖𝕝\n\n"
                 + "Действие отменено";
         
-        EditMessageText message = MessageBuilder
+        var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
-                .setMessageId(uh.getMsgId())
-                .buildUpdateMessage();
+                .row()
+                .button("<< главное меню", "/start")
+                .endRow();
         
-        return message;
+        return updateOrCreateMessage(uh, sendMessage);
+
+//        if (uh.isUpdatable()) {
+//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
     }
 }

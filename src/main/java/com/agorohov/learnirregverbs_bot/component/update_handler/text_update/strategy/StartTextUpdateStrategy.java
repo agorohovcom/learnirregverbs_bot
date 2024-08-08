@@ -15,7 +15,7 @@ public class StartTextUpdateStrategy implements UpdateProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "𝕃𝕖𝕒𝕣𝕟 𝕀𝕣𝕣 𝕍𝕖𝕣𝕓𝕤 𝔹𝕠𝕥\n\n"
+        String textToSend = "𝕃𝕖𝕒𝕣𝕟 𝕀𝕣𝕣𝕖𝕘𝕦𝕝𝕒𝕣 𝕍𝕖𝕣𝕓𝕤 𝔹𝕠𝕥\n\n"
                 + "Привет, " + uh.getUserFirstName() + "!\n\n"
                 + "Это бот для изучения неправильных глаголов английского языка.\n\n"
                 + "Ты можешь учиться и следить за прогрессом своего обучения.\n\n"
@@ -26,7 +26,7 @@ public class StartTextUpdateStrategy implements UpdateProcessingStrategy {
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
                 .row()
-                .button("Учить", "/learn")
+                .button("Учить неправильные глаголы", "/learn")
                 .endRow()
                 .row()
                 .button("Статистика", "/stat")
@@ -37,11 +37,13 @@ public class StartTextUpdateStrategy implements UpdateProcessingStrategy {
                 .row()
                 .button("Помощь", "/help")
                 .endRow();
+        
+        return updateOrCreateMessage(uh, sendMessage);
 
-        if (uh.isUpdatable()) {
-            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-        } else {
-            return sendMessage.buildNewMessage();
-        }
+//        if (uh.isUpdatable()) {
+//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
     }
 }

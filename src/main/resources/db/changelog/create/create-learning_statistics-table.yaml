@@ -34,7 +34,7 @@ databaseChangeLog:
                     references: users(chat_id)
               - column:
                   name: verb_id
-                  type: smallint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_verbs

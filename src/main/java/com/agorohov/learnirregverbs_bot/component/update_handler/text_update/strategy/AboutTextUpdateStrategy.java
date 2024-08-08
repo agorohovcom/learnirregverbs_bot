@@ -22,7 +22,8 @@ public class AboutTextUpdateStrategy implements UpdateProcessingStrategy {
                 + "Сайт автора: agorohov.com \n"
                 + "Резюме автора: [тут будет резюме]\n\n"
                 + "Алгоритм работы: [описание как оно работает]\n"
-                + "Какая-то ещё инфа: [я инфа]";
+                + "Какая-то ещё инфа: [я инфа]\n\n"
+                + "Написать сколько слов всего и как это работает";
 
         var sendMessage = MessageBuilder
                 .create()
@@ -31,11 +32,13 @@ public class AboutTextUpdateStrategy implements UpdateProcessingStrategy {
                 .row()
                 .button("<< главное меню", "/start")
                 .endRow();
+        
+        return updateOrCreateMessage(uh, sendMessage);
 
-        if (uh.isUpdatable()) {
-            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-        } else {
-            return sendMessage.buildNewMessage();
-        }
+//        if (uh.isUpdatable()) {
+//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
     }
 }

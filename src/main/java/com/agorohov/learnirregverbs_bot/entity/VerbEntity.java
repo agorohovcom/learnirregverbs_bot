@@ -3,8 +3,6 @@ package com.agorohov.learnirregverbs_bot.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -16,14 +14,13 @@ import lombok.experimental.Accessors;
 @Table(name = "verbs")
 @Data
 @Accessors(chain = true)
-public class Verb {
+public class VerbEntity {
     
     @Id
     // автоген или вручную? сейчас добавляет из таблицы глаголов
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-//    private Integer id;
-    private short id;
+    private Integer id;
 
     @Column(name = "infinitive")
     private String infinitive;

@@ -5,34 +5,35 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
-public class HelpTextUpdateStrategy implements UpdateProcessingStrategy {
+public class StatResetTextUpdateStrategy implements UpdateProcessingStrategy {
 
     private final UpdateHandler uh;
 
-    public HelpTextUpdateStrategy(UpdateHandler uh) {
+    public StatResetTextUpdateStrategy(UpdateHandler uh) {
         this.uh = uh;
     }
 
     @Override
     public BotApiMethod processUpdate() {
-        String textToSend = "ℍ𝕖𝕝𝕡\n\n"
-                + "Управление ботом осуществляется через меню команд и с помощью кнопок под сообщениями.\n"
-                + "Описание пунктов основного меню:\n\n"
-                + "/start - главное меню бота;\n"
-                + "/learn - учить неправильные глаголы;\n"
-                + "/stat - личная статистика;\n"
-                + "/about - информация о боте;\n"
-                + "/help - описание команд бота и другая помощь.\n\n"
-                + "Удалить свою статистику по изучению неправильных глаголов можно в разделе /stat";
+        String textToSend = "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+                + uh.getUserFirstName() + ", ты собираешься обнулить свою статистику.\n"
+                + "Это действие невозможно отменить. Продолжить?";
 
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(uh.getUserId())
                 .setText(textToSend)
                 .row()
+                .button("Обнулить", "/stat_reset_confirm")
+                .button("Отмена", "/dismiss")
+                .endRow()
+                .row()
+                .button("< статистика", "/stat")
+                .endRow()
+                .row()
                 .button("<< главное меню", "/start")
                 .endRow();
-
+        
         return updateOrCreateMessage(uh, sendMessage);
 
 //        if (uh.isUpdatable()) {
@@ -41,5 +42,4 @@ public class HelpTextUpdateStrategy implements UpdateProcessingStrategy {
 //            return sendMessage.buildNewMessage();
 //        }
     }
-
 }

@@ -4,7 +4,6 @@ import com.agorohov.learnirregverbs_bot.dto.UserDTO;
 import java.sql.Timestamp;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -21,26 +20,24 @@ public abstract class UpdateHandler {
     protected Integer msgId;
     protected String msgBody;
     protected String msgCallbackData;
-    
+
     protected Integer updateId;
 
     protected boolean isAdmin;
-
     protected long updateWasReceivedAt;
-
     protected String updateType;
 
     protected UpdateProcessingStrategy processingStrategy;
-    
+
     protected String botToken;
-    
-    public boolean isUpdatable() {
+
+    public boolean isUpdatable(String newTextToSend) {
         // проверяем что сообщение от бота,
         // что прошло менее 47 часов (вообще максимум 48)
         // и что сообщение имеет другое содержимое (убрал эту проверку)
         return ((message.getFrom().getId().toString().equals(botToken))
-                && ((System.currentTimeMillis() - updateWasReceivedAt) < 47 * 3600000));
-//                && (!msgBody.equals(text));
+                && ((System.currentTimeMillis() - updateWasReceivedAt) < 47 * 3600000))
+                && (!msgBody.equals(newTextToSend));
     }
 
     // сомнительноооооо, ннно окэй (я про возвращаемый тип)
@@ -48,7 +45,11 @@ public abstract class UpdateHandler {
         return processingStrategy.processUpdate();
     }
 
-    protected void updateHandlerFieldsInitializer(Update update, String updateType, String botToken, String botOwner) {
+    protected void updateHandlerFieldsInitializer(
+            Update update,
+            String updateType,
+            String botToken,
+            String botOwner) {
         message = update.hasMessage()
                 ? update.getMessage()
                 : update.getCallbackQuery().getMessage();
@@ -58,7 +59,7 @@ public abstract class UpdateHandler {
         userFirstName = message.getChat().getFirstName();
         msgId = message.getMessageId();
         msgBody = message.getText();
-        
+
         updateId = update.getUpdateId();
 
         msgCallbackData = update.hasCallbackQuery()
@@ -68,7 +69,7 @@ public abstract class UpdateHandler {
         this.updateType = updateType;
         this.botToken = botToken;
 //        System.out.println("botToken: " + botToken);
-        
+
         isAdmin = botOwner.equals(String.valueOf(userId));
 
         updateWasReceivedAt = System.currentTimeMillis();
