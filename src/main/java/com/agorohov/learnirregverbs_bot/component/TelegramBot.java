@@ -21,7 +21,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     private final UpdateHandlerFactory updateHandlerFactory;
     private final BotConfig config;
-    
+
     private long botStartsAt;
 
     @PostConstruct
@@ -37,9 +37,11 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     @Override
     public void onUpdateReceived(Update update) {
         long updateWasReceivedAt = System.currentTimeMillis();
-        
+
         try {
-            execute(updateHandlerFactory.getHandler(update).handle(update, updateWasReceivedAt, getBotToken().split(":")[0]));
+            execute(updateHandlerFactory
+                    .getHandler(update)
+                    .handle(update, updateWasReceivedAt, getBotToken().split(":")[0]));
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
         }

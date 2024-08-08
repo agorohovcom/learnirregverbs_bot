@@ -16,6 +16,7 @@ public interface ProcessingStrategy {
                 : false;
         boolean isStillTimeToEdit = (System.currentTimeMillis() - updateWasReceivedAt) < (47 * 3600000);
         boolean isMessageFromBot = update.getMessage().getFrom().getId().equals(botId);
+        
         if (isNewMsgNotEqOld && isStillTimeToEdit && isMessageFromBot) {
             return sendMessage.setMessageId(update.getMessage().getMessageId()).buildUpdateMessage();
         } else {
