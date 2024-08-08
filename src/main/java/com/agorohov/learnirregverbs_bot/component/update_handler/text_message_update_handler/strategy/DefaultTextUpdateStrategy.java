@@ -1,7 +1,6 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
-import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -10,14 +9,8 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrat
 @Component
 public class DefaultTextUpdateStrategy implements ProcessingStrategy {
 
-//    private final UpdateHandler uh;
-//
-//    public DefaultTextUpdateStrategy(UpdateHandler uh) {
-//        this.uh = uh;
-//    }
-
     @Override
-    public BotApiMethod processUpdate(Update update) {
+    public BotApiMethod processUpdate(Update update, long updateWasReceivedAt, String botId) {
         String textToSend = "𝕆𝕠𝕡𝕤\n\n"
                 + "Нет такой команды.\n"
                 + "Используй кнопки или меню бота.\n\n"
@@ -34,9 +27,6 @@ public class DefaultTextUpdateStrategy implements ProcessingStrategy {
                 .button("<< главное меню", "/start")
                 .endRow();
         
-        return sendMessage.buildNewMessage();
-        
-//        return updateOrCreateMessage(uh, sendMessage);
+        return updateOrCreateMessage(update, sendMessage, updateWasReceivedAt, botId);
     }
-
 }

@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class LearnTextStrategy implements ProcessingStrategy {
 
     @Override
-    public BotApiMethod processUpdate(Update update) {
+    public BotApiMethod processUpdate(Update update, long updateWasReceivedAt, String botId) {
 
         String textToSend = "𝕃𝕖𝕒𝕣𝕟\n\n"
                 + update.getMessage().getFrom().getFirstName() + ", начнём учиться!\n\n"
@@ -30,13 +30,7 @@ public class LearnTextStrategy implements ProcessingStrategy {
                 .row()
                 .button("<< главное меню", "/start")
                 .endRow();
-        
-        return sendMessage.buildNewMessage();
 
-//        return updateOrCreateMessage(uh, sendMessage);
+        return updateOrCreateMessage(update, sendMessage, updateWasReceivedAt, botId);
     }
-
-//    private VerbDTO getRandomIrrVerbDTO() {
-//        return verbService.findById(new Random().nextInt(verbService.getCount()));
-//    }
 }

@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class CallbackQueryUpdateHandler implements UpdateHandler {
 
     @Override
-    public BotApiMethod handle(Update update, long updateWasReceivedAt) {
+    public BotApiMethod handle(Update update, long updateWasReceivedAt, String botId) {
         return null;
     }
 

@@ -16,7 +16,7 @@ public class StartTextStrategy implements ProcessingStrategy {
     private final VerbService verbService;
 
     @Override
-    public BotApiMethod processUpdate(Update update, long updateWasReceivedAt) {
+    public BotApiMethod processUpdate(Update update, long updateWasReceivedAt, String botId) {
         String textToSend = "𝕃𝕖𝕒𝕣𝕟 𝕀𝕣𝕣𝕖𝕘𝕦𝕝𝕒𝕣 𝕍𝕖𝕣𝕓𝕤 𝔹𝕠𝕥\n\n"
                 + "Привет, " + update.getMessage().getFrom().getFirstName() + "!\n\n"
                 + "Это бот для изучения неправильных глаголов английского языка.\n\n"
@@ -40,6 +40,6 @@ public class StartTextStrategy implements ProcessingStrategy {
                 .button("Помощь", "/help")
                 .endRow();
         
-        return updateOrCreateMessage(update, sendMessage, updateWasReceivedAt);
+        return updateOrCreateMessage(update, sendMessage, updateWasReceivedAt, botId);
     }
 }

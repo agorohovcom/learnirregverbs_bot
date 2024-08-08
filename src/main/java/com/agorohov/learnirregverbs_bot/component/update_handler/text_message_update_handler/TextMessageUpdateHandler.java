@@ -13,7 +13,7 @@ public class TextMessageUpdateHandler implements UpdateHandler {
     private final TextProcessingStrategyFactory strategyFactory;
 
     @Override
-    public BotApiMethod handle(Update update, long updateWasReceivedAt) {
-        return strategyFactory.getStrategy(update).processUpdate(update, updateWasReceivedAt);
+    public BotApiMethod handle(Update update, long updateWasReceivedAt, String botId) {
+        return strategyFactory.getStrategy(update).processUpdate(update, updateWasReceivedAt, botId);
     }
 }

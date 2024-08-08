@@ -39,7 +39,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
         long updateWasReceivedAt = System.currentTimeMillis();
         
         try {
-            execute(updateHandlerFactory.getHandler(update).handle(update, updateWasReceivedAt));
+            execute(updateHandlerFactory.getHandler(update).handle(update, updateWasReceivedAt, getBotToken().split(":")[0]));
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
         }

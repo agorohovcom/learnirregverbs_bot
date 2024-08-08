@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class HelpTextStrategy implements ProcessingStrategy {
 
     @Override
-    public BotApiMethod processUpdate(Update update) {
+    public BotApiMethod processUpdate(Update update, long updateWasReceivedAt, String botId) {
         String textToSend = "ℍ𝕖𝕝𝕡\n\n"
                 + "Управление ботом осуществляется через меню команд и с помощью кнопок под сообщениями.\n"
                 + "Описание пунктов основного меню:\n\n"
@@ -31,9 +31,7 @@ public class HelpTextStrategy implements ProcessingStrategy {
                 .button("<< главное меню", "/start")
                 .endRow();
         
-        return sendMessage.buildNewMessage();
-
-//        return updateOrCreateMessage(uh, sendMessage);
+        return updateOrCreateMessage(update, sendMessage, updateWasReceivedAt, botId);
     }
 
 }

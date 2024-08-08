@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class AboutTextStrategy implements ProcessingStrategy {
     
     @Override
-    public BotApiMethod processUpdate(Update update) {
+    public BotApiMethod processUpdate(Update update, long updateWasReceivedAt, String botId) {
         String textToSend = "𝔸𝕓𝕠𝕦𝕥\n\n"
                 + "Этот бот для изучения неправильных глаголов английского языка - "
                 + "проект некоего Александра Горохова.\n\n"
@@ -31,8 +31,6 @@ public class AboutTextStrategy implements ProcessingStrategy {
                 .button("<< главное меню", "/start")
                 .endRow();
         
-        return sendMessage.buildNewMessage();
-        
-//        return updateOrCreateMessage(uh, sendMessage);
+        return updateOrCreateMessage(update, sendMessage, updateWasReceivedAt, botId);
     }
 }

@@ -13,7 +13,7 @@ public class UnknownUpdateHandler implements UpdateHandler {
     private final UnknownProcessingStrategyFactory strategyFactory;
     
     @Override
-    public BotApiMethod handle(Update update, long updateWasReceivedAt) {
-        return strategyFactory.getStrategy(update).processUpdate(update, updateWasReceivedAt);
+    public BotApiMethod handle(Update update, long updateWasReceivedAt, String botId) {
+        return strategyFactory.getStrategy(update).processUpdate(update, updateWasReceivedAt, botId);
     }
 }
