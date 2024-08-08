@@ -10,15 +10,17 @@ public interface ProcessingStrategy {
     // этот метод проверяет, можно ли редактировать предыдущее сообщение,
     // и дальше редактирует или создаёт новое сообщение
     default BotApiMethod updateOrCreateMessage(UpdateWrapper wrapper, MessageBuilder sendMessage) {
-        boolean isNewMsgNotEqOld = wrapper.getUpdate().hasMessage() && wrapper.getMessage().hasText()
-                ? !wrapper.getMessage().getText().equals(sendMessage.getText())
-                : false;
-        boolean isStillTimeToEdit = (System.currentTimeMillis() - wrapper.getUpdateWasReceivedAt()) < (47 * 3600000);
-        
-        if (isNewMsgNotEqOld && isStillTimeToEdit && wrapper.isFromBot()) {
-            return sendMessage.setMessageId(wrapper.getMessage().getMessageId()).buildUpdateMessage();
-        } else {
-            return sendMessage.buildNewMessage();
-        }
+//        boolean isNewMsgNotEqOld = wrapper.getUpdate().hasMessage() && wrapper.getMessage().hasText()
+//                ? wrapper.getMessage().getText().equals(sendMessage.getText())
+//                : wrapper.getUpdate().getCallbackQuery().getData().equals(sendMessage.getText());
+//        
+//        boolean isStillTimeToEdit = (System.currentTimeMillis() - wrapper.getUpdateWasReceivedAt()) < (47 * 3600000);
+//        
+//        if (isNewMsgNotEqOld && isStillTimeToEdit && wrapper.isFromBot()) {
+//            return sendMessage.setMessageId(wrapper.getMessage().getMessageId()).buildUpdateMessage();
+//        } else {
+//            return sendMessage.buildNewMessage();
+//        }
+return sendMessage.setMessageId(wrapper.getMessage().getMessageId()).buildUpdateMessage();
     }
 }

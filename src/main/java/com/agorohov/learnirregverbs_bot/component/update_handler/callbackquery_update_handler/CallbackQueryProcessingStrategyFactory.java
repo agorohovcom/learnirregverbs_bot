@@ -24,7 +24,7 @@ public class CallbackQueryProcessingStrategyFactory {
     private final HelpTextStrategy helpTextStrategy;
     
     public ProcessingStrategy getStrategy(UpdateWrapper wrapper) {
-        return switch (wrapper.getMessage().getText()) {
+        return switch (wrapper.getUpdate().getCallbackQuery().getData()) {
             case "/dismiss" -> dismissCallbackQueryStrategy;
             case "/start" -> startTextStrategy;
             case "/learn" -> learnTextStrategy;

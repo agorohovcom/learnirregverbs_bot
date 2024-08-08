@@ -25,7 +25,7 @@ public class StartTextStrategy implements ProcessingStrategy {
 
         var sendMessage = MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getFrom().getId())
+                .setChatId(wrapper.getMessage().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("Учить неправильные глаголы", "/learn")

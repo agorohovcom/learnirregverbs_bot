@@ -14,7 +14,7 @@ public class StatResetConfirmTextStrategy implements ProcessingStrategy {
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
         String textToSend = "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                + wrapper.getMessage().getFrom().getFirstName() + ", твоя статистика изучения "
+                + wrapper.getMessage().getChat().getUserName() + ", твоя статистика изучения "
                 + "неправильных глаголов удалена.\n\n"
                 + "Но ты можешь начать заново!";
 

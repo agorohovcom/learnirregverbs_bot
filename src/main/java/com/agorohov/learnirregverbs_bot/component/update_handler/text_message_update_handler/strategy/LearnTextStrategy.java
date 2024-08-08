@@ -15,7 +15,7 @@ public class LearnTextStrategy implements ProcessingStrategy {
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
 
         String textToSend = "𝕃𝕖𝕒𝕣𝕟\n\n"
-                + wrapper.getMessage().getFrom().getFirstName() + ", начнём учиться!\n\n"
+                + wrapper.getMessage().getChat().getUserName() + ", начнём учиться!\n\n"
                 + "Перед тобой 5 случайных неправильных глаголов в трёх формах "
                 + "и с переводом. Постарайся их запомнить, чтобы пройти тест.\n\n"
                 + "Когда будешь готов, нажми \"Пройти тест\"";

@@ -14,7 +14,7 @@ public class StatTextStrategy implements ProcessingStrategy {
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
         String textToSend = "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                + wrapper.getMessage().getFrom().getFirstName() + ", а вот и твоя статистика.\n"
+                + wrapper.getMessage().getChat().getUserName() + ", а вот и твоя статистика.\n"
                 + "Тут вкратце объяснено по статистике. Здорово, правда?";
 
         var sendMessage = MessageBuilder

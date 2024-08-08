@@ -37,9 +37,9 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-        
+       
         // Добавляю к Update дополнительные данные с помощью класса-обертки
-        UpdateWrapper wrapper = new UpdateWrapper(
+            UpdateWrapper wrapper = new UpdateWrapper(
                 update,
                 System.currentTimeMillis(),
                 isItBotId(getIdFromUpdate(update)),
