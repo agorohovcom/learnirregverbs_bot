@@ -29,25 +29,29 @@ public class UserServiceImpl implements UserService {
     public boolean existsById(Long id) {
         return userRepository.existsById(id);
     }
-    
+
     @Override
     public void save(UserDTO dto) {
+        boolean isItNewUser = existsById(dto.getChatId());
+
         // если пользователь с таким ID уже есть, используем его,
         // только обновляем имя (вдруг изменилось) и дату последнего сообщения.
         // если пользователя с таким ID ещё нет, создаём нового
-        UserEntity entity = existsById(dto.getChatId())
+        UserEntity entity = isItNewUser
                 ? convertDTOtoEntity(findById(dto.getChatId()).get())
-                        .setUserName(dto.getUserName())
+                        .setUserName(dto.getUserFirstName())
                         .setLastMessageAt(dto.getLastMessageAt())
                 : new UserEntity()
                         .setChatId(dto.getChatId())
-                        .setUserName(dto.getUserName())
+                        .setUserName(dto.getUserFirstName())
                         .setFirstMessageAt(dto.getLastMessageAt())
                         .setLastMessageAt(dto.getLastMessageAt());
 
         try {
             userRepository.saveAndFlush(entity);
-            log.info("User with id = " + entity.getChatId() + " was saved to DB");
+            if (!isItNewUser) {
+                log.info("New user with id = " + entity.getChatId() + " was saved to DB");
+            }
         } catch (DataAccessException e) {
             log.error(e.getMessage());
         }
@@ -56,7 +60,7 @@ public class UserServiceImpl implements UserService {
     private UserEntity convertDTOtoEntity(UserDTO dto) {
         return new UserEntity()
                 .setChatId(dto.getChatId())
-                .setUserName(dto.getUserName())
+                .setUserName(dto.getUserFirstName())
                 .setFirstMessageAt(dto.getFirstMessageAt())
                 .setLastMessageAt(dto.getLastMessageAt());
     }
@@ -64,7 +68,7 @@ public class UserServiceImpl implements UserService {
     private UserDTO convertEntityToDTO(UserEntity entity) {
         return new UserDTO()
                 .setChatId(entity.getChatId())
-                .setUserName(entity.getUserName())
+                .setUserFirstName(entity.getUserName())
                 .setFirstMessageAt(entity.getFirstMessageAt())
                 .setLastMessageAt(entity.getLastMessageAt());
     }

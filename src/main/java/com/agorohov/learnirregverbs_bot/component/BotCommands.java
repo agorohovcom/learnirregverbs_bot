@@ -10,6 +10,6 @@ public interface BotCommands {
             new BotCommand("/stat", "статистика"),
             new BotCommand("/about", "о боте"),
             new BotCommand("/help", "помощь"),
-            new BotCommand("/admin", "панель админа, !!!!удалить отсюда!!!!")
+            new BotCommand("/admin", "жми если админ xD")
     );
 }

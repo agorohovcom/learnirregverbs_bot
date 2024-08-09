@@ -25,16 +25,7 @@ public class VerbServiceImpl implements VerbService {
     public Integer getCount() {
         return (int) verbRepository.count();
     }
-
-    // это вроде как не должно потребоваться, если че удалю
-//    private VerbEntity convertDTOtoEntity(VerbDTO dto) {
-//        return new VerbEntity()
-//                .setId(dto.getId())
-//                .setInfinitive(dto.getInfinitive())
-//                .setPast(dto.getPast())
-//                .setPastParticiple(dto.getPastParticiple())
-//                .setTranslation(dto.getTranslation());
-//    }
+    
     private VerbDTO convertEntityToDTO(VerbEntity entity) {
         return new VerbDTO()
                 .setId(entity.getId())

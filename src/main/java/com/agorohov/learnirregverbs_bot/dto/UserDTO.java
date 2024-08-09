@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class UserDTO {
     private Long chatId;
-    private String userName;
+    private String userFirstName;
     private Timestamp firstMessageAt;
     private Timestamp lastMessageAt;
 }

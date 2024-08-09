@@ -1,20 +1,20 @@
-package com.agorohov.learnirregverbs_bot.component.update_handler.text_update.strategy;
+package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
-import com.agorohov.learnirregverbs_bot.component.MessageBuilder;
-import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandler;
-import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateProcessingStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
+import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
-public class AboutTextUpdateStrategy implements UpdateProcessingStrategy {
+@Component
+@RequiredArgsConstructor
+public class AboutTextStrategy implements ProcessingStrategy {
     
-    private final UpdateHandler uh;
-
-    public AboutTextUpdateStrategy(UpdateHandler uh) {
-        this.uh = uh;
-    }
-
     @Override
-    public BotApiMethod processUpdate() {
+    public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "𝔸𝕓𝕠𝕦𝕥\n\n"
                 + "Этот бот для изучения неправильных глаголов английского языка - "
                 + "проект некоего Александра Горохова.\n\n"
@@ -27,18 +27,12 @@ public class AboutTextUpdateStrategy implements UpdateProcessingStrategy {
 
         var sendMessage = MessageBuilder
                 .create()
-                .setChatId(uh.getUserId())
+                .setChatId(wrapper.getMessage().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("<< главное меню", "/start")
                 .endRow();
         
-        return updateOrCreateMessage(uh, sendMessage);
-
-//        if (uh.isUpdatable()) {
-//            return sendMessage.setMessageId(uh.getMsgId()).buildUpdateMessage();
-//        } else {
-//            return sendMessage.buildNewMessage();
-//        }
+        return updateOrCreateMessage(wrapper, sendMessage);
     }
 }

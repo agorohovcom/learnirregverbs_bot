@@ -1,12 +1,10 @@
 package com.agorohov.learnirregverbs_bot.component;
 
-import com.agorohov.learnirregverbs_bot.component.update_handler.*;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandlerFactory;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
-import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.UserService;
-import com.agorohov.learnirregverbs_bot.service.VerbService;
 import jakarta.annotation.PostConstruct;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
@@ -23,10 +21,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
+    private final UpdateHandlerFactory updateHandlerFactory;
     private final BotConfig config;
     private final UserService userService;
-//    private final VerbService verbService;
-//    private final Random random;
 
     private long botStartsAt;
 
@@ -42,35 +39,32 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-        // updateHandler получает ссылку на TextUpdate или другой класс, смотря какой тип update,
-        // далее UpdateTypeDistributor выбирает реализацию UpdateProcessingStrategy,
-        // передаем botOwner, чтобы сравнить с id пользователя и понять, от админа ли update
-        UpdateHandler updateHandler = UpdateTypeDistributor.distribute(update, getBotToken().split(":")[0], getBotOwner());
 
-//        updateHandler.printInfo();
+        // Добавляю к Update дополнительные данные с помощью класса-обертки
+        UpdateWrapper wrapper = new UpdateWrapper(
+                update,
+                System.currentTimeMillis(),
+                isItBotId(getIdFromUpdate(update)),
+                isAdmin(getIdFromUpdate(update))
+        );
 
-        log.info("Update was recived ("
-                + "id = "
-                + update.getUpdateId()
-                + ", type = "
-                + updateHandler.getUpdateType()
-                + ", strategy = "
-                + updateHandler.getProcessingStrategy().getClass().getSimpleName()
-                + ").");
+        userService.save(wrapper.giveMeUserDTO());
         
-        // печатаем рандомный глагол в консоль
-//        int verbId = random.nextInt(verbService.getCount());
-//        VerbDTO verb = verbService.findById(verbId);
-//        System.out.println(verb);
-
-        // обновляем даныне о пользователе в БД или добавляем нового
-        userService.save(updateHandler.giveMeUserDTO());
-
-        // update обрабатывается согласно установленной стратегии
         try {
-            execute(updateHandler.doWork());
+            execute(updateHandlerFactory.getHandler(wrapper).handle(wrapper));
         } catch (TelegramApiException ex) {
-            log.error(ex.toString());
+            ex.printStackTrace();
+        } finally {
+            log.info("Update was recived ("
+                    + "userId = "
+                    + wrapper.getMessage().getChatId()
+                    + ", updateId = "
+                    + wrapper.getUpdate().getUpdateId()
+                    + ", type = "
+                    + wrapper.getType()
+                    + ", strategy = "
+                    + wrapper.getStrategy()
+                    + ").");
         }
     }
 
@@ -86,5 +80,19 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     public String getBotOwner() {
         return config.getBotOwner();
+    }
+
+    private boolean isItBotId(Long botId) {
+        return getBotToken().split(":")[0].equals(String.valueOf(botId));
+    }
+
+    private boolean isAdmin(long id) {
+        return getBotOwner().equals(String.valueOf(id));
+    }
+
+    private long getIdFromUpdate(Update update) {
+        return update.hasMessage()
+                ? update.getMessage().getFrom().getId()
+                : update.getCallbackQuery().getMessage().getFrom().getId();
     }
 }

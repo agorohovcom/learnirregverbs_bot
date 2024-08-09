@@ -1,4 +1,4 @@
-package com.agorohov.learnirregverbs_bot.component;
+package com.agorohov.learnirregverbs_bot.utils;
 
 import java.util.ArrayList;
 import java.util.List;
