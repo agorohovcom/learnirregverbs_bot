@@ -5,13 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
-import com.agorohov.learnirregverbs_bot.config.BotConfig;
 
 @Component
 @RequiredArgsConstructor
 public class TextProcessingStrategyFactory {
-    
-    private final BotConfig config;
 
     private final StartTextStrategy startTextStrategy;
     private final LearnTextStrategy learnTextStrategy;
@@ -28,8 +25,7 @@ public class TextProcessingStrategyFactory {
             case "/stat" -> statTextStrategy;
             case "/about" -> aboutTextStrategy;
             case "/help" -> helpTextStrategy;
-            case "/admin" -> config.getBotOwner()
-                    .equals(wrapper.getMessage().getFrom().getId().toString())
+            case "/admin" -> wrapper.isAdmin()
                 ? adminTextStrategy
                 : defaultTextUpdateStrategy;
             default -> defaultTextUpdateStrategy;

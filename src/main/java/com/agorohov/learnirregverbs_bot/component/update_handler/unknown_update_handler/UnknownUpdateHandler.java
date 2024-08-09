@@ -10,10 +10,13 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 @RequiredArgsConstructor
 public class UnknownUpdateHandler implements UpdateHandler {
     
+    private static final String UPDATE_TYPE = "UnknownUpdate";
+    
     private final UnknownProcessingStrategyFactory strategyFactory;
     
     @Override
     public BotApiMethod handle(UpdateWrapper wrapper) {
+        wrapper.setType(UPDATE_TYPE);
         return strategyFactory.getStrategy(wrapper).processUpdate(wrapper);
     }
 }

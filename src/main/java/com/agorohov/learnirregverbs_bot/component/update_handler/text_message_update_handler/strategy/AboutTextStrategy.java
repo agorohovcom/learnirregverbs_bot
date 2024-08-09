@@ -13,6 +13,8 @@ public class AboutTextStrategy implements ProcessingStrategy {
     
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "𝔸𝕓𝕠𝕦𝕥\n\n"
                 + "Этот бот для изучения неправильных глаголов английского языка - "
                 + "проект некоего Александра Горохова.\n\n"

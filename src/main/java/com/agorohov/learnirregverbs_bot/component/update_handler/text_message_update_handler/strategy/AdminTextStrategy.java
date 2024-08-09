@@ -13,6 +13,8 @@ public class AdminTextStrategy implements ProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "𝔸𝕕𝕞𝕚𝕟\n\n"
                 + "Приветствую, хозяин!";
 

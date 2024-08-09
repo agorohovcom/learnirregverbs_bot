@@ -13,6 +13,8 @@ public class LearnTestTextStrategy implements ProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "𝕋𝕖𝕤𝕥\n\n"
                 + "Тут будет тест";
 

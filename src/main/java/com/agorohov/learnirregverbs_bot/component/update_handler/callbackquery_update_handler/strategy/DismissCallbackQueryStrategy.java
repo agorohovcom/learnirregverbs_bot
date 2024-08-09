@@ -13,6 +13,8 @@ public class DismissCallbackQueryStrategy implements ProcessingStrategy{
     
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "ℂ𝕒𝕟𝕔𝕖𝕝\n\n"
                 + "Действие отменено";
         

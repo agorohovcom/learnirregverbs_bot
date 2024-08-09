@@ -13,6 +13,8 @@ public class FailCallbackQueryStrategy implements ProcessingStrategy{
     
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "𝕆𝕠𝕡𝕤\n\n"
                 + "Извини, произошла внутренняя ошибка.";
         

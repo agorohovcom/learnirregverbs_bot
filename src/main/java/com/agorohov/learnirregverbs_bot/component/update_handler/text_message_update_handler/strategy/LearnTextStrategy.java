@@ -13,7 +13,8 @@ public class LearnTextStrategy implements ProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
-
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "𝕃𝕖𝕒𝕣𝕟\n\n"
                 + wrapper.getMessage().getChat().getUserName() + ", начнём учиться!\n\n"
                 + "Перед тобой 5 случайных неправильных глаголов в трёх формах "

@@ -13,6 +13,8 @@ public class HelpTextStrategy implements ProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "ℍ𝕖𝕝𝕡\n\n"
                 + "Управление ботом осуществляется через меню команд и с помощью кнопок под сообщениями.\n"
                 + "Описание пунктов основного меню:\n\n"

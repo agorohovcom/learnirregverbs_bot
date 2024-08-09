@@ -3,6 +3,7 @@ package com.agorohov.learnirregverbs_bot.component;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateHandlerFactory;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
+import com.agorohov.learnirregverbs_bot.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     private final UpdateHandlerFactory updateHandlerFactory;
     private final BotConfig config;
+    private final UserService userService;
 
     private long botStartsAt;
 
@@ -46,15 +48,23 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                 isAdmin(getIdFromUpdate(update))
         );
 
-//        Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
-//        System.out.println("update.getMessage().getText(): " + message.getText() + "\n\n");
-//        System.out.println("update.getCallbackQuery().getData(): " + update.getCallbackQuery().getData() + "\n\n");
-//        System.out.println("===============================\n===============================");
+        userService.save(wrapper.giveMeUserDTO());
         
         try {
             execute(updateHandlerFactory.getHandler(wrapper).handle(wrapper));
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
+        } finally {
+            log.info("Update was recived ("
+                    + "userId = "
+                    + wrapper.getMessage().getChatId()
+                    + ", updateId = "
+                    + wrapper.getUpdate().getUpdateId()
+                    + ", type = "
+                    + wrapper.getType()
+                    + ", strategy = "
+                    + wrapper.getStrategy()
+                    + ").");
         }
     }
 

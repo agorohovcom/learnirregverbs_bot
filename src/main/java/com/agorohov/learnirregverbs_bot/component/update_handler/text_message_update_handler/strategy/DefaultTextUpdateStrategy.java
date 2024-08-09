@@ -11,6 +11,8 @@ public class DefaultTextUpdateStrategy implements ProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "𝕆𝕠𝕡𝕤\n\n"
                 + "Нет такой команды.\n"
                 + "Используй кнопки или меню бота.\n\n"

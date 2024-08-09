@@ -13,6 +13,8 @@ public class UnknownUpdateStrategy implements ProcessingStrategy {
 
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
+        wrapper.setStrategy(this.getClass().getSimpleName());
+        
         String textToSend = "𝕆𝕠𝕡𝕤\n\n"
                 + "Такой тип сообщений не поддерживается.\n"
                 + "Используй кнопки или меню бота.\n\n"
