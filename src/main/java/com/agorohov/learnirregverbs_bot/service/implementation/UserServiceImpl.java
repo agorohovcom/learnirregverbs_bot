@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         try {
             userRepository.saveAndFlush(entity);
             if (!isItNewUser) {
-                log.info("New user with id = " + entity.getChatId() + " was saved to DB");
+                log.info("New user with id = " + entity.getChatId() + " addded to the DB");
             }
         } catch (DataAccessException e) {
             log.error(e.getMessage());

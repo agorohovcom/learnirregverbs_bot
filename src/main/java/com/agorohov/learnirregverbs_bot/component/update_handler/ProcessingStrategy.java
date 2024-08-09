@@ -12,7 +12,9 @@ public interface ProcessingStrategy {
     // и от бота ли оно.
     // Если да - редактируем предыдущее, если нет - шлём новое
     default BotApiMethod updateOrCreateMessage(UpdateWrapper wrapper, MessageBuilder sendMessage) {
-        boolean isNewMsgNotEqOld = !wrapper.getMessage().getText().trim().equals(sendMessage.getText().trim());
+        boolean isNewMsgNotEqOld = wrapper.getMessage().hasText()
+                ? !wrapper.getMessage().getText().trim().equals(sendMessage.getText().trim())
+                : false;
         boolean isStillTimeToEdit = (System.currentTimeMillis() - wrapper.getUpdateWasReceivedAt()) < (47 * 3600000);
         
         if (isNewMsgNotEqOld && isStillTimeToEdit && wrapper.isFromBot()) {
