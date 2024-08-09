@@ -37,15 +37,20 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-       
+
         // Добавляю к Update дополнительные данные с помощью класса-обертки
-            UpdateWrapper wrapper = new UpdateWrapper(
+        UpdateWrapper wrapper = new UpdateWrapper(
                 update,
                 System.currentTimeMillis(),
                 isItBotId(getIdFromUpdate(update)),
                 isAdmin(getIdFromUpdate(update))
         );
 
+//        Message message = update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
+//        System.out.println("update.getMessage().getText(): " + message.getText() + "\n\n");
+//        System.out.println("update.getCallbackQuery().getData(): " + update.getCallbackQuery().getData() + "\n\n");
+//        System.out.println("===============================\n===============================");
+        
         try {
             execute(updateHandlerFactory.getHandler(wrapper).handle(wrapper));
         } catch (TelegramApiException ex) {
@@ -68,10 +73,10 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     }
 
     private boolean isItBotId(Long botId) {
-        return botId.equals(getBotToken().split(":")[0]);
+        return getBotToken().split(":")[0].equals(String.valueOf(botId));
     }
-    
-    private boolean isAdmin(long id){
+
+    private boolean isAdmin(long id) {
         return getBotOwner().equals(String.valueOf(id));
     }
 

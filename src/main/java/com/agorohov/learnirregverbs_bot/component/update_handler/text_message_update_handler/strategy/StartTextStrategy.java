@@ -13,15 +13,12 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 @RequiredArgsConstructor
 public class StartTextStrategy implements ProcessingStrategy {
 
-    private final VerbService verbService;
-
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
         String textToSend = "𝕃𝕖𝕒𝕣𝕟 𝕀𝕣𝕣𝕖𝕘𝕦𝕝𝕒𝕣 𝕍𝕖𝕣𝕓𝕤 𝔹𝕠𝕥\n\n"
-                + "Привет, " + wrapper.getMessage().getFrom().getFirstName() + "!\n\n"
+                + "Привет, " + wrapper.getMessage().getChat().getUserName() + "!\n\n"
                 + "Это бот для изучения неправильных глаголов английского языка.\n\n"
-                + "Ты можешь учиться и следить за прогрессом своего обучения.\n\n"
-                + verbService.findById(new Random().nextInt(verbService.getCount()));
+                + "Ты можешь учиться и следить за прогрессом своего обучения.";
 
         var sendMessage = MessageBuilder
                 .create()
