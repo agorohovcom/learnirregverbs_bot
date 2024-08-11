@@ -7,4 +7,6 @@ public interface VerbService {
     VerbDTO findById(Integer id);
 
     Integer getCount();
+    
+    VerbDTO getRandomVerbDTO();
 }

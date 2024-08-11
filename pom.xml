@@ -24,9 +24,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         
-        <lombok.version>1.18.30</lombok.version>
-        <liquibase.version>4.25.1</liquibase.version>
-        <h2.version>2.2.224</h2.version>
+        <lombok.version>1.18.34</lombok.version>
+        <liquibase.version>4.29.1</liquibase.version>
+        <h2.version>2.3.230</h2.version>
         <telegrambots-spring-boot-starter.version>6.9.0</telegrambots-spring-boot-starter.version>
     </properties>
     

@@ -39,6 +39,9 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
+        
+//        System.out.println(getIdFromUpdate(update));
+//        System.out.println(getIdFromUpdate2(update));
 
         // Добавляю к Update дополнительные данные с помощью класса-обертки
         UpdateWrapper wrapper = new UpdateWrapper(
@@ -95,4 +98,10 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                 ? update.getMessage().getFrom().getId()
                 : update.getCallbackQuery().getMessage().getFrom().getId();
     }
+    
+//    private long getIdFromUpdate2(Update update) {
+//        return update.hasMessage()
+//                ? update.getMessage().getFrom().getId()
+//                : update.getCallbackQuery().getMessage().getChatId();
+//    }
 }

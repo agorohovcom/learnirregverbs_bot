@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @Data
 @PropertySource("application.yaml")
+@EnableScheduling
 //@ConfigurationProperties(prefix = "bot")
 public class BotConfig {
 

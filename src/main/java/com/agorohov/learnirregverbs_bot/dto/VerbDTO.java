@@ -11,4 +11,13 @@ public class VerbDTO {
     private String past;
     private String pastParticiple;
     private String translation;
+    
+    @Override
+    public String toString(){
+        return infinitive
+                + " / " + past
+                + " / " + pastParticiple
+                + " (" + translation
+                + ")";
+    }
 }
