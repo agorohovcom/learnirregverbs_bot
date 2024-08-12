@@ -18,6 +18,7 @@ public class TestButtonsBuilder {
     private final Random random;
 
     private static final int BUTTONS_AMOUNT = 12;
+    private static final int FAIL_BUTTONS_AMOUNT = BUTTONS_AMOUNT - 3;
 
     public TestButtons create(VerbDTO verb) {
         Map<Integer, String[]> buttons = new HashMap<>();
@@ -31,6 +32,9 @@ public class TestButtonsBuilder {
         buttons.put(rightButtonIndexes[0], new String[]{verb.getInfinitive(), "/learn_test_ok_" + verb.getInfinitive()});
         buttons.put(rightButtonIndexes[1], new String[]{verb.getPast(), "/learn_test_ok_past" + verb.getPast()});
         buttons.put(rightButtonIndexes[2], new String[]{verb.getPastParticiple(), "/learn_test_ok_" + verb.getPastParticiple()});
+        
+        // получим рандомные неправильные ответы
+        String[] randomFailVerbs = getRandomVerbs(FAIL_BUTTONS_AMOUNT);
 
         for (int i = 0; i < BUTTONS_AMOUNT; i++) {
             if (buttons.containsKey(i)) {
@@ -40,5 +44,15 @@ public class TestButtonsBuilder {
         }
 
         return new TestButtons(buttons);
+    }
+    
+    private String[] getRandomVerbs(int amount) {
+        // получим массив из рандомных форм глаголов amount штук
+        String[] result = new String[amount];
+        
+        VerbDTO[] verbs = Stream.generate(
+        () -> );
+        
+        return result;
     }
 }

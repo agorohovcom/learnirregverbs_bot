@@ -36,16 +36,14 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
             } else {
                 if (session.isCorrectResult()) {
                     textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
-                    + "Верно!\n\n"
-                    + "Результат записан в твою статистику. Продолжим?";
+                            + "Верно!\n\n"
+                            + "Результат записан в твою статистику. Продолжим?";
                 } else {
                     textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
-                    + "К сожалению, ответ неверный.\n\n"
-                    + "Результат записан в твою статистику. Продолжим?";
+                            + "К сожалению, ответ неверный.\n\n"
+                            + "Результат записан в твою статистику. Продолжим?";
                 }
             }
-
-            
         }
 
         var sendMessage = MessageBuilder
