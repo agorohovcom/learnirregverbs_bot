@@ -1,7 +1,7 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
-import com.agorohov.learnirregverbs_bot.component.learning.LearnSession;
-import com.agorohov.learnirregverbs_bot.component.learning.LearnSessionKeeper;
+import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSession;
+import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSessionKeeper;
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
@@ -22,15 +22,10 @@ public class LearnTextStrategy implements ProcessingStrategy {
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
         wrapper.setStrategy(this.getClass().getSimpleName());
 
-//        List<VerbDTO> vdtos = Stream.generate(
-//                () -> verbService.getRandomVerbDTO())
-//                .distinct()
-//                .limit(3)
-//                .collect(Collectors.toCollection(ArrayList::new));
-        VerbDTO verb = verbService.getRandomVerbDTO();
+        VerbDTO verb = getNextVerb();
 
         sessionKeeper.put(new LearnSession(
-                wrapper.getMessage().getFrom().getId(),
+                wrapper.getMessage().getChatId(),
                 verb,
                 wrapper.getUpdateWasReceivedAt()));
 
@@ -54,5 +49,14 @@ public class LearnTextStrategy implements ProcessingStrategy {
                 .endRow();
 
         return updateOrCreateMessage(wrapper, sendMessage);
+    }
+
+    private VerbDTO getNextVerb() {
+        //        List<VerbDTO> vdtos = Stream.generate(
+//                () -> verbService.getRandomVerbDTO())
+//                .distinct()
+//                .limit(3)
+//                .collect(Collectors.toCollection(ArrayList::new));
+        return verbService.getRandomVerbDTO();
     }
 }

@@ -1,4 +1,4 @@
-package com.agorohov.learnirregverbs_bot.component.learning;
+package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
 import java.util.HashMap;
 import java.util.Map;
