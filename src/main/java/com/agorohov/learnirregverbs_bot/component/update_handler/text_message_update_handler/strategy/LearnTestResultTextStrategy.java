@@ -1,5 +1,6 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
+import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSession;
 import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSessionKeeper;
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
@@ -18,16 +19,33 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
         wrapper.setStrategy(this.getClass().getSimpleName());
 
+        String textToSend = "";
+
         boolean isSessionExist = sessionKeeper.isExist(wrapper.getMessage().getChatId());
 
-        String textToSend = null;
-
         if (!isSessionExist) {
-            textToSend = "Почему это сессии нет в сторадже?";
-        } else {
             textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
+                    + "Время вышло, выбери другое слово.";
+        } else {
+            LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
+            session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
+            sessionKeeper.put(session);
+
+            if (!session.isAllAnswersReceived()) {
+                wrapper.setExecutable(false);
+            } else {
+                if (session.isCorrectResult()) {
+                    textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                     + "Верно!\n\n"
-                    + "Ответ записан в твою статистику. Продолжим?";
+                    + "Результат записан в твою статистику. Продолжим?";
+                } else {
+                    textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
+                    + "К сожалению, ответ неверный.\n\n"
+                    + "Результат записан в твою статистику. Продолжим?";
+                }
+            }
+
+            
         }
 
         var sendMessage = MessageBuilder

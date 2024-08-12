@@ -17,6 +17,7 @@ public class CallbackQueryProcessingStrategyFactory {
     private final StartTextStrategy startTextStrategy;
     private final LearnTextStrategy learnTextStrategy;
     private final LearnTestTextStrategy learnTestTextStrategy;
+    private final LearnTestResultTextStrategy learnTestResultTextStrategy;
     private final StatTextStrategy statTextStrategy;
     private final StatResetTextStrategy statResetTextStrategy;
     private final StatResetConfirmTextStrategy statResetConfirmTextStrategy;
@@ -24,7 +25,13 @@ public class CallbackQueryProcessingStrategyFactory {
     private final HelpTextStrategy helpTextStrategy;
     
     public ProcessingStrategy getStrategy(UpdateWrapper wrapper) {
-        return switch (wrapper.getUpdate().getCallbackQuery().getData()) {
+        String data = wrapper.getUpdate().getCallbackQuery().getData();
+        
+        if(data.startsWith("/learn_test_fail_") || data.startsWith("/learn_test_ok_")){
+            return learnTestResultTextStrategy;
+        }
+        
+        return switch (data) {
             case "/dismiss" -> dismissCallbackQueryStrategy;
             case "/start" -> startTextStrategy;
             case "/learn" -> learnTextStrategy;
