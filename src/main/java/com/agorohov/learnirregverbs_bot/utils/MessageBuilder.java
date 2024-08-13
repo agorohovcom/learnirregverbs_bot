@@ -56,7 +56,6 @@ public class MessageBuilder {
         message.setChatId(chatId);
         message.setText(text);
 //        message.setParseMode("Markdown");
-
         message.setParseMode("HTML");
 
         var keyboardMarkup = new InlineKeyboardMarkup();

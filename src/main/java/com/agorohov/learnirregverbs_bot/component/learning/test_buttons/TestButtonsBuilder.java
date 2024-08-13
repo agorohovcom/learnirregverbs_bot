@@ -29,9 +29,9 @@ public class TestButtonsBuilder {
                 .limit(3)
                 .toArray(Integer[]::new);
 
-        buttons.put(rightButtonIndexes[0], new String[]{verb.getInfinitive(), "/learn_test_ok_" + verb.getInfinitive()});
-        buttons.put(rightButtonIndexes[1], new String[]{verb.getPast(), "/learn_test_ok_past" + verb.getPast()});
-        buttons.put(rightButtonIndexes[2], new String[]{verb.getPastParticiple(), "/learn_test_ok_" + verb.getPastParticiple()});
+        buttons.put(rightButtonIndexes[0], new String[]{verb.getInfinitive(), "/learn_test_ok_infinitive_" + verb.getInfinitive()});
+        buttons.put(rightButtonIndexes[1], new String[]{verb.getPast(), "/learn_test_ok_past_" + verb.getPast()});
+        buttons.put(rightButtonIndexes[2], new String[]{verb.getPastParticiple(), "/learn_test_ok_pastparticiple_" + verb.getPastParticiple()});
 
         // получим рандомные неправильные ответы
         String[] randomFailVerbsForms = getRandomVerbs(verb, BUTTONS_AMOUNT);

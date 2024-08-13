@@ -35,7 +35,7 @@ public class LearnTestTextStrategy implements ProcessingStrategy {
             sendMessage
                     .setText(textToSend)
                     .row()
-                    .button("< учить другое слово", "/learn")
+                    .button("Учить другое слово", "/learn")
                     .endRow()
                     .row()
                     .button("<< главное меню", "/start")

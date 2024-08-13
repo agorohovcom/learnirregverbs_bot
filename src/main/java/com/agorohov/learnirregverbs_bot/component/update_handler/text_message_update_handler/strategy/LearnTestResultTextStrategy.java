@@ -49,13 +49,18 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
             } else {
                 if (session.isCorrectResult()) {
                     textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
-                            + congrats[random.nextInt(congrats.length)] + "\n\n"
-                            + "<b>" + session.getVerb().toString() + "</b>\n"
+                            + "✅ " + congrats[random.nextInt(congrats.length)] + "\n\n"
+                            + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "Результат записан в твою статистику. Продолжим?";
                 } else {
                     textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
-                            + "К сожалению, ответ неверный.\n\n"
+                            + "❌ К сожалению, ответ неверный.\n\n"
+                            + "Твой ответ:\n"
+                            + "<b>" + session.getAnswers()[0] + " / " + session.getAnswers()[1] + " / " + session.getAnswers()[2] + "</b>\n\n"
+                            + "Правильный ответ:\n"
+                            + "<b>" + session.getVerb() + "</b>\n"
+                            + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "Результат записан в твою статистику. Продолжим?";
                 }
             }
