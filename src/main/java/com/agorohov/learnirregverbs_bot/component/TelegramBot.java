@@ -39,6 +39,8 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
+//        System.out.println(getIdFromUpdate(update));
+//        System.out.println(getIdFromUpdate2(update));
 
         // Добавляю к Update дополнительные данные с помощью класса-обертки
         UpdateWrapper wrapper = new UpdateWrapper(
@@ -49,9 +51,13 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
         );
 
         userService.save(wrapper.giveMeUserDTO());
-        
+
+        var updateProcessingResult = updateHandlerFactory.getHandler(wrapper).handle(wrapper);
+
         try {
-            execute(updateHandlerFactory.getHandler(wrapper).handle(wrapper));
+            if (wrapper.isExecutable()) {
+                execute(updateProcessingResult);
+            }
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
         } finally {
@@ -65,6 +71,9 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                     + ", strategy = "
                     + wrapper.getStrategy()
                     + ").");
+            
+            // Надо ли нулить? Чтобы быстрее GC отработал
+            wrapper = null;
         }
     }
 
@@ -95,4 +104,10 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                 ? update.getMessage().getFrom().getId()
                 : update.getCallbackQuery().getMessage().getFrom().getId();
     }
+
+//    private long getIdFromUpdate2(Update update) {
+//        return update.hasMessage()
+//                ? update.getMessage().getFrom().getId()
+//                : update.getCallbackQuery().getMessage().getChatId();
+//    }
 }

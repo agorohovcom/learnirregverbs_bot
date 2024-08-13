@@ -17,6 +17,9 @@ public class UpdateWrapper {
     // для логгирования
     private String type;
     private String strategy;
+    
+    // вызывать ли метод execute
+    private boolean isExecutable = true;
 
     public Message getMessage() {
         return update.hasMessage()

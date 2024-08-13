@@ -55,6 +55,6 @@ bot:
   token: ${IRRVERBSBOTTOKEN}
   owner: ${IRRVERBSBOTOWNER}
 
-# cron:
+cron:
   # секунды / минуты / часы / день / месяц / день недели  
-  # scheduler: 0 34 12 * * *
+  cleanOldLearnSessions: '0 0 */2 * * *'
