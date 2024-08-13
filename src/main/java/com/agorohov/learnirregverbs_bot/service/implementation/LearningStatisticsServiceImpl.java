@@ -8,20 +8,28 @@ import com.agorohov.learnirregverbs_bot.entity.UserEntity;
 import com.agorohov.learnirregverbs_bot.entity.VerbEntity;
 import com.agorohov.learnirregverbs_bot.repository.LearningStatisticsRepository;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
-import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class LearningStatisticsServiceImpl implements LearningStatisticsService {
 
     private final LearningStatisticsRepository learningStatisticsRepository;
 
-    @Transactional
     @Override
     public void save(LearningStatisticsDTO learningStatistics) {
         learningStatisticsRepository.saveAndFlush(convertDTOtoEntity(learningStatistics));
+        log.info("Test result for user (id = "
+                + learningStatistics.getUser().getChatId()
+                + ") and verb (id = "
+                + learningStatistics.getVerb().getId()
+                + ") saved to the DB");
     }
 
     @Override
@@ -32,6 +40,21 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
     @Override
     public LearningStatisticsDTO getByUserChatIdAndVerbId(Long userChatId, Integer verbId) {
         return convertEntityToDTO(learningStatisticsRepository.findByUserChatIdAndVerbId(userChatId, verbId));
+    }
+    
+    @Override
+    public List<LearningStatisticsDTO> getAllStatisticsById(Long userChatId) {
+        return learningStatisticsRepository.findAllStatisticsById(userChatId)
+                .stream()
+                .map(e -> convertEntityToDTO(e))
+                .collect(Collectors.toUnmodifiableList());
+    }
+    
+    @Transactional
+    @Override
+    public void deleteByUserChatId(Long userChatId) {
+        learningStatisticsRepository.deleteByUserChatId(userChatId);
+        log.info("The user (id = " + userChatId + ") has reset their statistics");
     }
 
     private LearningStatisticsEntity convertDTOtoEntity(LearningStatisticsDTO dto) {
