@@ -18,11 +18,11 @@ public class TestButtonsBuilder {
     private final Random random;
 
     private static final int BUTTONS_AMOUNT = 12;
-    private static final int FAIL_BUTTONS_AMOUNT = BUTTONS_AMOUNT - 3;
 
     public TestButtons create(VerbDTO verb) {
         Map<Integer, String[]> buttons = new HashMap<>();
 
+        // находим случайные индексы для кнопок с верными ответами
         Integer[] rightButtonIndexes = Stream
                 .generate(() -> random.nextInt(BUTTONS_AMOUNT))
                 .distinct()
@@ -32,27 +32,30 @@ public class TestButtonsBuilder {
         buttons.put(rightButtonIndexes[0], new String[]{verb.getInfinitive(), "/learn_test_ok_" + verb.getInfinitive()});
         buttons.put(rightButtonIndexes[1], new String[]{verb.getPast(), "/learn_test_ok_past" + verb.getPast()});
         buttons.put(rightButtonIndexes[2], new String[]{verb.getPastParticiple(), "/learn_test_ok_" + verb.getPastParticiple()});
-        
+
         // получим рандомные неправильные ответы
-        String[] randomFailVerbs = getRandomVerbs(FAIL_BUTTONS_AMOUNT);
+        String[] randomFailVerbsForms = getRandomVerbs(verb, BUTTONS_AMOUNT);
 
         for (int i = 0; i < BUTTONS_AMOUNT; i++) {
             if (buttons.containsKey(i)) {
                 continue;
             }
-            buttons.put(i, new String[]{"pitooh", "/learn_test_fail_" + i});
+            buttons.put(i, new String[]{randomFailVerbsForms[i], "/learn_test_fail_" + randomFailVerbsForms[i]});
         }
 
         return new TestButtons(buttons);
     }
-    
-    private String[] getRandomVerbs(int amount) {
+
+    private String[] getRandomVerbs(VerbDTO verb, int amount) {
         // получим массив из рандомных форм глаголов amount штук
-        String[] result = new String[amount];
-        
-        VerbDTO[] verbs = Stream.generate(
-        () -> );
-        
+        String[] result = Stream
+                .generate(() -> verbService.getRandomVerbDTO())
+                .filter(e -> !e.equals(verb))
+                .distinct()
+                .limit(amount)
+                .map(e -> e.getRandomFormByIndex(random.nextInt(2)))
+                .toArray(String[]::new);
+
         return result;
     }
 }

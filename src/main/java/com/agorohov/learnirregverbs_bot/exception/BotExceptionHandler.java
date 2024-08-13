@@ -10,6 +10,7 @@ public class BotExceptionHandler {
 
     @ExceptionHandler({
         VerbNotFoundByIdException.class,
+        VerbFormNotFoundByIndexException.class
     })
     public ResponseEntity<String> handleEmployeeExceptions(RuntimeException e) {
         e.printStackTrace();

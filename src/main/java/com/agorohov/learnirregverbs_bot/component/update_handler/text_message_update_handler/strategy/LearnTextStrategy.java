@@ -30,10 +30,10 @@ public class LearnTextStrategy implements ProcessingStrategy {
                 wrapper.getUpdateWasReceivedAt()));
 
         String textToSend = "𝕃𝕖𝕒𝕣𝕟\n\n"
-                + wrapper.getMessage().getChat().getUserName() + ", давай учиться!\n"
-                + "Постарайся запомнить три формы глагола.\n\n"
+                + wrapper.getMessage().getChat().getUserName()
+                + ", запомни три формы глагола:\n\n<b>" + verb.getTranslation() + "</b>\n\n"
                 + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
-                + verb + "\n\n"
+                + "<b>" + verb + "</b>\n\n"
                 + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
                 + "Когда будешь готов, нажми \"Пройти тест\"";
 
@@ -52,11 +52,6 @@ public class LearnTextStrategy implements ProcessingStrategy {
     }
 
     private VerbDTO getNextVerb() {
-        //        List<VerbDTO> vdtos = Stream.generate(
-//                () -> verbService.getRandomVerbDTO())
-//                .distinct()
-//                .limit(3)
-//                .collect(Collectors.toCollection(ArrayList::new));
         return verbService.getRandomVerbDTO();
     }
 }

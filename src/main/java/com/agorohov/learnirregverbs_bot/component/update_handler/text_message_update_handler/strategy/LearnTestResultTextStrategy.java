@@ -5,6 +5,7 @@ import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSe
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -14,6 +15,18 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 public class LearnTestResultTextStrategy implements ProcessingStrategy {
 
     private final LearnSessionKeeper sessionKeeper;
+    private final Random random;
+    
+    String[] congrats = new String[]{
+        "Верно!",
+        "Правильно!",
+        "Это правильный ответ!",
+        "Молодец!",
+        "Супер!",
+        "Так держать!",
+        "Ты не перестаешь удивлять!",
+        "Да!"
+    };
 
     @Override
     public BotApiMethod processUpdate(UpdateWrapper wrapper) {
@@ -36,7 +49,9 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
             } else {
                 if (session.isCorrectResult()) {
                     textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
-                            + "Верно!\n\n"
+                            + congrats[random.nextInt(congrats.length)] + "\n\n"
+                            + "<b>" + session.getVerb().toString() + "</b>\n"
+                            + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "Результат записан в твою статистику. Продолжим?";
                 } else {
                     textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
