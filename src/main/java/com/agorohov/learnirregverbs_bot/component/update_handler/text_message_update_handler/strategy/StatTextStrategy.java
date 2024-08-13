@@ -27,9 +27,6 @@ public class StatTextStrategy implements ProcessingStrategy {
                 .button("Обнулить статистику", "/stat_reset")
                 .endRow()
                 .row()
-                .button("< учить", "/learn")
-                .endRow()
-                .row()
                 .button("<< главное меню", "/start")
                 .endRow();
         

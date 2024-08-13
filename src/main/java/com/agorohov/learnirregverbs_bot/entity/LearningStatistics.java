@@ -24,12 +24,12 @@ public class LearningStatistics {
     
     @Column(name = "attempts")
     private Integer attempts = 0;
-    
-    @Column(name = "result")
-    private Integer result = 0;
-    
+        
     @Column(name = "correct_series")
     private Integer correctSeries = 0;
+    
+    @Column(name = "rank")
+    private Short rank = 0;
     
     @ManyToOne
     @JoinColumn(name = "user_chat_id", nullable = false)

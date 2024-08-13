@@ -18,12 +18,12 @@ databaseChangeLog:
                   type: int
                   defaultValue: 0
               - column:
-                  name: result
+                  name: correct_series
                   type: int
                   defaultValue: 0
               - column:
-                  name: correct_series
-                  type: int
+                  name: rank
+                  type: smallint
                   defaultValue: 0
               - column:
                   name: user_chat_id
