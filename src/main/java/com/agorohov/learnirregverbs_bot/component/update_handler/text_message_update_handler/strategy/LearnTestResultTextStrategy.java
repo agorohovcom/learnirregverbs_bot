@@ -4,6 +4,8 @@ import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSe
 import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSessionKeeper;
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
+import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
+import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +16,10 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 @RequiredArgsConstructor
 public class LearnTestResultTextStrategy implements ProcessingStrategy {
 
+    private final LearningStatisticsService learningStatisticsService;
     private final LearnSessionKeeper sessionKeeper;
     private final Random random;
-    
+
     String[] congrats = new String[]{
         "Верно!",
         "Правильно!",
@@ -44,16 +47,30 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
             session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
             sessionKeeper.put(session);
 
+            LearningStatisticsDTO learningStatistics = null;
+
+            if (learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId())) {
+                learningStatistics = learningStatisticsService.getByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId());
+            } else {
+                learningStatistics = new LearningStatisticsDTO()
+                        .setVerb(session.getVerb())
+                        .setUser(wrapper.giveMeUserDTO());
+            }
+
             if (!session.isAllAnswersReceived()) {
                 wrapper.setExecutable(false);
             } else {
                 if (session.isCorrectResult()) {
+                    learningStatistics.wins();
+
                     textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + "✅ " + congrats[random.nextInt(congrats.length)] + "\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "Результат записан в твою статистику. Продолжим?";
                 } else {
+                    learningStatistics.loses();
+
                     textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + "❌ К сожалению, ответ неверный.\n\n"
                             + "Твой ответ:\n"
@@ -63,6 +80,8 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "Результат записан в твою статистику. Продолжим?";
                 }
+                
+                learningStatisticsService.save(learningStatistics);
             }
         }
 

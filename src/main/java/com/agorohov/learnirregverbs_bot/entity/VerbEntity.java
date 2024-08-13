@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -34,6 +35,7 @@ public class VerbEntity {
     @Column(name = "translation")
     private String translation;
     
-    @OneToMany(mappedBy = "verb", cascade = CascadeType.ALL)
-    List<LearningStatistics> statistics;
+    // если orphanRemoval = true, то приходится сразу инициализировать statistics
+    @OneToMany(mappedBy = "verb", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
+    private List<LearningStatisticsEntity> statistics/* = new ArrayList<>()*/;
 }

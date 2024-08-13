@@ -27,12 +27,12 @@ public class VerbServiceImpl implements VerbService {
     public Integer getCount() {
         return (int) verbRepository.count();
     }
-    
+
     @Override
     public VerbDTO getRandomVerbDTO() {
         return findById(random.nextInt(getCount()) + 1);
     }
-    
+
     private VerbDTO convertEntityToDTO(VerbEntity entity) {
         return new VerbDTO()
                 .setId(entity.getId())

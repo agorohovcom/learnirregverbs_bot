@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -33,6 +34,7 @@ public class UserEntity {
     @Column(name = "is_deleted")
     private Boolean isDeleled = false;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<LearningStatistics> statistics;
+    // если orphanRemoval = true, то приходится сразу инициализировать statistics
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
+    private List<LearningStatisticsEntity> statistics/* = new ArrayList<>()*/;
 }

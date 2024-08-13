@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 @Table(name = "learning_statistics")
 @Data
 @Accessors(chain = true)
-public class LearningStatistics {
+public class LearningStatisticsEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
