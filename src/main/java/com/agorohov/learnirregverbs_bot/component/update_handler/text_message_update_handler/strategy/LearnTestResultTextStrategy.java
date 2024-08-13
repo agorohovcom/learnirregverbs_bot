@@ -67,7 +67,7 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
                             + "✅ " + congrats[random.nextInt(congrats.length)] + "\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
-                            + "Результат записан в твою статистику. Продолжим?";
+                            + "Результат записан. Продолжим?";
                 } else {
                     learningStatistics.loses();
 
@@ -78,7 +78,7 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
                             + "Правильный ответ:\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
-                            + "Результат записан в твою статистику. Продолжим?";
+                            + "Результат записан. Продолжим?";
                 }
                 
                 learningStatisticsService.save(learningStatistics);

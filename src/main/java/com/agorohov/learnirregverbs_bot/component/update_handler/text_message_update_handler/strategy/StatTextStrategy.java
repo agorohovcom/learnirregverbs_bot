@@ -33,12 +33,13 @@ public class StatTextStrategy implements ProcessingStrategy {
                 .setChatId(wrapper.getMessage().getChatId());
 
         if (!statistics.isEmpty()) {
+            int verbsCount = verbService.getCount();
             int appemptsTotal = statistics
                     .stream()
                     .mapToInt(e -> e.getAttempts())
                     .sum();
             int learnedVerbsAmount = statistics.size();
-            int learnedVerbsPercent = 100 * learnedVerbsAmount / verbService.getCount();
+            int learnedVerbsPercent = 100 * learnedVerbsAmount / verbsCount;
             int hightRateVerbs = (int) statistics
                     .stream()
                     .filter(e -> e.getRank() >= 5)
@@ -47,14 +48,16 @@ public class StatTextStrategy implements ProcessingStrategy {
                     .stream()
                     .filter(e -> e.getRank() >= 3 && e.getRank() < 5)
                     .count();
+            int hightRateVerbsPercent = 100 * hightRateVerbs / verbsCount;
+            int midRateVerbsPercent = 100 * midRateVerbs / verbsCount;
 
             textToSend = "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
                     + wrapper.getMessage().getChat().getUserName()
                     + ", вот твоя статистика:\n\n"
                     + " • Пройдено тестов: <b>" + appemptsTotal + "</b>\n"
                     + " • Встречено глаголов: <b>" + learnedVerbsAmount + " (" + learnedVerbsPercent + " %)</b>\n"
-                    + " • Хорошо изучено: <b>" + hightRateVerbs + "</b>\n"
-                    + " • Средне изучено: <b>" + midRateVerbs + "</b>\n\n"
+                    + " • Хорошо изучено: <b>" + hightRateVerbs + " (" + hightRateVerbsPercent + " %)</b>\n"
+                    + " • Средне изучено: <b>" + midRateVerbs + " (" + midRateVerbsPercent + " %)</b>\n\n"
                     + "Успехов тебе в изучении!";
 
             sendMessage.setText(textToSend)
