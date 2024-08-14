@@ -2,25 +2,22 @@ package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_u
 
 import com.agorohov.learnirregverbs_bot.component.learning.learn_session.*;
 import com.agorohov.learnirregverbs_bot.component.learning.test_buttons.*;
-import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 @Component
 @RequiredArgsConstructor
-public class LearnTestTextStrategy implements ProcessingStrategy {
+public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
 
     private final LearnSessionKeeper sessionKeeper;
     private final TestButtonsBuilder buttonsBuilder;
 
     @Override
-    public BotApiMethod processUpdate(UpdateWrapper wrapper) {
-        wrapper.setStrategy(this.getClass().getSimpleName());
-
-        String textToSend = null;
+    protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
+        String textToSend = "";
         var sendMessage = MessageBuilder
                 .create()
                 .setChatId(wrapper.getMessage().getChatId());
@@ -78,7 +75,6 @@ public class LearnTestTextStrategy implements ProcessingStrategy {
                     .button("<< главное меню", "/start")
                     .endRow();
         }
-
-        return updateOrCreateMessage(wrapper, sendMessage);
+        return sendMessage;
     }
 }
