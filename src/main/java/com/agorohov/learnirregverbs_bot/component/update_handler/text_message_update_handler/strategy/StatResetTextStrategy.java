@@ -12,10 +12,12 @@ public class StatResetTextStrategy extends ProcessingStrategyAbstractImpl {
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
-        String textToSend = "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                + "⚠️ " + wrapper.getMessage().getChat().getUserName()
+        String textToSend = "📊 "    // эмодзи
+                + "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+                + wrapper.getMessage().getChat().getUserName()
                 + ", ты собираешься обнулить свою статистику.\n\n"
-                + "Это действие невозможно отменить.\n\n"
+                + "⚠️ "  // эмодзи
+                + "<b>Это действие невозможно отменить!</b>\n\n️"
                 + "Продолжить?";
 
         return MessageBuilder

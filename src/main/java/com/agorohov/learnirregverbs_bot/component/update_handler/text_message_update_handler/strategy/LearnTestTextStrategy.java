@@ -26,7 +26,8 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
         boolean isSessionExist = sessionKeeper.isExist(wrapper.getMessage().getChatId());
 
         if (!isSessionExist) {
-            textToSend = "𝕋𝕖𝕤𝕥\n\n"
+            textToSend = "⌛️ "   // эмодзи
+                    + "𝕋𝕖𝕤𝕥\n\n"
                     + "Время вышло, выбери другое слово.";
 
             sendMessage
@@ -42,9 +43,12 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
             LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
             TestButtons testButtons = buttonsBuilder.create(session.getVerb());
 
-            textToSend = "𝕋𝕖𝕤𝕥\n\n"
+            textToSend = "🎓 "   // эмодзи
+                    + "𝕋𝕖𝕤𝕥\n\n"
                     + "Пройдём тест!\n\n"
-                    + "Выбери три формы глагола \"" + session.getVerb().getTranslation() + "\" в правильном порядке.";
+                    + "Выбери три формы глагола в правильном порядке:\n\n"
+                    + "📌 "  // эмодзи
+                    + "<b>" + session.getVerb().getTranslation() + "</b>";
 
             sendMessage
                     .setText(textToSend)

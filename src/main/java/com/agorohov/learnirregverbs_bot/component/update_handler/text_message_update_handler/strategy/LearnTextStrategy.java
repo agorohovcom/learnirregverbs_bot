@@ -26,13 +26,17 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
                 verb,
                 wrapper.getUpdateWasReceivedAt()));
 
-        String textToSend = "𝕃𝕖𝕒𝕣𝕟\n\n"
+        String textToSend = "🎓 "    // эмодзи
+                + "𝕃𝕖𝕒𝕣𝕟\n\n"
                 + wrapper.getMessage().getChat().getUserName()
-                + ", запомни три формы глагола:\n\n<b>" + verb.getTranslation() + "</b>\n\n"
+                + ", запомни три формы глагола:\n\n"
                 + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
-                + "<b>" + verb + "</b>\n\n"
+                + "📖 "  // эмодзи
+                + "<b>" + verb + "</b>\n"
+                + "📌️ "  // эмодзи
+                + "(" + verb.getTranslation() + ")\n\n"
                 + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
-                + "Когда будешь готов, нажми \"Пройти тест\"";
+                + "Если готов, жми \"Пройти тест\"";
 
         return MessageBuilder
                 .create()

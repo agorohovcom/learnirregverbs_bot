@@ -48,7 +48,8 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
             int hightRateVerbsPercent = 100 * hightRateVerbs / verbsCount;
             int midRateVerbsPercent = 100 * midRateVerbs / verbsCount;
 
-            textToSend = "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+            textToSend = "📊 "    // эмодзи
+                + "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
                     + wrapper.getMessage().getChat().getUserName()
                     + ", вот твоя статистика:\n\n"
                     + " • Пройдено тестов: <b>" + appemptsTotal + "</b>\n"
@@ -68,7 +69,8 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
                     .button("<< главное меню", "/start")
                     .endRow();
         } else {
-            textToSend = "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+            textToSend = "📊 "    // эмодзи
+                + "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
                     + wrapper.getMessage().getChat().getUserName() + ", твоя статистика пока что пуста.\n\n"
                     + "Изучай неправильные глаголы, и с каждым ответом твоя статистика будет изменяться.";
 

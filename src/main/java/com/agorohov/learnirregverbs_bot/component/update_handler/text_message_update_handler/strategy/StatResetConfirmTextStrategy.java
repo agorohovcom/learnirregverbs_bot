@@ -17,7 +17,9 @@ public class StatResetConfirmTextStrategy extends ProcessingStrategyAbstractImpl
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         learningStatisticsService.deleteByUserChatId(wrapper.getMessage().getChatId());
 
-        String textToSend = "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+        String textToSend = "📊 "    // эмодзи
+                + "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
+                + "♻️ "  // эмодзи
                 + wrapper.getMessage().getChat().getUserName() + ", твоя статистика изучения "
                 + "неправильных глаголов удалена.\n\n"
                 + "Но ты можешь начать заново!";

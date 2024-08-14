@@ -23,6 +23,7 @@ public class CallbackQueryProcessingStrategyFactory {
     private final StatResetConfirmTextStrategy statResetConfirmTextStrategy;
     private final AboutTextStrategy aboutTextStrategy;
     private final HelpTextStrategy helpTextStrategy;
+    private final FeedbackTextStrategy feedbackTextStrategy;
     
     public ProcessingStrategy getStrategy(UpdateWrapper wrapper) {
         String data = wrapper.getUpdate().getCallbackQuery().getData();
@@ -41,6 +42,7 @@ public class CallbackQueryProcessingStrategyFactory {
             case "/stat_reset_confirm" -> statResetConfirmTextStrategy;
             case "/about" -> aboutTextStrategy;
             case "/help" -> helpTextStrategy;
+            case "/feedback" -> feedbackTextStrategy;
             default -> failCallbackQueryStrategy;
         };
     }

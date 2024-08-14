@@ -12,7 +12,8 @@ public class FailCallbackQueryStrategy extends ProcessingStrategyAbstractImpl {
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
-        String textToSend = "𝕆𝕠𝕡𝕤\n\n"
+        String textToSend = "🌀 "    // эмодзи
+                + "𝕆𝕠𝕡𝕤\n\n"
                 + "Извини, произошла внутренняя ошибка.";
 
         return MessageBuilder

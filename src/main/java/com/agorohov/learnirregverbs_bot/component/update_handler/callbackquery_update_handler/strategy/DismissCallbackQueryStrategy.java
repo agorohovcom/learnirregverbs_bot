@@ -12,7 +12,8 @@ public class DismissCallbackQueryStrategy extends ProcessingStrategyAbstractImpl
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
-        String textToSend = "ℂ𝕒𝕟𝕔𝕖𝕝\n\n"
+        String textToSend = "❌ "    // эмодзи
+                + "ℂ𝕒𝕟𝕔𝕖𝕝\n\n"
                 + "Действие отменено";
 
         return MessageBuilder

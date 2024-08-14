@@ -12,7 +12,8 @@ public class UnknownUpdateStrategy extends ProcessingStrategyAbstractImpl {
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
-        String textToSend = "𝕆𝕠𝕡𝕤\n\n"
+        String textToSend = "🌀 "    // эмодзи
+                + "𝕆𝕠𝕡𝕤\n\n"
                 + "Такой тип сообщений не поддерживается.\n"
                 + "Используй кнопки или меню бота.\n\n"
                 + "Если нужна помощь, загляни в раздел \"Помощь\"";
@@ -22,7 +23,7 @@ public class UnknownUpdateStrategy extends ProcessingStrategyAbstractImpl {
                 .setChatId(wrapper.getMessage().getFrom().getId())
                 .setText(textToSend)
                 .row()
-                .button("< помощь", "/help")
+                .button("Помощь", "/help")
                 .endRow()
                 .row()
                 .button("<< главное меню", "/start")
