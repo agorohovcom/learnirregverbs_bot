@@ -61,7 +61,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
         } finally {
-            log.info("Update was recived ("
+            log.info("Update received ("
                     + "userId = "
                     + wrapper.getMessage().getChatId()
                     + ", updateId = "

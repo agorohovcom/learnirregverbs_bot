@@ -1,6 +1,6 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
-import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
@@ -10,20 +10,17 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class StatTextStrategy implements ProcessingStrategy {
+public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
 
     private final LearningStatisticsService learningStatisticsService;
     private final VerbService verbService;
 
     @Override
-    public BotApiMethod processUpdate(UpdateWrapper wrapper) {
-        wrapper.setStrategy(this.getClass().getSimpleName());
-
+    protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         List<LearningStatisticsDTO> statistics = learningStatisticsService
                 .getAllStatisticsById(wrapper.getMessage().getChatId());
 
@@ -85,6 +82,6 @@ public class StatTextStrategy implements ProcessingStrategy {
         }
 
         log.info("The user (id = " + wrapper.getMessage().getChatId() + ") requested his statistics");
-        return updateOrCreateMessage(wrapper, sendMessage);
+        return sendMessage;
     }
 }

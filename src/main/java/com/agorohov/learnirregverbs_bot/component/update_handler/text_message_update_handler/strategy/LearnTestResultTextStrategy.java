@@ -2,7 +2,7 @@ package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_u
 
 import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSession;
 import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSessionKeeper;
-import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
@@ -10,17 +10,16 @@ import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 @Component
 @RequiredArgsConstructor
-public class LearnTestResultTextStrategy implements ProcessingStrategy {
+public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl {
 
     private final LearningStatisticsService learningStatisticsService;
     private final LearnSessionKeeper sessionKeeper;
     private final Random random;
 
-    String[] congrats = new String[]{
+    private String[] congrats = new String[]{
         "Верно!",
         "Правильно!",
         "Это правильный ответ!",
@@ -32,9 +31,7 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
     };
 
     @Override
-    public BotApiMethod processUpdate(UpdateWrapper wrapper) {
-        wrapper.setStrategy(this.getClass().getSimpleName());
-
+    protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         String textToSend = "";
 
         boolean isSessionExist = sessionKeeper.isExist(wrapper.getMessage().getChatId());
@@ -80,12 +77,12 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "Результат записан. Продолжим?";
                 }
-                
+
                 learningStatisticsService.save(learningStatistics);
             }
         }
 
-        var sendMessage = MessageBuilder
+        return MessageBuilder
                 .create()
                 .setChatId(wrapper.getMessage().getChatId())
                 .setText(textToSend)
@@ -95,7 +92,5 @@ public class LearnTestResultTextStrategy implements ProcessingStrategy {
                 .row()
                 .button("<< главное меню", "/start")
                 .endRow();
-
-        return updateOrCreateMessage(wrapper, sendMessage);
     }
 }
