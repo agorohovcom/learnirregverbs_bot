@@ -34,35 +34,37 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         String textToSend = "";
 
-        boolean isSessionExist = sessionKeeper.isExist(wrapper.getMessage().getChatId());
-
-        if (!isSessionExist) {
-            textToSend = "🎓 "    // эмодзи
+        // если в LearnSessionKeeper нет сессии текущего пользователя
+        if (!sessionKeeper.isExist(wrapper.getMessage().getChatId())) {
+            textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
-                    + "⌛️ "   // эмодзи
-                    + "Время вышло, выбери другое слово.";
+                    + "⌛️ " // эмодзи
+                    + "Время вышло, получи другой глагол.";
         } else {
-            LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
+            LearnSession session = sessionKeeper.getOrCreateAndPutAndGet(wrapper.getMessage().getChatId());
             session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
-            sessionKeeper.put(session);
+            // а надо ли тут пут делать?
+//            sessionKeeper.put(session);
 
             LearningStatisticsDTO learningStatistics = null;
 
-            if (learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId())) {
-                learningStatistics = learningStatisticsService.getByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId());
-            } else {
-                learningStatistics = new LearningStatisticsDTO()
-                        .setVerb(session.getVerb())
-                        .setUser(wrapper.giveMeUserDTO());
+            synchronized (this) {
+                if (learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId())) {
+                    learningStatistics = learningStatisticsService.getByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId());
+                } else {
+                    learningStatistics = new LearningStatisticsDTO()
+                            .setVerb(session.getVerb())
+                            .setUser(wrapper.giveMeUserDTO());
+                }
             }
 
-            if (!session.isAllAnswersReceived()) {
+            if (!session.isThreeAnswersReceived()) {
                 wrapper.setExecutable(false);
             } else {
                 if (session.isCorrectResult()) {
                     learningStatistics.wins();
 
-                    textToSend = "✅ "   // эмодзи
+                    textToSend = "✅ " // эмодзи
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + congrats[random.nextInt(congrats.length)] + "\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
@@ -74,10 +76,10 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                     textToSend = "❌ "
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + "К сожалению, ответ неверный.\n\n"
-                            + "✖️ "  // эмодзи
+                            + "✖️ " // эмодзи
                             + "Твой ответ:\n\n"
                             + "<b>" + session.getAnswers()[0] + " / " + session.getAnswers()[1] + " / " + session.getAnswers()[2] + "</b>\n\n"
-                            + "✔️ "    // эмодзи
+                            + "✔️ " // эмодзи
                             + "Правильный ответ:\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
@@ -85,6 +87,8 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                 }
 
                 learningStatisticsService.save(learningStatistics);
+                
+                sessionKeeper.put(session);
             }
         }
 
@@ -93,7 +97,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                 .setChatId(wrapper.getMessage().getChatId())
                 .setText(textToSend)
                 .row()
-                .button("Учить следующее слово", "/learn")
+                .button("Учить следующий глагол", "/learn")
                 .endRow()
                 .row()
                 .button("<< главное меню", "/start")

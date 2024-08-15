@@ -10,10 +10,12 @@ public class TestButtons {
         this.buttons = buttons;
     }
 
+    // нужно обработать некорректный индекс
     public String getButtonText(int index) {
         return buttons.get(index)[0];
     }
     
+    // нужно обработать некорректный индекс
     public String getCallbackData(int index) {
         return buttons.get(index)[1];
     }

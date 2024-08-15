@@ -7,13 +7,31 @@ import lombok.Data;
 public class LearnSession {
 
     private final long userId;
-    private final VerbDTO verb;
-    private final long createdAt;
+    private final VerbDTO[] verbs;
+    private final int cycles;
+    private final long createdAt = System.currentTimeMillis();
+
+    // нужна переменная, которая будет указывать на текущий глагол до завершения теста
+    // по завершению теста нереключить глагол
+    private int pos = 0;
+
+    // нужен метод getVerb(), который выдаёт глагол исходя из переменной выше
+    public VerbDTO getVerb() {
+        VerbDTO verb = verbs[pos];
+        return verb;
+    }
+
+    public VerbDTO getNextVerb() {
+        pos++;
+        answersReceived = 0;
+        isThreeAnswersReceived = false;
+        return getVerb();
+    }
 
     private int answersReceived = 0;
     private String[] answers = new String[3];
 
-    private boolean isAllAnswersReceived;
+    private boolean isThreeAnswersReceived;
 
     public void saveAnswer(String answer) {
         if (answersReceived < 3) {
@@ -24,13 +42,13 @@ public class LearnSession {
                     .replace("/learn_test_fail_", "");
         }
         if (answersReceived == 3) {
-            isAllAnswersReceived = true;
+            isThreeAnswersReceived = true;
         }
     }
 
     public boolean isCorrectResult() {
-        return answers[0].equals(verb.getInfinitive())
-                && answers[1].equals(verb.getPast())
-                && answers[2].equals(verb.getPastParticiple());
+        return answers[0].equals(getVerb().getInfinitive())
+                && answers[1].equals(getVerb().getPast())
+                && answers[2].equals(getVerb().getPastParticiple());
     }
 }

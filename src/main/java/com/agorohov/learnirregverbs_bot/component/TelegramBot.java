@@ -73,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                     + ")");
             
             // Надо ли нулить? Чтобы быстрее GC отработал
-            wrapper = null;
+//            wrapper = null;
         }
     }
 
