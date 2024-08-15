@@ -75,10 +75,10 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + "К сожалению, ответ неверный.\n\n"
                             + "✖️ "  // эмодзи
-                            + "Твой ответ:\n"
+                            + "Твой ответ:\n\n"
                             + "<b>" + session.getAnswers()[0] + " / " + session.getAnswers()[1] + " / " + session.getAnswers()[2] + "</b>\n\n"
                             + "✔️ "    // эмодзи
-                            + "Правильный ответ:\n"
+                            + "Правильный ответ:\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "Результат записан. Продолжим?";
