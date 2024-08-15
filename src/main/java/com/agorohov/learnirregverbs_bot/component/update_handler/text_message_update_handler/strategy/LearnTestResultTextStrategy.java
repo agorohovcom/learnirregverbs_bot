@@ -20,14 +20,14 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
     private final Random random;
 
     private String[] congrats = new String[]{
-        "Верно!",
+        "👍 Верно!", // тут эмодзи
         "Правильно!",
         "Это правильный ответ!",
         "Молодец!",
-        "Супер!",
+        "🥳 Супер!", // тут эмодзи
         "Так держать!",
         "Ты не перестаешь удивлять!",
-        "Да!"
+        "🎉 Да!" // тут эмодзи
     };
 
     @Override
@@ -67,7 +67,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + congrats[random.nextInt(congrats.length)] + "\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
-                            + "Результат записан. Продолжим?";
+                            + "Результат сохранён. Продолжим?";
                 } else {
                     learningStatistics.loses();
 

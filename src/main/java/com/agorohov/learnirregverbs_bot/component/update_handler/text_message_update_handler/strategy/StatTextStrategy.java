@@ -63,9 +63,6 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
                     .button("Обнулить статистику", "/stat_reset")
                     .endRow()
                     .row()
-                    .button("Учить неправильные глаголы", "/learn")
-                    .endRow()
-                    .row()
                     .button("<< главное меню", "/start")
                     .endRow();
         } else {

@@ -74,9 +74,6 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
                     .button(testButtons.getButtonText(11), testButtons.getCallbackData(11))
                     .endRow()
                     .row()
-                    .button("< учить другое слово", "/learn")
-                    .endRow()
-                    .row()
                     .button("<< главное меню", "/start")
                     .endRow();
         }

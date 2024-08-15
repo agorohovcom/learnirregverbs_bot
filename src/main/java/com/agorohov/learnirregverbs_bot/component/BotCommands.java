@@ -8,9 +8,8 @@ public interface BotCommands {
             new BotCommand("/start", "главное меню"),
             new BotCommand("/learn", "учить неправильные глаголы"),
             new BotCommand("/stat", "твоя статистика"),
-            new BotCommand("/about", "о боте"),
+            new BotCommand("/about", "информация о боте"),
             new BotCommand("/help", "помощь"),
-            new BotCommand("/feedback", "оставить обратную связь"),
             new BotCommand("/admin", "это для админа :)")
     );
 }
