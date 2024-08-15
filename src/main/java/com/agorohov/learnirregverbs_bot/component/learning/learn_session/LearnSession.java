@@ -1,7 +1,6 @@
 package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
-import java.util.Arrays;
 import lombok.Data;
 
 @Data
@@ -30,9 +29,6 @@ public class LearnSession {
     }
 
     public boolean isCorrectResult() {
-//        return answers[0].endsWith(verb.getInfinitive())
-//                && answers[1].endsWith(verb.getPast())
-//                && answers[2].endsWith(verb.getPastParticiple());
         return answers[0].equals(verb.getInfinitive())
                 && answers[1].equals(verb.getPast())
                 && answers[2].equals(verb.getPastParticiple());

@@ -16,7 +16,6 @@ public class TextProcessingStrategyFactory {
     private final StatResetTextStrategy statResetTextStrategy;
     private final AboutTextStrategy aboutTextStrategy;
     private final HelpTextStrategy helpTextStrategy;
-    private final FeedbackTextStrategy feedbackTextStrategy;
     private final AdminTextStrategy adminTextStrategy;
     private final DefaultTextUpdateStrategy defaultTextUpdateStrategy;
 
@@ -28,7 +27,6 @@ public class TextProcessingStrategyFactory {
             case "/stat_reset" -> statResetTextStrategy;
             case "/about" -> aboutTextStrategy;
             case "/help" -> helpTextStrategy;
-            case "/feedback" -> feedbackTextStrategy;
             case "/admin" -> wrapper.isAdmin()
                 ? adminTextStrategy
                 : defaultTextUpdateStrategy;

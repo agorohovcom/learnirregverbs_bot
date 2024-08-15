@@ -37,7 +37,9 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
         boolean isSessionExist = sessionKeeper.isExist(wrapper.getMessage().getChatId());
 
         if (!isSessionExist) {
-            textToSend = "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
+            textToSend = "🎓 "    // эмодзи
+                    + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
+                    + "⌛️ "   // эмодзи
                     + "Время вышло, выбери другое слово.";
         } else {
             LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());

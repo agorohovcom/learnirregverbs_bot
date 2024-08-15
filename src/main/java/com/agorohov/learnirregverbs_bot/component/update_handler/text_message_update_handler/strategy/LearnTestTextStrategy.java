@@ -26,8 +26,9 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
         boolean isSessionExist = sessionKeeper.isExist(wrapper.getMessage().getChatId());
 
         if (!isSessionExist) {
-            textToSend = "⌛️ "   // эмодзи
+            textToSend = "🎓 "   // эмодзи
                     + "𝕋𝕖𝕤𝕥\n\n"
+                    + "⌛️ "   // эмодзи
                     + "Время вышло, выбери другое слово.";
 
             sendMessage

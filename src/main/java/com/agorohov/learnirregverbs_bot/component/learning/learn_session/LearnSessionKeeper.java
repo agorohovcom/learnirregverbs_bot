@@ -1,14 +1,17 @@
 package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class LearnSessionKeeper {
-    private final Map<Long, LearnSession> learnSessions = new HashMap<>();
+    private Map<Long, LearnSession> learnSessions = new ConcurrentHashMap<>();
     
     public void put(LearnSession session) {
         learnSessions.put(session.getUserId(), session);
@@ -26,9 +29,23 @@ public class LearnSessionKeeper {
         return learnSessions.containsKey(userId);
     }
     
+    // удаляет сессии, которым 2 часа и больше
     @Async
     @Scheduled(cron = "${cron.cleanOldLearnSessions}", zone = "Europe/Moscow")
     private void cleanOldLearnSessions() {
-        // Тут код для запуска удаления слишком старых сессий
+        long now = System.currentTimeMillis();
+        long sizeBefore = learnSessions.size();
+        
+        learnSessions = learnSessions
+                .entrySet()
+                .stream()
+                .filter(e -> ((now - e.getValue().getCreatedAt()) < 7200000))
+//                .filter(e -> ((now - e.getValue().getCreatedAt()) < 10000))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                
+        log.info(sizeBefore - learnSessions.size()
+                + " old learn sessions cleared, "
+                + learnSessions.size()
+                + " sessions left.");
     }
 }
