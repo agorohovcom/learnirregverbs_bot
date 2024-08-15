@@ -80,7 +80,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
                     .endRow();
         }
 
-        log.info("The user (id = " + wrapper.getMessage().getChatId() + ") requested his statistics");
+        log.info("User (id = " + wrapper.getMessage().getChatId() + ") requested his statistics");
         return sendMessage;
     }
 }

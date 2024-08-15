@@ -70,7 +70,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                     + wrapper.getType()
                     + ", strategy = "
                     + wrapper.getStrategy()
-                    + ").");
+                    + ")");
             
             // Надо ли нулить? Чтобы быстрее GC отработал
             wrapper = null;
