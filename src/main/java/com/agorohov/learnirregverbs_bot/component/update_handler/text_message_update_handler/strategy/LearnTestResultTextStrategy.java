@@ -34,20 +34,17 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         String textToSend = "";
 
-        // если в LearnSessionKeeper нет сессии текущего пользователя
-        if (!sessionKeeper.isExist(wrapper.getMessage().getChatId())) {
+        if (!sessionKeeper.isExists(wrapper.getMessage().getChatId())) {
             textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                     + "⌛️ " // эмодзи
-                    + "Время вышло, получи другой глагол.";
+                    + "Сессия окончена, получи другой глагол.";
         } else {
-            LearnSession session = sessionKeeper.getOrCreateAndPutAndGet(wrapper.getMessage().getChatId());
+            LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
             session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
-            // а надо ли тут пут делать?
-//            sessionKeeper.put(session);
-
+            
+            // получаем LearningStatisticsDTO
             LearningStatisticsDTO learningStatistics = null;
-
             synchronized (this) {
                 if (learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId())) {
                     learningStatistics = learningStatisticsService.getByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId());
@@ -57,11 +54,13 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             .setUser(wrapper.giveMeUserDTO());
                 }
             }
-
+            
+            // если 3 ответа ещё не выбрано, не выполнять execute()
             if (!session.isThreeAnswersReceived()) {
                 wrapper.setExecutable(false);
             } else {
                 if (session.isCorrectResult()) {
+                    
                     learningStatistics.wins();
 
                     textToSend = "✅ " // эмодзи
@@ -86,9 +85,8 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "Результат записан. Продолжим?";
                 }
 
+                // сделать saveWin() и saveLose()
                 learningStatisticsService.save(learningStatistics);
-                
-                sessionKeeper.put(session);
             }
         }
 

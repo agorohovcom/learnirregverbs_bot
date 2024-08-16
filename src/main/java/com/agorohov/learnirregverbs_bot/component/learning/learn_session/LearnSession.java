@@ -11,27 +11,48 @@ public class LearnSession {
     private final int cycles;
     private final long createdAt = System.currentTimeMillis();
 
-    // нужна переменная, которая будет указывать на текущий глагол до завершения теста
-    // по завершению теста нереключить глагол
-    private int pos = 0;
+    private Integer step;
+    
+    private String[] answers = new String[3];
+    private int answersReceived = 0;
+    private boolean isThreeAnswersReceived;
+    
+    public boolean hasNextVerb() {
+        if (step == null) {
+            step = 0;
+        }
+        return step + 1 < verbs.length * cycles;
+    }
+    
+    public boolean hasVerb(){
+        if (step == null) {
+            step = 0;
+        }
+        return step < verbs.length * cycles;
+    }
 
-    // нужен метод getVerb(), который выдаёт глагол исходя из переменной выше
+    private int getVerbIndex() {
+        return step % verbs.length;
+    }
+
+    // выдаёт текущий глагол
     public VerbDTO getVerb() {
-        VerbDTO verb = verbs[pos];
-        return verb;
+        if (step == null) {
+            step = 0;
+        }
+        return verbs[getVerbIndex()];
     }
 
     public VerbDTO getNextVerb() {
-        pos++;
+        if (step == null) {
+            step = 0;
+        } else {
+            step++;
+        }
         answersReceived = 0;
         isThreeAnswersReceived = false;
         return getVerb();
     }
-
-    private int answersReceived = 0;
-    private String[] answers = new String[3];
-
-    private boolean isThreeAnswersReceived;
 
     public void saveAnswer(String answer) {
         if (answersReceived < 3) {

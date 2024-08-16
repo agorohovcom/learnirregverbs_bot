@@ -22,12 +22,11 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
                 .create()
                 .setChatId(wrapper.getMessage().getChatId());
 
-        // если в LearnSessionKeeper нет сессии текущего пользователя
-        if (!sessionKeeper.isExist(wrapper.getMessage().getChatId())) {
-            textToSend = "🎓 "   // эмодзи
+        if (!sessionKeeper.isExists(wrapper.getMessage().getChatId())) {
+            textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥\n\n"
-                    + "⌛️ "   // эмодзи
-                    + "Время вышло, получи следующий глагол.";
+                    + "⌛️ " // эмодзи
+                    + "Сессия окончена, получи другой глагол.";
 
             sendMessage
                     .setText(textToSend)
@@ -38,15 +37,14 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
                     .button("<< главное меню", "/start")
                     .endRow();
         } else {
-            // достаём (или создаём и достаём) сессию, создаем кнопки теста
-            LearnSession session = sessionKeeper.getOrCreateAndPutAndGet(wrapper.getMessage().getChatId());
+            LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
             TestButtons testButtons = buttonsBuilder.create(session.getVerb());
 
-            textToSend = "🎓 "   // эмодзи
+            textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥\n\n"
                     + "Пройдём тест!\n\n"
                     + "Выбери три формы глагола в правильном порядке:\n\n"
-                    + "📌 "  // эмодзи
+                    + "📌 " // эмодзи
                     + "<b>" + session.getVerb().getTranslation() + "</b>";
 
             sendMessage
