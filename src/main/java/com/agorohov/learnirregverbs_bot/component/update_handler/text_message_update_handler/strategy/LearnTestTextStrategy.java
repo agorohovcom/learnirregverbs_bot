@@ -26,7 +26,7 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
             textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥\n\n"
                     + "⌛️ " // эмодзи
-                    + "Сессия окончена, получи другой глагол.";
+                    + "Сессия окончена, давай по новой.";
 
             sendMessage
                     .setText(textToSend)

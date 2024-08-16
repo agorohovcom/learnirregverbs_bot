@@ -33,7 +33,9 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
                 + "<b>" + verb + "</b>\n"
                 + "📌️ " // эмодзи
                 + "(" + verb.getTranslation() + ")\n\n"
-                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                + "🏆  " // эмодзи
+                + session.getStars(session.getLearningStatistics().getRank()) + "\n\n"
                 + "Если готов, жми \"Пройти тест\"";
 
         return MessageBuilder

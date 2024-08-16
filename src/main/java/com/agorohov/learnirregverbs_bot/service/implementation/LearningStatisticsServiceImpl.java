@@ -88,7 +88,7 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
                 .collect(Collectors.toUnmodifiableList());
     }
     
-    @Transactional
+    @Transactional  // ???
     @Override
     public void deleteAllByUserChatId(Long userChatId) {
         learningStatisticsRepository.deleteByUserChatId(userChatId);

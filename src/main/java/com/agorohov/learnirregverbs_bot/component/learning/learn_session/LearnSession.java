@@ -1,5 +1,6 @@
 package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
+import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ public class LearnSession {
 
     private final long userId;
     private final VerbDTO[] verbs;
+    private final LearningStatisticsDTO[] statistics;
     private final int cycles;
     private final long createdAt = System.currentTimeMillis();
 
@@ -31,7 +33,7 @@ public class LearnSession {
         return step < verbs.length * cycles;
     }
 
-    private int getVerbIndex() {
+    private int getIndex() {
         return step % verbs.length;
     }
 
@@ -40,17 +42,24 @@ public class LearnSession {
         if (step == null) {
             step = 0;
         }
-        return verbs[getVerbIndex()];
+        return verbs[getIndex()];
+    }
+    
+    public LearningStatisticsDTO getLearningStatistics() {
+        if (step == null) {
+            step = 0;
+        }
+        return statistics[getIndex()];
     }
     
     public String getStars(Short stars) {
-        String zero = "☆☆☆☆☆☆";
-        String one = "★☆☆☆☆☆";
-        String two = "★★☆☆☆☆";
-        String three = "★★★☆☆☆";
-        String four = "★★★★☆☆";
-        String five = "★★★★★☆";
-        String six = "★★★★★★";
+        String zero     = "☆☆☆☆☆☆";
+        String one      = "★☆☆☆☆☆";
+        String two      = "★★☆☆☆☆";
+        String three    = "★★★☆☆☆";
+        String four     = "★★★★☆☆";
+        String five     = "★★★★★☆";
+        String six      = "★★★★★★";
         return switch(stars){
             case 0 -> zero;
             case 1 -> one;

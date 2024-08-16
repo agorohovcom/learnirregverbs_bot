@@ -38,22 +38,13 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
             textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                     + "⌛️ " // эмодзи
-                    + "Сессия окончена, получи другой глагол.";
+                    + "Текущая сессия окончена, друг.";
         } else {
             LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
             session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
 
             // получаем LearningStatisticsDTO
-            LearningStatisticsDTO learningStatistics = null;
-            synchronized (this) {
-                if (learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId())) {
-                    learningStatistics = learningStatisticsService.getByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId());
-                } else {
-                    learningStatistics = new LearningStatisticsDTO()
-                            .setVerb(session.getVerb())
-                            .setUser(wrapper.giveMeUserDTO());
-                }
-            }
+            LearningStatisticsDTO learningStatistics = session.getLearningStatistics();
 
             // если 3 ответа ещё не выбрано, не выполнять execute()
             if (!session.isThreeAnswersReceived()) {

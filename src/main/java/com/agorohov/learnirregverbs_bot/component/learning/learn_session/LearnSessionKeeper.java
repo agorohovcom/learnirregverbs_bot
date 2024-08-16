@@ -1,6 +1,9 @@
 package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
+import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
+import com.agorohov.learnirregverbs_bot.dto.UserDTO;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
+import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +20,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class LearnSessionKeeper {
 
-    private final VerbService service;
+    private final VerbService verbService;
+    private final LearningStatisticsService learningStatisticsService;
 
     // может сделать из проперти доставать?
     private static final Integer VERBS_IN_SESSION = 5;
@@ -48,12 +52,25 @@ public class LearnSessionKeeper {
         // пока просто рандом
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!   надо поменять на !!!!!!!!!!!!!!!!!!!!!
         // ЧУДО-ЮДО АЛГОРИТМ по рангам
-        verbs = Stream.generate(() -> service.getRandomVerbDTO())
+        verbs = Stream.generate(() -> verbService.getRandomVerbDTO())
                 .distinct()
                 .limit(verbs.length)
                 .toArray(VerbDTO[]::new);
 
-        LearnSession result = new LearnSession(userId, verbs, CYCLES_IN_SESSION);
+        LearningStatisticsDTO[] dtos = new LearningStatisticsDTO[VERBS_IN_SESSION];
+        for (int i = 0; i < VERBS_IN_SESSION; i++) {
+            dtos[i] = learningStatisticsService.existByUserChatIdAndVerbId(userId, verbs[i].getId())
+                    ? learningStatisticsService.getByUserChatIdAndVerbId(userId, verbs[i].getId())
+                    : new LearningStatisticsDTO()
+                            .setUser(new UserDTO()
+                                    .setChatId(userId))
+                            .setVerb(verbs[i])
+                            .setRank((short) 0)
+                            .setAttempts(0)
+                            .setCorrectSeries(0);
+        }
+
+        LearnSession result = new LearnSession(userId, verbs, dtos, CYCLES_IN_SESSION);
 
         log.info("User (id = " + userId + ")received a new batch of verbs");
 
