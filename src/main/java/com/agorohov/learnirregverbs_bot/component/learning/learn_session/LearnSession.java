@@ -42,6 +42,17 @@ public class LearnSession {
         }
         return verbs[getVerbIndex()];
     }
+    
+    public String getStars() {
+        String zero = "☆☆☆☆☆☆";
+        String one = "★☆☆☆☆☆";
+        String two = "★★☆☆☆☆";
+        String three = "★★★☆☆☆";
+        String four = "★★★★☆☆";
+        String five = "★★★★★☆";
+        String six = "★★★★★★";
+        return null;
+    }
 
     public VerbDTO getNextVerb() {
         if (step == null) {

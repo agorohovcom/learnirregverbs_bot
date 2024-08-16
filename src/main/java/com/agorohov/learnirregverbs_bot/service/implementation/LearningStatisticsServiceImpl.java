@@ -28,6 +28,47 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
                 + learningStatistics.getVerb().getId()
                 + ") saved to the DB");
     }
+    
+    @Override
+    public void saveWin(LearningStatisticsDTO learningStatistics) {
+        if (learningStatistics.getAttempts() == null) {
+            learningStatistics.setAttempts(0);
+        }
+        if (learningStatistics.getCorrectSeries() == null) {
+            learningStatistics.setCorrectSeries(0);
+        }
+        learningStatistics.setAttempts(learningStatistics.getAttempts() + 1);
+        learningStatistics.setCorrectSeries(learningStatistics.getCorrectSeries() + 1);
+        if (learningStatistics.getRank() == null) {
+            learningStatistics.setRank((short) 0);
+        }
+        if (learningStatistics.getCorrectSeries() >= 10) {
+            learningStatistics.setRank((short) 6);
+        }
+        if (learningStatistics.getRank() < 5) {
+            learningStatistics.setRank((short) (learningStatistics.getRank() + 1));
+        }
+        save(learningStatistics);
+    }
+    
+    @Override
+    public void saveLose(LearningStatisticsDTO learningStatistics) {
+        if (learningStatistics.getAttempts() == null) {
+            learningStatistics.setAttempts(0);
+        }
+        learningStatistics.setAttempts(learningStatistics.getAttempts() + 1);
+        learningStatistics.setCorrectSeries(0);
+        if (learningStatistics.getRank() == null) {
+            learningStatistics.setRank((short) 0);
+        }
+        if (learningStatistics.getCorrectSeries() >= 10) {
+            learningStatistics.setRank((short) 6);
+        }
+        if (learningStatistics.getRank() > 0) {
+            learningStatistics.setRank((short) (learningStatistics.getRank() - 1));
+        }
+        save(learningStatistics);
+    }
 
     @Override
     public boolean existByUserChatIdAndVerbId(Long userChatId, Integer verbId) {
@@ -49,7 +90,7 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
     
     @Transactional
     @Override
-    public void deleteByUserChatId(Long userChatId) {
+    public void deleteAllByUserChatId(Long userChatId) {
         learningStatisticsRepository.deleteByUserChatId(userChatId);
         log.info("The user (id = " + userChatId + ") has reset their statistics");
     }

@@ -42,7 +42,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
         } else {
             LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
             session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
-            
+
             // получаем LearningStatisticsDTO
             LearningStatisticsDTO learningStatistics = null;
             synchronized (this) {
@@ -54,14 +54,15 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             .setUser(wrapper.giveMeUserDTO());
                 }
             }
-            
+
             // если 3 ответа ещё не выбрано, не выполнять execute()
             if (!session.isThreeAnswersReceived()) {
                 wrapper.setExecutable(false);
             } else {
                 if (session.isCorrectResult()) {
-                    
-                    learningStatistics.wins();
+
+//                    learningStatistics.wins();
+                    learningStatisticsService.saveWin(learningStatistics);
 
                     textToSend = "✅ " // эмодзи
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
@@ -70,7 +71,8 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "Результат сохранён. Продолжим?";
                 } else {
-                    learningStatistics.loses();
+//                    learningStatistics.loses();
+                    learningStatisticsService.saveLose(learningStatistics);
 
                     textToSend = "❌ "
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
@@ -86,7 +88,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                 }
 
                 // сделать saveWin() и saveLose()
-                learningStatisticsService.save(learningStatistics);
+//                learningStatisticsService.save(learningStatistics);
             }
         }
 
