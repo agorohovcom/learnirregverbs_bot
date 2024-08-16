@@ -52,19 +52,14 @@ public class LearnSessionKeeper {
                 .distinct()
                 .limit(verbs.length)
                 .toArray(VerbDTO[]::new);
-        
+
         LearnSession result = new LearnSession(userId, verbs, CYCLES_IN_SESSION);
-        
+
         log.info("User (id = " + userId + ")received a new batch of verbs");
-        
+
         return put(result);
     }
 
-    // удаляет сессии, которым 2 часа и больше
-    // это было для одного слова, теперь надо не удалять, а pos++
-    // а удалять те, которые всё
-    // но можно и по времени добавить максимум. да, надо бы добавить
-    // ПРИДЕТСЯ ПЕРЕДЕЛЫВАТЬ
     @Async
     @Scheduled(cron = "${cron.cleanOldLearnSessions}", zone = "Europe/Moscow")
     private void cleanOldLearnSessions() {
@@ -75,7 +70,7 @@ public class LearnSessionKeeper {
                 .entrySet()
                 .stream()
                 .filter(e -> ((now - e.getValue().getCreatedAt()) < 7200000))
-                //                .filter(e -> ((now - e.getValue().getCreatedAt()) < 10000))   // 10 сек для теста
+                //                                .filter(e -> ((now - e.getValue().getCreatedAt()) < 10000))   // 10 сек для теста
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         log.info(sizeBefore - learnSessions.size()

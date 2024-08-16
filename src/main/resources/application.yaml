@@ -58,4 +58,4 @@ bot:
 cron:
   # секунды / минуты / часы / день / месяц / день недели
   cleanOldLearnSessions: '0 0 */2 * * *'
-  #cleanOldLearnSessions: '0/10 * * * * *'
+  #cleanOldLearnSessions: '0/15 * * * * *'

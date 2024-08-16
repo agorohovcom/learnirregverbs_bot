@@ -60,8 +60,6 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                 wrapper.setExecutable(false);
             } else {
                 if (session.isCorrectResult()) {
-
-//                    learningStatistics.wins();
                     learningStatisticsService.saveWin(learningStatistics);
 
                     textToSend = "✅ " // эмодзи
@@ -69,9 +67,10 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + congrats[random.nextInt(congrats.length)] + "\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
+                            + "🏆 "  // эмодзи
+                            + session.getStars(learningStatistics.getRank()) + "\n"
                             + "Результат сохранён. Продолжим?";
                 } else {
-//                    learningStatistics.loses();
                     learningStatisticsService.saveLose(learningStatistics);
 
                     textToSend = "❌ "
@@ -84,11 +83,10 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "Правильный ответ:\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
+                            + "🏆 "  // эмодзи
+                            + session.getStars(learningStatistics.getRank()) + "\n"
                             + "Результат записан. Продолжим?";
                 }
-
-                // сделать saveWin() и saveLose()
-//                learningStatisticsService.save(learningStatistics);
             }
         }
 

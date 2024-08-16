@@ -43,7 +43,7 @@ public class LearnSession {
         return verbs[getVerbIndex()];
     }
     
-    public String getStars() {
+    public String getStars(Short stars) {
         String zero = "☆☆☆☆☆☆";
         String one = "★☆☆☆☆☆";
         String two = "★★☆☆☆☆";
@@ -51,7 +51,15 @@ public class LearnSession {
         String four = "★★★★☆☆";
         String five = "★★★★★☆";
         String six = "★★★★★★";
-        return null;
+        return switch(stars){
+            case 0 -> zero;
+            case 1 -> one;
+            case 2 -> two;
+            case 3 -> three;
+            case 4 -> four;
+            case 5 -> five;
+            default -> six;
+        };
     }
 
     public VerbDTO getNextVerb() {
