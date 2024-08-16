@@ -24,8 +24,8 @@ public class LearnSessionKeeper {
     private final LearningStatisticsService learningStatisticsService;
 
     // может сделать из проперти доставать?
-    private static final Integer VERBS_IN_SESSION = 5;
-    private static final Integer CYCLES_IN_SESSION = 3;
+    private static final Integer VERBS_IN_SESSION = 3;
+    private static final Integer CYCLES_IN_SESSION = 2;
 
     private Map<Long, LearnSession> learnSessions = new ConcurrentHashMap<>();
 
@@ -57,9 +57,9 @@ public class LearnSessionKeeper {
                 .limit(verbs.length)
                 .toArray(VerbDTO[]::new);
 
-        LearningStatisticsDTO[] dtos = new LearningStatisticsDTO[VERBS_IN_SESSION];
+        LearningStatisticsDTO[] stats = new LearningStatisticsDTO[VERBS_IN_SESSION];
         for (int i = 0; i < VERBS_IN_SESSION; i++) {
-            dtos[i] = learningStatisticsService.existByUserChatIdAndVerbId(userId, verbs[i].getId())
+            stats[i] = learningStatisticsService.existByUserChatIdAndVerbId(userId, verbs[i].getId())
                     ? learningStatisticsService.getByUserChatIdAndVerbId(userId, verbs[i].getId())
                     : new LearningStatisticsDTO()
                             .setUser(new UserDTO()
@@ -70,9 +70,9 @@ public class LearnSessionKeeper {
                             .setCorrectSeries(0);
         }
 
-        LearnSession result = new LearnSession(userId, verbs, dtos, CYCLES_IN_SESSION);
+        LearnSession result = new LearnSession(userId, verbs, stats, CYCLES_IN_SESSION);
 
-        log.info("User (id = " + userId + ")received a new batch of verbs");
+        log.info("User (id = " + userId + ") received a new batch of verbs");
 
         return put(result);
     }
@@ -87,7 +87,7 @@ public class LearnSessionKeeper {
                 .entrySet()
                 .stream()
                 .filter(e -> ((now - e.getValue().getCreatedAt()) < 7200000))
-                //                                .filter(e -> ((now - e.getValue().getCreatedAt()) < 10000))   // 10 сек для теста
+                //                .filter(e -> ((now - e.getValue().getCreatedAt()) < 10000)) // 10 сек для теста
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         log.info(sizeBefore - learnSessions.size()

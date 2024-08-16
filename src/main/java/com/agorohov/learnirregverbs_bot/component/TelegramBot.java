@@ -100,7 +100,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     }
 
     private long getIdFromUpdate(Update update) {
-        update.getEditedMessage().getFrom().getId();
+//        update.getEditedMessage().getFrom().getId();
         return update.hasMessage()
                 ? update.getMessage().getFrom().getId()
                 : update.getCallbackQuery().getMessage().getFrom().getId();

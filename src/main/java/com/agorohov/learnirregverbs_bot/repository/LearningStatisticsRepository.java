@@ -18,7 +18,7 @@ public interface LearningStatisticsRepository extends JpaRepository<LearningStat
     @Query(value = "SELECT * FROM learning_statistics WHERE user_chat_id = :user_chat_id", nativeQuery = true)
     List<LearningStatisticsEntity> findAllStatisticsById(@Param("user_chat_id") Long userChatId);
 
-    @Query(value = "SELECT * FROM learning_statistics WHERE user_chat_id = :user_chat_id AND verb_id = :verb_id", nativeQuery = true)
+    @Query(value = "SELECT ls FROM learning_statistics WHERE user_chat_id = :user_chat_id AND verb_id = :verb_id", nativeQuery = true)
     LearningStatisticsEntity findByUserChatIdAndVerbId(@Param("user_chat_id") Long userChatId, @Param("verb_id") Integer verbId);
 
     @Query(value = "SELECT EXISTS (SELECT 1 FROM learning_statistics WHERE user_chat_id = :user_chat_id AND verb_id = :verb_id)", nativeQuery = true)
