@@ -5,6 +5,7 @@ import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSe
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
+import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
 
     private final LearnSessionKeeper sessionKeeper;
+    private final LearningStatisticsService statisticsService;
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
@@ -23,6 +25,9 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
                 : sessionKeeper.createAndPutAndGet(wrapper.getMessage().getChatId());
         
         VerbDTO verb = session.getNextVerb();
+        short starsAmount = statisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
+                ? statisticsService.findByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId()).getRank()
+                : 0;
         
         String textToSend = "🎓 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟\n\n"
@@ -35,7 +40,7 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
                 + "(" + verb.getTranslation() + ")\n\n"
                 + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
                 + "🏆  " // эмодзи
-                + session.getStars(session.getLearningStatistics().getRank()) + "\n\n"
+                + session.getStars(starsAmount) + "\n\n"
                 + "Если готов, жми \"Пройти тест\"";
 
         return MessageBuilder

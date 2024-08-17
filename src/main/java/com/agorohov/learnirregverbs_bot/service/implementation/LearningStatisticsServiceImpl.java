@@ -20,7 +20,7 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
     private final LearningStatisticsRepository learningStatisticsRepository;
     private final EntityDTOMapper mapper;
 
-    @Transactional      // ???
+//    @Transactional      // ???
     @Override
     public void save(LearningStatisticsDTO learningStatistics) {
         boolean isStatExists = existByUserChatIdAndVerbId(learningStatistics.getUser().getChatId(), learningStatistics.getVerb().getId());

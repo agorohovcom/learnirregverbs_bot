@@ -13,10 +13,7 @@ public class UnknownUpdateStrategy extends ProcessingStrategyAbstractImpl {
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         
-        // Это сообщение не будет отправлено
-        // Пока решил вопрос с этим типом Update так
-        // По хорошему надо убрать пустые действия
-        wrapper.setExecutable(false);
+//        wrapper.setExecutable(false);
 
         String textToSend = "🌀 " // эмодзи
                 + "𝕆𝕠𝕡𝕤\n\n"

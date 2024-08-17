@@ -2,31 +2,33 @@ package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
 import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Data
+
+@RequiredArgsConstructor
 public class LearnSession {
 
     private final long userId;
     private final VerbDTO[] verbs;
-    private final LearningStatisticsDTO[] statistics;
     private final int cycles;
     private final long createdAt = System.currentTimeMillis();
 
     private Integer step;
-    
+
     private String[] answers = new String[3];
     private int answersReceived = 0;
     private boolean isThreeAnswersReceived;
-    
+
+    private LearningStatisticsDTO statistics;
+
     public boolean hasNextVerb() {
         if (step == null) {
             step = 0;
         }
         return step + 1 < verbs.length * cycles;
     }
-    
-    public boolean hasVerb(){
+
+    public boolean hasVerb() {
         if (step == null) {
             step = 0;
         }
@@ -44,30 +46,34 @@ public class LearnSession {
         }
         return verbs[getIndex()];
     }
-    
-    public LearningStatisticsDTO getLearningStatistics() {
+
+    public LearningStatisticsDTO getLearningStatisticsOrNull() {
         if (step == null) {
             step = 0;
         }
-        return statistics[getIndex()];
+        if (statistics != null && statistics.getVerb().getId().equals(getVerb().getId())) {
+            return statistics;
+        }
+        statistics = null;
+        return null;
     }
-    
+
     public String getStars(Short stars) {
-        String zero     = "☆☆☆☆☆☆";
-        String one      = "★☆☆☆☆☆";
-        String two      = "★★☆☆☆☆";
-        String three    = "★★★☆☆☆";
-        String four     = "★★★★☆☆";
-        String five     = "★★★★★☆";
-        String six      = "★★★★★★";
-        return switch(stars){
-            case 0 -> zero;
-            case 1 -> one;
-            case 2 -> two;
-            case 3 -> three;
-            case 4 -> four;
-            case 5 -> five;
-            default -> six;
+        return switch (stars) {
+            case 0 ->
+                "☆☆☆☆☆☆";
+            case 1 ->
+                "★☆☆☆☆☆";
+            case 2 ->
+                "★★☆☆☆☆";
+            case 3 ->
+                "★★★☆☆☆";
+            case 4 ->
+                "★★★★☆☆";
+            case 5 ->
+                "★★★★★☆";
+            default ->
+                "★★★★★★";
         };
     }
 
@@ -80,6 +86,25 @@ public class LearnSession {
         answersReceived = 0;
         isThreeAnswersReceived = false;
         return getVerb();
+    }
+    
+    public long getCreatedAt() {
+        return createdAt;
+    }
+    
+    public long getUserId() {
+        return userId;
+    }
+    
+    public boolean isThreeAnswersReceived() {
+        return isThreeAnswersReceived;
+    }
+    
+    public String getAnswer(int index) {
+        if(index < 0 || index > 2) {
+            throw new IllegalArgumentException();
+        }
+        return answers[index];
     }
 
     public void saveAnswer(String answer) {

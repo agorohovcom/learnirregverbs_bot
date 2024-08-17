@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsById(id);
     }
 
-    @Transactional      // ???
+//    @Transactional
     @Override
     public void save(UserDTO dto) {
         boolean isUserExists = existsById(dto.getChatId());

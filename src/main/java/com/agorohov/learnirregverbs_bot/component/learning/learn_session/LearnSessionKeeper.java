@@ -1,7 +1,5 @@
 package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
-import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
-import com.agorohov.learnirregverbs_bot.dto.UserDTO;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
@@ -48,16 +46,18 @@ public class LearnSessionKeeper {
 
     public LearnSession createAndPutAndGet(Long userId) {
 
-        VerbDTO[] verbs = new VerbDTO[VERBS_IN_SESSION];
         // пока просто рандом
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!   надо поменять на !!!!!!!!!!!!!!!!!!!!!
         // ЧУДО-ЮДО АЛГОРИТМ по рангам
+        VerbDTO[] verbs = new VerbDTO[VERBS_IN_SESSION];
+
         verbs = Stream.generate(() -> verbService.getRandomVerbDTO())
                 .distinct()
                 .limit(verbs.length)
                 .toArray(VerbDTO[]::new);
 
-        LearningStatisticsDTO[] stats = new LearningStatisticsDTO[VERBS_IN_SESSION];
+        /*LearningStatisticsDTO[] stats = new LearningStatisticsDTO[VERBS_IN_SESSION];
+        
         for (int i = 0; i < VERBS_IN_SESSION; i++) {
             stats[i] = learningStatisticsService.existByUserChatIdAndVerbId(userId, verbs[i].getId())
                     ? learningStatisticsService.findByUserChatIdAndVerbId(userId, verbs[i].getId())
@@ -68,9 +68,8 @@ public class LearnSessionKeeper {
                             .setRank((short) 0)
                             .setAttempts(0)
                             .setCorrectSeries(0);
-        }
-
-        LearnSession result = new LearnSession(userId, verbs, stats, CYCLES_IN_SESSION);
+        }*/
+        LearnSession result = new LearnSession(userId, verbs, /*stats, */ CYCLES_IN_SESSION);
 
         log.info("User (id = " + userId + ") received a new batch of verbs");
 

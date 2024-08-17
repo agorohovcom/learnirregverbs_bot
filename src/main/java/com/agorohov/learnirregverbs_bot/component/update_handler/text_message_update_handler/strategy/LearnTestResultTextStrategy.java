@@ -5,6 +5,7 @@ import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSe
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
+import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import java.util.Random;
@@ -43,8 +44,19 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
             LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
             session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
 
-            // получаем LearningStatisticsDTO
-            LearningStatisticsDTO learningStatistics = session.getLearningStatistics();
+            VerbDTO verb = session.getVerb();
+
+            // получаем LearningStatisticsDTO из session, БД или создаём новый
+            LearningStatisticsDTO learningStatistics = null;
+            if (session.getLearningStatisticsOrNull() != null) {
+                learningStatistics = session.getLearningStatisticsOrNull();
+            } else {
+                learningStatistics = learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
+                        ? learningStatisticsService.findByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
+                        : new LearningStatisticsDTO()
+                                .setVerb(verb)
+                                .setUser(wrapper.giveMeUserDTO());
+            }
 
             // если 3 ответа ещё не выбрано, не выполнять execute()
             if (!session.isThreeAnswersReceived()) {
@@ -56,9 +68,9 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                     textToSend = "✅ " // эмодзи
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + congrats[random.nextInt(congrats.length)] + "\n\n"
-//                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
-                            + "<b>" + session.getVerb() + "</b>\n"
-                            + "(" + session.getVerb().getTranslation() + ")\n\n"
+                            //                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                            + "<b>" + verb + "</b>\n"
+                            + "(" + verb.getTranslation() + ")\n\n"
                             + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
                             + "🏆 " // эмодзи
                             + session.getStars(learningStatistics.getRank()) + "\n\n"
@@ -71,12 +83,12 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "К сожалению, ответ неверный.\n\n"
                             + "✖️ " // эмодзи
                             + "Твой ответ:\n\n"
-                            + "<b>" + session.getAnswers()[0] + " / " + session.getAnswers()[1] + " / " + session.getAnswers()[2] + "</b>\n\n"
+                            + "<b>" + session.getAnswer(0) + " / " + session.getAnswer(1) + " / " + session.getAnswer(2) + "</b>\n\n"
                             + "✔️ " // эмодзи
                             + "Правильный ответ:\n\n"
-//                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
-                            + "<b>" + session.getVerb() + "</b>\n"
-                            + "(" + session.getVerb().getTranslation() + ")\n\n"
+                            //                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                            + "<b>" + verb + "</b>\n"
+                            + "(" + verb.getTranslation() + ")\n\n"
                             + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
                             + "🏆 " // эмодзи
                             + session.getStars(learningStatistics.getRank()) + "\n\n"
