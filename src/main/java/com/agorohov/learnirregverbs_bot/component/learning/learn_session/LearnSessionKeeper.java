@@ -24,7 +24,7 @@ public class LearnSessionKeeper {
     private final LearningStatisticsService learningStatisticsService;
 
     // может сделать из проперти доставать?
-    private static final Integer VERBS_IN_SESSION = 3;
+    private static final Integer VERBS_IN_SESSION = 5;
     private static final Integer CYCLES_IN_SESSION = 2;
 
     private Map<Long, LearnSession> learnSessions = new ConcurrentHashMap<>();
@@ -60,7 +60,7 @@ public class LearnSessionKeeper {
         LearningStatisticsDTO[] stats = new LearningStatisticsDTO[VERBS_IN_SESSION];
         for (int i = 0; i < VERBS_IN_SESSION; i++) {
             stats[i] = learningStatisticsService.existByUserChatIdAndVerbId(userId, verbs[i].getId())
-                    ? learningStatisticsService.getByUserChatIdAndVerbId(userId, verbs[i].getId())
+                    ? learningStatisticsService.findByUserChatIdAndVerbId(userId, verbs[i].getId())
                     : new LearningStatisticsDTO()
                             .setUser(new UserDTO()
                                     .setChatId(userId))
@@ -87,7 +87,7 @@ public class LearnSessionKeeper {
                 .entrySet()
                 .stream()
                 .filter(e -> ((now - e.getValue().getCreatedAt()) < 7200000))
-                //                .filter(e -> ((now - e.getValue().getCreatedAt()) < 10000)) // 10 сек для теста
+                //                                .filter(e -> ((now - e.getValue().getCreatedAt()) < 5000)) // 5 сек для теста
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         log.info(sizeBefore - learnSessions.size()

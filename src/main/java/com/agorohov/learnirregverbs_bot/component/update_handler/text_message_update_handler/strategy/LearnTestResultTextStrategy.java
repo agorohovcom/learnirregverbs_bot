@@ -56,7 +56,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                     textToSend = "✅ " // эмодзи
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + congrats[random.nextInt(congrats.length)] + "\n\n"
-                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+//                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -74,7 +74,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "<b>" + session.getAnswers()[0] + " / " + session.getAnswers()[1] + " / " + session.getAnswers()[2] + "</b>\n\n"
                             + "✔️ " // эмодзи
                             + "Правильный ответ:\n\n"
-                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+//                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
                             + "<b>" + session.getVerb() + "</b>\n"
                             + "(" + session.getVerb().getTranslation() + ")\n\n"
                             + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"

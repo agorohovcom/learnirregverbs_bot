@@ -13,7 +13,7 @@ public interface LearningStatisticsService {
 
     boolean existByUserChatIdAndVerbId(Long userChatId, Integer verbId);
 
-    LearningStatisticsDTO getByUserChatIdAndVerbId(Long userChatId, Integer verbId);
+    LearningStatisticsDTO findByUserChatIdAndVerbId(Long userChatId, Integer verbId);
     
     List<LearningStatisticsDTO> getAllStatisticsById(Long userChatId);
     

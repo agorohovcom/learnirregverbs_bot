@@ -2,6 +2,7 @@ package com.agorohov.learnirregverbs_bot.service.implementation;
 
 import com.agorohov.learnirregverbs_bot.component.mapper.EntityDTOMapper;
 import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
+import com.agorohov.learnirregverbs_bot.entity.LearningStatisticsEntity;
 import com.agorohov.learnirregverbs_bot.repository.LearningStatisticsRepository;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import java.util.List;
@@ -19,16 +20,27 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
     private final LearningStatisticsRepository learningStatisticsRepository;
     private final EntityDTOMapper mapper;
 
+    @Transactional      // ???
     @Override
     public void save(LearningStatisticsDTO learningStatistics) {
-        learningStatisticsRepository.saveAndFlush(mapper.toEntity(learningStatistics));
+        boolean isStatExists = existByUserChatIdAndVerbId(learningStatistics.getUser().getChatId(), learningStatistics.getVerb().getId());
+
+        LearningStatisticsEntity entity = isStatExists
+                ? mapper.toEntity(findByUserChatIdAndVerbId(learningStatistics.getUser().getChatId(), learningStatistics.getVerb().getId())
+                        .setAttempts(learningStatistics.getAttempts()))
+                        .setCorrectSeries(learningStatistics.getCorrectSeries())
+                        .setRank(learningStatistics.getRank())
+                : mapper.toEntity(learningStatistics);
+
+        learningStatisticsRepository.saveAndFlush(entity);
+
         log.info("Test result for user (id = "
                 + learningStatistics.getUser().getChatId()
                 + ") and verb (id = "
                 + learningStatistics.getVerb().getId()
                 + ") saved to the DB");
     }
-    
+
     @Override
     public void saveWin(LearningStatisticsDTO learningStatistics) {
         if (learningStatistics.getAttempts() == null) {
@@ -50,7 +62,7 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
         }
         save(learningStatistics);
     }
-    
+
     @Override
     public void saveLose(LearningStatisticsDTO learningStatistics) {
         if (learningStatistics.getAttempts() == null) {
@@ -76,18 +88,18 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
     }
 
     @Override
-    public LearningStatisticsDTO getByUserChatIdAndVerbId(Long userChatId, Integer verbId) {
+    public LearningStatisticsDTO findByUserChatIdAndVerbId(Long userChatId, Integer verbId) {
         return mapper.toDTO(learningStatisticsRepository.findByUserChatIdAndVerbId(userChatId, verbId));
     }
-    
+
     @Override
     public List<LearningStatisticsDTO> getAllStatisticsById(Long userChatId) {
-        return learningStatisticsRepository.findAllStatisticsById(userChatId)
+        return learningStatisticsRepository.findAllStatisticsByUserChatId(userChatId)
                 .stream()
                 .map(e -> mapper.toDTO(e))
                 .collect(Collectors.toUnmodifiableList());
     }
-    
+
     @Transactional  // ???
     @Override
     public void deleteAllByUserChatId(Long userChatId) {
