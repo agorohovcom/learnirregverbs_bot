@@ -49,6 +49,7 @@ public class LearnSessionKeeper {
         // пока просто рандом
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!   надо поменять на !!!!!!!!!!!!!!!!!!!!!
         // ЧУДО-ЮДО АЛГОРИТМ по рангам
+        
         VerbDTO[] verbs = new VerbDTO[VERBS_IN_SESSION];
 
         verbs = Stream.generate(() -> verbService.getRandomVerbDTO())
@@ -56,19 +57,6 @@ public class LearnSessionKeeper {
                 .limit(verbs.length)
                 .toArray(VerbDTO[]::new);
 
-        /*LearningStatisticsDTO[] stats = new LearningStatisticsDTO[VERBS_IN_SESSION];
-        
-        for (int i = 0; i < VERBS_IN_SESSION; i++) {
-            stats[i] = learningStatisticsService.existByUserChatIdAndVerbId(userId, verbs[i].getId())
-                    ? learningStatisticsService.findByUserChatIdAndVerbId(userId, verbs[i].getId())
-                    : new LearningStatisticsDTO()
-                            .setUser(new UserDTO()
-                                    .setChatId(userId))
-                            .setVerb(verbs[i])
-                            .setRank((short) 0)
-                            .setAttempts(0)
-                            .setCorrectSeries(0);
-        }*/
         LearnSession result = new LearnSession(userId, verbs, /*stats, */ CYCLES_IN_SESSION);
 
         log.info("User (id = " + userId + ") received a new batch of verbs");
