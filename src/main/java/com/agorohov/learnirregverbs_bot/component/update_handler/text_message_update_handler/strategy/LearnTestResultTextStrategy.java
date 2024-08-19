@@ -5,6 +5,7 @@ import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSe
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
+import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import java.util.Random;
@@ -34,57 +35,65 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         String textToSend = "";
 
-        boolean isSessionExist = sessionKeeper.isExist(wrapper.getMessage().getChatId());
-
-        if (!isSessionExist) {
-            textToSend = "🎓 "    // эмодзи
+        if (!sessionKeeper.isExists(wrapper.getMessage().getChatId())) {
+            textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
-                    + "⌛️ "   // эмодзи
-                    + "Время вышло, выбери другое слово.";
+                    + "⌛️ " // эмодзи
+                    + "Текущая сессия окончена, друг.";
         } else {
             LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
             session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
-            sessionKeeper.put(session);
 
+            VerbDTO verb = session.getVerb();
+
+            // получаем LearningStatisticsDTO из session, БД или создаём новый
             LearningStatisticsDTO learningStatistics = null;
-
-            if (learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId())) {
-                learningStatistics = learningStatisticsService.getByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), session.getVerb().getId());
+            if (session.getLearningStatisticsOrNull() != null) {
+                learningStatistics = session.getLearningStatisticsOrNull();
             } else {
-                learningStatistics = new LearningStatisticsDTO()
-                        .setVerb(session.getVerb())
-                        .setUser(wrapper.giveMeUserDTO());
+                learningStatistics = learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
+                        ? learningStatisticsService.findByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
+                        : new LearningStatisticsDTO()
+                                .setVerb(verb)
+                                .setUser(wrapper.giveMeUserDTO());
             }
 
-            if (!session.isAllAnswersReceived()) {
+            // если 3 ответа ещё не выбрано, не выполнять execute()
+            if (!session.isThreeAnswersReceived()) {
                 wrapper.setExecutable(false);
             } else {
                 if (session.isCorrectResult()) {
-                    learningStatistics.wins();
+                    learningStatisticsService.saveWin(learningStatistics);
 
-                    textToSend = "✅ "   // эмодзи
+                    textToSend = "✅ " // эмодзи
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + congrats[random.nextInt(congrats.length)] + "\n\n"
-                            + "<b>" + session.getVerb() + "</b>\n"
-                            + "(" + session.getVerb().getTranslation() + ")\n\n"
+                            //                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                            + "<b>" + verb + "</b>\n"
+                            + "(" + verb.getTranslation() + ")\n\n"
+                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                            + "🏆 " // эмодзи
+                            + session.getStars(learningStatistics.getRank()) + "\n\n"
                             + "Результат сохранён. Продолжим?";
                 } else {
-                    learningStatistics.loses();
+                    learningStatisticsService.saveLose(learningStatistics);
 
                     textToSend = "❌ "
                             + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                             + "К сожалению, ответ неверный.\n\n"
-                            + "✖️ "  // эмодзи
+                            + "✖️ " // эмодзи
                             + "Твой ответ:\n\n"
-                            + "<b>" + session.getAnswers()[0] + " / " + session.getAnswers()[1] + " / " + session.getAnswers()[2] + "</b>\n\n"
-                            + "✔️ "    // эмодзи
+                            + "<b>" + session.getAnswer(0) + " / " + session.getAnswer(1) + " / " + session.getAnswer(2) + "</b>\n\n"
+                            + "✔️ " // эмодзи
                             + "Правильный ответ:\n\n"
-                            + "<b>" + session.getVerb() + "</b>\n"
-                            + "(" + session.getVerb().getTranslation() + ")\n\n"
+                            //                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                            + "<b>" + verb + "</b>\n"
+                            + "(" + verb.getTranslation() + ")\n\n"
+                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                            + "🏆 " // эмодзи
+                            + session.getStars(learningStatistics.getRank()) + "\n\n"
                             + "Результат записан. Продолжим?";
                 }
-
-                learningStatisticsService.save(learningStatistics);
             }
         }
 
@@ -93,7 +102,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                 .setChatId(wrapper.getMessage().getChatId())
                 .setText(textToSend)
                 .row()
-                .button("Учить следующее слово", "/learn")
+                .button("Учить следующий глагол", "/learn")
                 .endRow()
                 .row()
                 .button("<< главное меню", "/start")

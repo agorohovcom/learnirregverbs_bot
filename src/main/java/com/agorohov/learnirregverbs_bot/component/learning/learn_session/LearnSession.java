@@ -1,19 +1,111 @@
 package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
+import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Data
+
+@RequiredArgsConstructor
 public class LearnSession {
 
     private final long userId;
-    private final VerbDTO verb;
-    private final long createdAt;
+    private final VerbDTO[] verbs;
+    private final int cycles;
+    private final long createdAt = System.currentTimeMillis();
 
-    private int answersReceived = 0;
+    private Integer step;
+
     private String[] answers = new String[3];
+    private int answersReceived = 0;
+    private boolean isThreeAnswersReceived;
 
-    private boolean isAllAnswersReceived;
+    private LearningStatisticsDTO statistics;
+
+    public boolean hasNextVerb() {
+        if (step == null) {
+            step = 0;
+        }
+        return step + 1 < verbs.length * cycles;
+    }
+
+    public boolean hasVerb() {
+        if (step == null) {
+            step = 0;
+        }
+        return step < verbs.length * cycles;
+    }
+
+    private int getIndex() {
+        return step % verbs.length;
+    }
+
+    // выдаёт текущий глагол
+    public VerbDTO getVerb() {
+        if (step == null) {
+            step = 0;
+        }
+        return verbs[getIndex()];
+    }
+
+    public LearningStatisticsDTO getLearningStatisticsOrNull() {
+        if (step == null) {
+            step = 0;
+        }
+        if (statistics != null && statistics.getVerb().getId().equals(getVerb().getId())) {
+            return statistics;
+        }
+        statistics = null;
+        return null;
+    }
+
+    public String getStars(Short stars) {
+        return switch (stars) {
+            case 0 ->
+                "☆☆☆☆☆☆";
+            case 1 ->
+                "★☆☆☆☆☆";
+            case 2 ->
+                "★★☆☆☆☆";
+            case 3 ->
+                "★★★☆☆☆";
+            case 4 ->
+                "★★★★☆☆";
+            case 5 ->
+                "★★★★★☆";
+            default ->
+                "★★★★★★";
+        };
+    }
+
+    public VerbDTO getNextVerb() {
+        if (step == null) {
+            step = 0;
+        } else {
+            step++;
+        }
+        answersReceived = 0;
+        isThreeAnswersReceived = false;
+        return getVerb();
+    }
+    
+    public long getCreatedAt() {
+        return createdAt;
+    }
+    
+    public long getUserId() {
+        return userId;
+    }
+    
+    public boolean isThreeAnswersReceived() {
+        return isThreeAnswersReceived;
+    }
+    
+    public String getAnswer(int index) {
+        if(index < 0 || index > 2) {
+            throw new IllegalArgumentException();
+        }
+        return answers[index];
+    }
 
     public void saveAnswer(String answer) {
         if (answersReceived < 3) {
@@ -24,13 +116,13 @@ public class LearnSession {
                     .replace("/learn_test_fail_", "");
         }
         if (answersReceived == 3) {
-            isAllAnswersReceived = true;
+            isThreeAnswersReceived = true;
         }
     }
 
     public boolean isCorrectResult() {
-        return answers[0].equals(verb.getInfinitive())
-                && answers[1].equals(verb.getPast())
-                && answers[2].equals(verb.getPastParticiple());
+        return answers[0].equals(getVerb().getInfinitive())
+                && answers[1].equals(getVerb().getPast())
+                && answers[2].equals(getVerb().getPastParticiple());
     }
 }

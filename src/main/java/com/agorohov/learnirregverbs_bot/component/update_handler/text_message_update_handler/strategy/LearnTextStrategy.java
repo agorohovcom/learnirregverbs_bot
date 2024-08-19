@@ -5,8 +5,9 @@ import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSe
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
-import com.agorohov.learnirregverbs_bot.service.VerbService;
+import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,27 +16,31 @@ import org.springframework.stereotype.Component;
 public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
 
     private final LearnSessionKeeper sessionKeeper;
-    private final VerbService verbService;
+    private final LearningStatisticsService statisticsService;
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
-        VerbDTO verb = getNextVerb();
-
-        sessionKeeper.put(new LearnSession(
-                wrapper.getMessage().getChatId(),
-                verb,
-                wrapper.getUpdateWasReceivedAt()));
-
-        String textToSend = "🎓 "    // эмодзи
+        LearnSession session = sessionKeeper.isExists(wrapper.getMessage().getChatId()) && sessionKeeper.hasNextVerb(wrapper.getMessage().getChatId())
+                ? sessionKeeper.get(wrapper.getMessage().getChatId())
+                : sessionKeeper.createAndPutAndGet(wrapper.getMessage().getChatId());
+        
+        VerbDTO verb = session.getNextVerb();
+        short starsAmount = statisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
+                ? statisticsService.findByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId()).getRank()
+                : 0;
+        
+        String textToSend = "🎓 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟\n\n"
                 + wrapper.getMessage().getChat().getUserName()
                 + ", запомни три формы глагола:\n\n"
                 + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
-                + "📖 "  // эмодзи
+                + "📖 " // эмодзи
                 + "<b>" + verb + "</b>\n"
-                + "📌️ "  // эмодзи
+                + "📌️ " // эмодзи
                 + "(" + verb.getTranslation() + ")\n\n"
-                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                + "🏆  " // эмодзи
+                + session.getStars(starsAmount) + "\n\n"
                 + "Если готов, жми \"Пройти тест\"";
 
         return MessageBuilder
@@ -48,9 +53,5 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
                 .row()
                 .button("<< главное меню", "/start")
                 .endRow();
-    }
-
-    private VerbDTO getNextVerb() {
-        return verbService.getRandomVerbDTO();
     }
 }

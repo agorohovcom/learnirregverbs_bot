@@ -13,20 +13,37 @@ public class UpdateWrapper {
     private final long updateWasReceivedAt;
     private final boolean isFromBot;
     private final boolean isAdmin;
-    
+
     // для логгирования
     private String type;
     private String strategy;
-    
+
     // вызывать ли метод execute
     private boolean isExecutable = true;
 
     public Message getMessage() {
-        return update.hasMessage()
-                ? update.getMessage()
-                : update.getCallbackQuery().getMessage();
+//        return update.hasMessage()
+//                ? update.getMessage()
+//                : update.getCallbackQuery().getMessage();
+        Message result = null;
+        if (update.hasMessage()) {
+            result = update.getMessage();
+        }
+        if (update.hasCallbackQuery()) {
+            result = update.getCallbackQuery().getMessage();
+        }
+        if (update.hasEditedMessage()) {
+            result = update.getEditedMessage();
+        }
+        if (update.hasChannelPost()) {
+            result = update.getChannelPost();
+        }
+        if (update.hasEditedChannelPost()) {
+            result = update.getEditedChannelPost();
+        }
+        return result;
     }
-    
+
     public UserDTO giveMeUserDTO() {
         return new UserDTO()
                 .setChatId(getMessage().getChatId())

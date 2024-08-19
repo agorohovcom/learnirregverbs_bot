@@ -16,6 +16,8 @@ databaseChangeLog:
               - column:
                   name: infinitive
                   type: varchar(50)
+                  constraints:
+                    unique: true
               - column:
                   name: past
                   type: varchar(50)

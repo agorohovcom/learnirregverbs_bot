@@ -39,8 +39,6 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-//        System.out.println(getIdFromUpdate(update));
-//        System.out.println(getIdFromUpdate2(update));
 
         // Добавляю к Update дополнительные данные с помощью класса-обертки
         UpdateWrapper wrapper = new UpdateWrapper(
@@ -58,8 +56,12 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
             if (wrapper.isExecutable()) {
                 execute(updateProcessingResult);
             }
-        } catch (TelegramApiException ex) {
-            ex.printStackTrace();
+        } catch (TelegramApiException e) {
+            if (e.getMessage().contains("message is not modified")) {
+                log.warn("Message is not modified, user (id = " + wrapper.getMessage().getChatId() + ") presses the buttons too quickly");
+            } else {
+                log.error(e.getMessage());
+            }
         } finally {
             log.info("Update received ("
                     + "userId = "
@@ -71,9 +73,6 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
                     + ", strategy = "
                     + wrapper.getStrategy()
                     + ")");
-            
-            // Надо ли нулить? Чтобы быстрее GC отработал
-            wrapper = null;
         }
     }
 
@@ -100,14 +99,20 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     }
 
     private long getIdFromUpdate(Update update) {
-        return update.hasMessage()
-                ? update.getMessage().getFrom().getId()
-                : update.getCallbackQuery().getMessage().getFrom().getId();
-    }
-
-//    private long getIdFromUpdate2(Update update) {
+        // было так, ругалось когда я редактировал своё сообщение,
+        // потому что это другой тип апдейта
+        // пока оставлю так, дальше надо сделать красиво
 //        return update.hasMessage()
 //                ? update.getMessage().getFrom().getId()
-//                : update.getCallbackQuery().getMessage().getChatId();
-//    }
+//                : update.getCallbackQuery().getMessage().getFrom().getId();
+
+        long result = 0;
+        if (update.hasMessage()) {
+            result = update.getMessage().getFrom().getId();
+        }
+        if (update.hasCallbackQuery()) {
+            result = update.getCallbackQuery().getMessage().getFrom().getId();
+        }
+        return result;
+    }
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -32,6 +33,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsById(id);
     }
 
+//    @Transactional
     @Override
     public void save(UserDTO dto) {
         boolean isUserExists = existsById(dto.getChatId());
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
         try {
             userRepository.saveAndFlush(entity);
             if (!isUserExists) {
-                log.info("New user with id = " + entity.getChatId() + " addded to the DB");
+                log.info("New user with id = " + entity.getChatId() + " added to the DB");
             }
         } catch (DataAccessException e) {
             log.error(e.getMessage());

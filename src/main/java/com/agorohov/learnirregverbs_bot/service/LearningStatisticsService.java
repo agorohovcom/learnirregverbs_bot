@@ -6,12 +6,16 @@ import java.util.List;
 public interface LearningStatisticsService {
 
     void save(LearningStatisticsDTO learningStatistics);
+    
+    void saveWin(LearningStatisticsDTO learningStatistics);
+    
+    void saveLose(LearningStatisticsDTO learningStatistics);
 
     boolean existByUserChatIdAndVerbId(Long userChatId, Integer verbId);
 
-    LearningStatisticsDTO getByUserChatIdAndVerbId(Long userChatId, Integer verbId);
+    LearningStatisticsDTO findByUserChatIdAndVerbId(Long userChatId, Integer verbId);
     
     List<LearningStatisticsDTO> getAllStatisticsById(Long userChatId);
     
-    void deleteByUserChatId(Long userChatId);
+    void deleteAllByUserChatId(Long userChatId);
 }

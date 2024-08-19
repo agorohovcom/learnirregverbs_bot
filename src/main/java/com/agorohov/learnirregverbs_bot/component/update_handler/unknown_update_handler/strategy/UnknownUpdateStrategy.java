@@ -12,7 +12,10 @@ public class UnknownUpdateStrategy extends ProcessingStrategyAbstractImpl {
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
-        String textToSend = "🌀 "    // эмодзи
+        
+//        wrapper.setExecutable(false);
+
+        String textToSend = "🌀 " // эмодзи
                 + "𝕆𝕠𝕡𝕤\n\n"
                 + "Такой тип сообщений не поддерживается.\n"
                 + "Используй кнопки или меню бота.\n\n"

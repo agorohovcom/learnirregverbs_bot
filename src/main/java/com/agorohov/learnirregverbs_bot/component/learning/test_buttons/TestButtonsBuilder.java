@@ -17,6 +17,7 @@ public class TestButtonsBuilder {
     private final VerbService verbService;
     private final Random random;
 
+    // в проперти перенести!
     private static final int BUTTONS_AMOUNT = 12;
 
     public TestButtons create(VerbDTO verb) {

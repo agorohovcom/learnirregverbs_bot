@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EntityDTOMapper {
-    
+
     public UserDTO toDTO(UserEntity entity) {
         return new UserDTO()
                 .setChatId(entity.getChatId())
@@ -18,15 +18,17 @@ public class EntityDTOMapper {
                 .setFirstMessageAt(entity.getFirstMessageAt())
                 .setLastMessageAt(entity.getLastMessageAt());
     }
-    
+
     public UserEntity toEntity(UserDTO dto) {
         return new UserEntity()
                 .setChatId(dto.getChatId())
                 .setUserName(dto.getUserFirstName())
-                .setFirstMessageAt(dto.getFirstMessageAt())
+                .setFirstMessageAt(dto.getFirstMessageAt() == null
+                        ? dto.getLastMessageAt()
+                        : dto.getFirstMessageAt())
                 .setLastMessageAt(dto.getLastMessageAt());
     }
-    
+
     public VerbDTO toDTO(VerbEntity entity) {
         return new VerbDTO()
                 .setId(entity.getId())
@@ -35,7 +37,7 @@ public class EntityDTOMapper {
                 .setPastParticiple(entity.getPastParticiple())
                 .setTranslation(entity.getTranslation());
     }
-    
+
     public LearningStatisticsDTO toDTO(LearningStatisticsEntity entity) {
         return new LearningStatisticsDTO()
                 .setId(entity.getId())
@@ -53,7 +55,7 @@ public class EntityDTOMapper {
                         .setPast(entity.getVerb().getPast())
                         .setPastParticiple(entity.getVerb().getPastParticiple()));
     }
-    
+
     public LearningStatisticsEntity toEntity(LearningStatisticsDTO dto) {
         return new LearningStatisticsEntity()
                 .setId(dto.getId())
