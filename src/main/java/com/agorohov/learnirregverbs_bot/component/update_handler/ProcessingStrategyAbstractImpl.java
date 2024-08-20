@@ -17,9 +17,7 @@ public abstract class ProcessingStrategyAbstractImpl implements ProcessingStrate
 
     public final BotApiMethod processUpdate(UpdateWrapper wrapper) {
         wrapper.setStrategy(strategyName);
-
         var sendMessage = strategyRealization(wrapper);
-
         return updateOrCreateMessage(wrapper, sendMessage);
     }
 }

@@ -10,10 +10,10 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 @Component
 @RequiredArgsConstructor
 public class CallbackQueryProcessingStrategyFactory {
-   
+
     private final DismissCallbackQueryStrategy dismissCallbackQueryStrategy;
     private final FailCallbackQueryStrategy failCallbackQueryStrategy;
-    
+
     private final StartTextStrategy startTextStrategy;
     private final LearnTextStrategy learnTextStrategy;
     private final LearnTestTextStrategy learnTestTextStrategy;
@@ -23,25 +23,32 @@ public class CallbackQueryProcessingStrategyFactory {
     private final StatResetConfirmTextStrategy statResetConfirmTextStrategy;
     private final AboutTextStrategy aboutTextStrategy;
     private final HelpTextStrategy helpTextStrategy;
-    
+
     public ProcessingStrategy getStrategy(UpdateWrapper wrapper) {
         String data = wrapper.getUpdate().getCallbackQuery().getData();
-        
-        if(data.startsWith("/learn_test_fail_") || data.startsWith("/learn_test_ok_")){
+
+        if (data.equals("/dismiss")) {
+            return dismissCallbackQueryStrategy;
+        } else if (data.equals("/start")) {
+            return startTextStrategy;
+        } else if (data.equals("/learn")) {
+            return learnTextStrategy;
+        } else if (data.equals("/learn_test")) {
+            return learnTestTextStrategy;
+        } else if (data.startsWith("/learn_test_fail_") || data.startsWith("/learn_test_ok_")) {
             return learnTestResultTextStrategy;
+        } else if (data.equals("/stat")) {
+            return statTextStrategy;
+        } else if (data.equals("/stat_reset")) {
+            return statResetTextStrategy;
+        } else if (data.equals("/stat_reset_confirm")) {
+            return statResetConfirmTextStrategy;
+        } else if (data.equals("/about")) {
+            return aboutTextStrategy;
+        } else if (data.equals("/help")) {
+            return helpTextStrategy;
+        } else {
+            return failCallbackQueryStrategy;
         }
-        
-        return switch (data) {
-            case "/dismiss" -> dismissCallbackQueryStrategy;
-            case "/start" -> startTextStrategy;
-            case "/learn" -> learnTextStrategy;
-            case "/learn_test" -> learnTestTextStrategy;
-            case "/stat" -> statTextStrategy;
-            case "/stat_reset" -> statResetTextStrategy;
-            case "/stat_reset_confirm" -> statResetConfirmTextStrategy;
-            case "/about" -> aboutTextStrategy;
-            case "/help" -> helpTextStrategy;
-            default -> failCallbackQueryStrategy;
-        };
     }
 }

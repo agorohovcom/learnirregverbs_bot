@@ -2,7 +2,6 @@ package com.agorohov.learnirregverbs_bot.component.learning.test_buttons;
 
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -17,15 +16,14 @@ public class TestButtonsBuilder {
     private final VerbService verbService;
     private final Random random;
 
-    // в проперти перенести!
-    private static final int BUTTONS_AMOUNT = 12;
+    private static final int TEST_BUTTONS_AMOUNT = 12;
 
     public TestButtons create(VerbDTO verb) {
         Map<Integer, String[]> buttons = new HashMap<>();
 
         // находим случайные индексы для кнопок с верными ответами
         Integer[] rightButtonIndexes = Stream
-                .generate(() -> random.nextInt(BUTTONS_AMOUNT))
+                .generate(() -> random.nextInt(TEST_BUTTONS_AMOUNT))
                 .distinct()
                 .limit(3)
                 .toArray(Integer[]::new);
@@ -35,9 +33,9 @@ public class TestButtonsBuilder {
         buttons.put(rightButtonIndexes[2], new String[]{verb.getPastParticiple(), "/learn_test_ok_pastparticiple_" + verb.getPastParticiple()});
 
         // получим рандомные неправильные ответы
-        String[] randomFailVerbsForms = getRandomVerbs(verb, BUTTONS_AMOUNT);
+        String[] randomFailVerbsForms = getRandomVerbs(verb, TEST_BUTTONS_AMOUNT);
 
-        for (int i = 0; i < BUTTONS_AMOUNT; i++) {
+        for (int i = 0; i < TEST_BUTTONS_AMOUNT; i++) {
             if (buttons.containsKey(i)) {
                 continue;
             }
