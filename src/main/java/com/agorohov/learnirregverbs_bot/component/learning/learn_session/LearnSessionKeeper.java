@@ -22,8 +22,8 @@ public class LearnSessionKeeper {
     private final LearningStatisticsService learningStatisticsService;
 
     // может сделать из проперти доставать?
-    private static final Integer VERBS_IN_SESSION = 5;
-    private static final Integer CYCLES_IN_SESSION = 2;
+    private static final Integer VERBS_IN_SESSION = 8;
+    private static final Integer CYCLES_IN_SESSION = 3;
 
     private Map<Long, LearnSession> learnSessions = new ConcurrentHashMap<>();
 
@@ -49,7 +49,6 @@ public class LearnSessionKeeper {
         // пока просто рандом
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!   надо поменять на !!!!!!!!!!!!!!!!!!!!!
         // ЧУДО-ЮДО АЛГОРИТМ по рангам
-        
         VerbDTO[] verbs = new VerbDTO[VERBS_IN_SESSION];
 
         verbs = Stream.generate(() -> verbService.getRandomVerbDTO())
@@ -57,7 +56,13 @@ public class LearnSessionKeeper {
                 .limit(verbs.length)
                 .toArray(VerbDTO[]::new);
 
-        LearnSession result = new LearnSession(userId, verbs, /*stats, */ CYCLES_IN_SESSION);
+        // это чтобы набирало всегда первые 5 глаголов для теста
+//        for (int i = 0; i < 5; i++) {
+//            verbs[i] = verbService.findById(i + 1);
+//            
+//        }
+
+        LearnSession result = new LearnSession(userId, verbs, CYCLES_IN_SESSION);
 
         log.info("User (id = " + userId + ") received a new batch of verbs");
 

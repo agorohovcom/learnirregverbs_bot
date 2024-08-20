@@ -11,6 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+/** Считаем:
+ * 1. Сколько всего пройдено тестов
+ * 2. Сколько глаголов встречено из общего числа
+ * 3. Сколько глаголов изучено хорошо - 5* и 6*
+ * 4. Сколько глаголов изучено средне - 3* и 4*
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor
