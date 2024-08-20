@@ -7,7 +7,6 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,18 +28,47 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
                 ? statisticsService.findByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId()).getRank()
                 : 0;
         
-        String textToSend = "🎓 " // эмодзи
+        String startText = "";
+        String verbText = "";
+        
+        if (starsAmount < 3) {
+            startText = "🎓 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟\n\n"
                 + wrapper.getMessage().getChat().getUserName()
-                + ", запомни три формы глагола:\n\n"
-                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                + ", запомни три формы глагола:\n\n";
+            verbText = "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
                 + "📖 " // эмодзи
                 + "<b>" + verb + "</b>\n"
                 + "📌️ " // эмодзи
                 + "(" + verb.getTranslation() + ")\n\n"
-                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n";
+        } else if (starsAmount >= 3 && starsAmount < 5) {
+            startText = "🎓 " // эмодзи
+                + "𝕃𝕖𝕒𝕣𝕟\n\n"
+                + wrapper.getMessage().getChat().getUserName()
+                + ", вспомни три формы глагола:\n\n";
+            verbText = "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                + "📖 " // эмодзи
+                + "<b>" + verb.getInfinitive() + " / ...</b>\n"
+                + "📌️ " // эмодзи
+                + "(" + verb.getTranslation() + ")\n\n"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n";
+        } else {
+            startText = "🎓 " // эмодзи
+                + "𝕃𝕖𝕒𝕣𝕟\n\n"
+                + wrapper.getMessage().getChat().getUserName()
+                + ", вспомни все 3 формы глагола:\n\n";
+            verbText = "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+//                + "📖 " // эмодзи
+//                + "<b>" + verb.getInfinitive() + " / ...</b>\n"
+                + "📌️ " // эмодзи
+                + "(" + verb.getTranslation() + ")\n\n"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - -\n";
+        }
+            
+        String textToSend = startText + verbText
                 + "🏆  " // эмодзи
-                + session.getStars(starsAmount) + "\n\n"
+                + session.getStarsString(starsAmount) + "\n\n"
                 + "Если готов, жми \"Пройти тест\"";
 
         return MessageBuilder

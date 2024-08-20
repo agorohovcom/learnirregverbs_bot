@@ -58,7 +58,7 @@ public class LearnSession {
         return null;
     }
 
-    public String getStars(Short stars) {
+    public String getStarsString(Short stars) {
         return switch (stars) {
             case 0 ->
                 "☆☆☆☆☆☆";

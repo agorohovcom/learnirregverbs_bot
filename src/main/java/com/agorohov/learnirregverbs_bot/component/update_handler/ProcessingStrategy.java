@@ -14,7 +14,6 @@ public interface ProcessingStrategy {
     default BotApiMethod updateOrCreateMessage(UpdateWrapper wrapper, MessageBuilder sendMessage) {
         boolean isNewMsgNotEqOld = wrapper.getMessage().hasText()
                 ? !wrapper.getMessage().getText().trim().equals(sendMessage.getText().trim())
-//                || !wrapper.getMessage().getReplyMarkup().getKeyboard().equals(sendMessage.getUnderMessageKeyboard())
                 : false;
         boolean isStillTimeToEdit = (System.currentTimeMillis() - wrapper.getUpdateWasReceivedAt()) < (47 * 3600000);
 

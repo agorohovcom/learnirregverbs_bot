@@ -1,7 +1,6 @@
 package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
-import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,6 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,11 +19,11 @@ import org.springframework.stereotype.Component;
 public class LearnSessionKeeper {
 
     private final VerbService verbService;
-    private final LearningStatisticsService learningStatisticsService;
 
-    // может сделать из проперти доставать?
-    private static final Integer VERBS_IN_SESSION = 5;
-    private static final Integer CYCLES_IN_SESSION = 2;
+    @Value("${session.verbs_amount}")
+    private int verbs_amount;
+    @Value("${session.cycles_amount}")
+    private int cycles_amount;
 
     private Map<Long, LearnSession> learnSessions = new ConcurrentHashMap<>();
 
@@ -49,15 +49,20 @@ public class LearnSessionKeeper {
         // пока просто рандом
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!   надо поменять на !!!!!!!!!!!!!!!!!!!!!
         // ЧУДО-ЮДО АЛГОРИТМ по рангам
-        
-        VerbDTO[] verbs = new VerbDTO[VERBS_IN_SESSION];
+        VerbDTO[] verbs = new VerbDTO[verbs_amount];
 
         verbs = Stream.generate(() -> verbService.getRandomVerbDTO())
                 .distinct()
                 .limit(verbs.length)
                 .toArray(VerbDTO[]::new);
 
-        LearnSession result = new LearnSession(userId, verbs, /*stats, */ CYCLES_IN_SESSION);
+        // это чтобы набирало всегда первые 5 глаголов для теста
+//        for (int i = 0; i < 5; i++) {
+//            verbs[i] = verbService.findById(i + 1);
+//            
+//        }
+
+        LearnSession result = new LearnSession(userId, verbs, cycles_amount);
 
         log.info("User (id = " + userId + ") received a new batch of verbs");
 

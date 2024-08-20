@@ -73,7 +73,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "(" + verb.getTranslation() + ")\n\n"
                             + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
                             + "🏆 " // эмодзи
-                            + session.getStars(learningStatistics.getRank()) + "\n\n"
+                            + session.getStarsString(learningStatistics.getRank()) + "\n\n"
                             + "Результат сохранён. Продолжим?";
                 } else {
                     learningStatisticsService.saveLose(learningStatistics);
@@ -91,7 +91,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "(" + verb.getTranslation() + ")\n\n"
                             + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
                             + "🏆 " // эмодзи
-                            + session.getStars(learningStatistics.getRank()) + "\n\n"
+                            + session.getStarsString(learningStatistics.getRank()) + "\n\n"
                             + "Результат записан. Продолжим?";
                 }
             }
