@@ -39,14 +39,25 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-
+        
         // Добавляю к Update дополнительные данные с помощью класса-обертки
         UpdateWrapper wrapper = new UpdateWrapper(
                 update,
                 System.currentTimeMillis(),
                 isItBotId(getIdFromUpdate(update)),
-                isAdmin(getIdFromUpdate(update))
+                botStartsAt
         );
+        
+//        System.out.println("wrapper.getMessage().getChatId() = " + wrapper.getMessage().getChatId());;
+//        System.out.println("Integer.valueOf(getBotOwner() = " + Integer.valueOf(getBotOwner()));
+        
+        if(wrapper.getMessage().getChatId().equals(Long.valueOf(getBotOwner()))) {
+            wrapper.setAdmin(true);
+        }
+        
+//        System.out.println("Bot Owner: " + getBotOwner());
+//        System.out.println("Id From Update: " + getIdFromUpdate(update));
+//        System.out.println("Is Admin: " + wrapper.isAdmin());
 
         userService.save(wrapper.giveMeUserDTO());
 
@@ -94,10 +105,12 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
         return getBotToken().split(":")[0].equals(String.valueOf(botId));
     }
 
-    private boolean isAdmin(long id) {
-        return getBotOwner().equals(String.valueOf(id));
-    }
+//    private boolean isAdmin(long id) {
+//        return getBotOwner().equals(String.valueOf(id));
+//    }
 
+    // Этот метод показывает id пользователя только при текстовых сообщениях,
+    // при CallbackData показывает id бота
     private long getIdFromUpdate(Update update) {
         // было так, ругалось когда я редактировал своё сообщение,
         // потому что это другой тип апдейта

@@ -23,6 +23,10 @@ public class CallbackQueryProcessingStrategyFactory {
     private final StatResetConfirmTextStrategy statResetConfirmTextStrategy;
     private final AboutTextStrategy aboutTextStrategy;
     private final HelpTextStrategy helpTextStrategy;
+    private final AdminTextStrategy adminTextStrategy;
+    private final AdminCalledGCTextStrategy adminCalledGCTextStrategy;
+    private final AdminShutdownTextStrategy adminShutdownTextStrategy;
+    private final AdminShutdownConfirmTextStrategy adminShutdownConfirmTextStrategy;
 
     public ProcessingStrategy getStrategy(UpdateWrapper wrapper) {
         String data = wrapper.getUpdate().getCallbackQuery().getData();
@@ -47,6 +51,14 @@ public class CallbackQueryProcessingStrategyFactory {
             return aboutTextStrategy;
         } else if (data.equals("/help")) {
             return helpTextStrategy;
+        } else if (data.equals("/admin") && wrapper.isAdmin()) {
+            return adminTextStrategy;
+        } else if (data.equals("/admin_call_gc") && wrapper.isAdmin()) {
+            return adminCalledGCTextStrategy;
+        } else if (data.equals("/admin_shutdown") && wrapper.isAdmin()) {
+            return adminShutdownTextStrategy;
+        } else if (data.equals("/admin_shutdown_confirm") && wrapper.isAdmin()) {
+            return adminShutdownConfirmTextStrategy;
         } else {
             return failCallbackQueryStrategy;
         }

@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
             log.error(e.getMessage());
         }
     }
+
+    @Override
+    public Integer getCount() {
+        return (int) userRepository.count();
+    }
 }

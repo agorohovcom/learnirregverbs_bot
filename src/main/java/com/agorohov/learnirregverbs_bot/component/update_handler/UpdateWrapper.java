@@ -12,11 +12,14 @@ public class UpdateWrapper {
     private final Update update;
     private final long updateWasReceivedAt;
     private final boolean isFromBot;
-    private final boolean isAdmin;
+    private final long botStartsAt;
 
     // для логгирования
     private String type;
     private String strategy;
+    
+    // админ?
+    private boolean isAdmin;
 
     // вызывать ли метод execute
     private boolean isExecutable = true;
@@ -50,4 +53,6 @@ public class UpdateWrapper {
                 .setUserFirstName(getMessage().getChat().getUserName())
                 .setLastMessageAt(new Timestamp(updateWasReceivedAt));
     }
+    
+    
 }

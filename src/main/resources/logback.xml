@@ -2,9 +2,9 @@
 <configuration>
     
     <property name="LOG_FILE" value="applog" />
-    <property name="LOG_DIR" value="logs" />
-    <!-- <property name="LOG_DIR" value="/var/log/agorohov.com/irregularverbs" /> -->
-    <!-- <property name="LOG_DIR" value="/app/logs" /> -->
+    <!--<property name="LOG_DIR" value="logs" />--> 
+    <property name="LOG_DIR" value="/app/logs" />
+    <!-- <property name="LOG_DIR" value="/var/log/agorohov.com/irregularverbs" /> Эту сейчас не юзаю --> 
     
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

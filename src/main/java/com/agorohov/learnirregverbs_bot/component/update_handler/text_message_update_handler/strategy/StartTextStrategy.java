@@ -22,12 +22,12 @@ public class StartTextStrategy extends ProcessingStrategyAbstractImpl {
                 + "  • отслеживать свой прогресс,\n"
                 + "  • узнать больше об этом боте и\n"
                 + "  • рассказать о нём друзьям!"
-                + " 😉"  // эмодзи
+                + " 😉" // эмодзи
                 + "\n\n"
-                + "🤓 "  // эмодзи
+                + "🤓 " // эмодзи
                 + "Ну что, давай начнём учиться!";
 
-        return MessageBuilder
+        MessageBuilder result = MessageBuilder
                 .create()
                 .setChatId(wrapper.getMessage().getChatId())
                 .setText(textToSend)
@@ -43,5 +43,14 @@ public class StartTextStrategy extends ProcessingStrategyAbstractImpl {
                 .row()
                 .button("Помощь", "/help")
                 .endRow();
+
+        if (wrapper.isAdmin()) {
+            result
+                    .row()
+                    .button("Чертоги админа", "/admin")
+                    .endRow();
+        }
+
+        return result;
     }
 }

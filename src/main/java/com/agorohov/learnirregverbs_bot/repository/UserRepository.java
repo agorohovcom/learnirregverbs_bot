@@ -16,4 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Override
     UserEntity saveAndFlush(UserEntity entity);
+    
+    @Override
+    long count();
 }

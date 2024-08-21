@@ -9,7 +9,7 @@ public interface BotCommands {
             new BotCommand("/learn", "учить неправильные глаголы"),
             new BotCommand("/stat", "твоя статистика"),
             new BotCommand("/about", "информация о боте"),
-            new BotCommand("/help", "помощь"),
-            new BotCommand("/admin", "это для админа :)")
+            new BotCommand("/help", "помощь")/*,*/
+//            new BotCommand("/admin", "это для админа :)")
     );
 }
