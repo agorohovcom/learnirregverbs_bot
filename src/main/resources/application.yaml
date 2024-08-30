@@ -9,8 +9,8 @@ spring:
     # change-log можно не указывать, это имя и этот путь используется в Liquibase поnумолчанию
     change-log: classpath:db/changelog/db.changelog-master.yaml
   datasource:
-    # url: jdbc:h2:file:./db/db
-    url: jdbc:h2:file:/app/db/db
+    url: jdbc:h2:file:./db/db
+    # url: jdbc:h2:file:/app/db/db
     # url: jdbc:h2:file:/var/lib/agorohov.com/irregularverbs/appdb Эту сейчас не юзаю
     username: u
     password:
@@ -52,11 +52,11 @@ spring:
       enabled: false
   
 bot:
-  name: ${IRRVERBSBOTNAME}
-  token: ${IRRVERBSBOTTOKEN}
+  # name: ${IRRVERBSBOTNAME}
+  # token: ${IRRVERBSBOTTOKEN}
   owner: ${IRRVERBSBOTOWNER}
-  # name: ${AGOROHOVTESTBOTNAME}
-  # token: ${AGOROHOVTESTBOTTOKEN}
+  name: ${AGOROHOVTESTBOTNAME}
+  token: ${AGOROHOVTESTBOTTOKEN}
 
 cron:
   # секунды / минуты / часы / день / месяц / день недели

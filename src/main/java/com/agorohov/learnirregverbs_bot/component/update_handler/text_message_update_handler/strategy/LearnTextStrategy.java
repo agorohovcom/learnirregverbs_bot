@@ -31,7 +31,7 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
         String startText = "";
         String verbText = "";
         
-        if (starsAmount < 3) {
+        if (starsAmount < 2) {
             startText = "🎓 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟\n\n"
                 + wrapper.getMessage().getChat().getUserName()
@@ -42,7 +42,7 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
                 + "📌️ " // эмодзи
                 + "(" + verb.getTranslation() + ")\n\n"
                 + "- - - - - - - - - - - - - - - - - - - - - - - - -\n";
-        } else if (starsAmount >= 3 && starsAmount < 5) {
+        } else if (starsAmount >= 2 && starsAmount < 5) {
             startText = "🎓 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟\n\n"
                 + wrapper.getMessage().getChat().getUserName()
