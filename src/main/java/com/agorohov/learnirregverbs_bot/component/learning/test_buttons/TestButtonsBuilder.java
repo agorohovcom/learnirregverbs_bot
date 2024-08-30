@@ -2,6 +2,7 @@ package com.agorohov.learnirregverbs_bot.component.learning.test_buttons;
 
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -22,16 +23,23 @@ public class TestButtonsBuilder {
         Map<Integer, String[]> buttons = new HashMap<>();
 
         // находим случайные индексы для кнопок с верными ответами
+        // и добавляем дубль одной из форм для повышения сложности
         Integer[] rightButtonIndexes = Stream
                 .generate(() -> random.nextInt(TEST_BUTTONS_AMOUNT))
                 .distinct()
-                .limit(3)
+                .limit(4)
                 .toArray(Integer[]::new);
+        
+        // определяем дубль какой формы будем добавлять
+        int extraRightButton = random.nextInt(3);
+        System.out.println("Дубль формы номер " + extraRightButton);
 
         buttons.put(rightButtonIndexes[0], new String[]{verb.getInfinitive(), "/learn_test_ok_infinitive_" + verb.getInfinitive()});
         buttons.put(rightButtonIndexes[1], new String[]{verb.getPast(), "/learn_test_ok_past_" + verb.getPast()});
         buttons.put(rightButtonIndexes[2], new String[]{verb.getPastParticiple(), "/learn_test_ok_pastparticiple_" + verb.getPastParticiple()});
-
+        // добавление лишней правильной формы
+        buttons.put(rightButtonIndexes[3], buttons.get(rightButtonIndexes[extraRightButton]));
+        
         // получим рандомные неправильные ответы
         String[] randomFailVerbsForms = getRandomVerbs(verb, TEST_BUTTONS_AMOUNT);
 
