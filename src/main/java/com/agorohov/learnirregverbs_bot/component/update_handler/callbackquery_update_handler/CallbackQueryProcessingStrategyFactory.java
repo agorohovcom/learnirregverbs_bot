@@ -41,7 +41,9 @@ public class CallbackQueryProcessingStrategyFactory {
             return learnTextStrategy;
         } else if (data.equals("/learn_test")) {
             return learnTestTextStrategy;
-        } else if (data.startsWith("/learn_test_fail_") || data.startsWith("/learn_test_ok_")) {
+        } else if (data.startsWith("/learn_test_fail_") 
+                || data.startsWith("/learn_test_ok_") 
+                || data.startsWith("/learn_test_random_double_")) {
             return learnTestResultTextStrategy;
         } else if (data.equals("/stat")) {
             return statTextStrategy;

@@ -28,17 +28,19 @@ public class TestButtonsBuilder {
                 .distinct()
                 .limit(4)
                 .toArray(Integer[]::new);
-        
+
         // определяем дубль какой формы будем добавлять
-        int extraRightButton = random.nextInt(3);
-//        System.out.println("Дубль формы номер " + extraRightButton);
+        int dubleIndex = random.nextInt(3);
+//        System.out.println(dubleIndex);
+        String[] forms = {verb.getInfinitive(), verb.getPast(), verb.getPastParticiple()};
+        String randomDuble = forms[dubleIndex];
 
         buttons.put(rightButtonIndexes[0], new String[]{verb.getInfinitive(), "/learn_test_ok_infinitive_" + verb.getInfinitive()});
         buttons.put(rightButtonIndexes[1], new String[]{verb.getPast(), "/learn_test_ok_past_" + verb.getPast()});
         buttons.put(rightButtonIndexes[2], new String[]{verb.getPastParticiple(), "/learn_test_ok_pastparticiple_" + verb.getPastParticiple()});
         // добавление лишней правильной формы
-        buttons.put(rightButtonIndexes[3], buttons.get(rightButtonIndexes[extraRightButton]));
-        
+        buttons.put(rightButtonIndexes[3], new String[]{randomDuble, "/learn_test_random_double_" + randomDuble});
+
         // получим рандомные неправильные ответы
         String[] randomFailVerbsForms = getRandomVerbs(verb, TEST_BUTTONS_AMOUNT);
 

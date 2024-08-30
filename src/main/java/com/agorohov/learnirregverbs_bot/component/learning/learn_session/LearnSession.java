@@ -113,6 +113,7 @@ public class LearnSession {
                     .replace("/learn_test_ok_infinitive_", "")
                     .replace("/learn_test_ok_past_", "")
                     .replace("/learn_test_ok_pastparticiple_", "")
+                    .replace("/learn_test_random_double_", "")
                     .replace("/learn_test_fail_", "");
         }
         if (answersReceived == 3) {
