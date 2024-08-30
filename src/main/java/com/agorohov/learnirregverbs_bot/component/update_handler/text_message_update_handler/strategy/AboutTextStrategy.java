@@ -26,10 +26,10 @@ public class AboutTextStrategy extends ProcessingStrategyAbstractImpl {
                 + "  Спасибо, что заглянул 😉\n\n"
                 + "🔗 " // эмодзи
                 + "<b>Ссылки:</b>\n\n"
-                + "  • <a href=\"https://github.com/agorohovcom/learnirregverbs_bot/\">Github проекта</a>\n"
-                + "  • <a href=\"https://www.linkedin.com/in/aleksandr-gorohov/\">Linkedin</a>\n"
                 + "  • <a href=\"https://t.me/Sanchio\">Telegram</a>\n"
-                + "  • <a href=\"https://agorohov.com/\">Сайт автора</a>\n\n";
+                + "  • <a href=\"https://www.linkedin.com/in/aleksandr-gorohov/\">Linkedin</a>\n"
+                + "  • <a href=\"https://github.com/agorohovcom/\">Github</a>\n"
+                + "  • <a href=\"https://agorohov.com/\">Блог</a>\n\n";
 
         return MessageBuilder
                 .create()
