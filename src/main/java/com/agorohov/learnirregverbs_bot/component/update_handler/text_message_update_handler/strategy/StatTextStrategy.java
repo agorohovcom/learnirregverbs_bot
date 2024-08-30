@@ -49,7 +49,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
                     .count();
             int midRateVerbs = (int) statistics
                     .stream()
-                    .filter(e -> e.getRank() >= 3 && e.getRank() < 5)
+                    .filter(e -> e.getRank() >= 2 && e.getRank() < 5)
                     .count();
             int hightRateVerbsPercent = 100 * hightRateVerbs / verbsCount;
             int midRateVerbsPercent = 100 * midRateVerbs / verbsCount;
