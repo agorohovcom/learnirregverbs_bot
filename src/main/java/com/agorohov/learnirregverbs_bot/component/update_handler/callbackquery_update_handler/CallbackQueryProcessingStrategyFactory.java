@@ -22,6 +22,8 @@ public class CallbackQueryProcessingStrategyFactory {
     private final StatResetTextStrategy statResetTextStrategy;
     private final StatResetConfirmTextStrategy statResetConfirmTextStrategy;
     private final AboutTextStrategy aboutTextStrategy;
+    private final AboutAlgorithmTextStrategy aboutAlgorithmTextStrategy;
+    private final AboutUsedTechnologiesTextStrategy aboutUsedTechnologiesTextStrategy;
     private final HelpTextStrategy helpTextStrategy;
     private final AdminTextStrategy adminTextStrategy;
     private final AdminCalledGCTextStrategy adminCalledGCTextStrategy;
@@ -49,6 +51,10 @@ public class CallbackQueryProcessingStrategyFactory {
             return statResetConfirmTextStrategy;
         } else if (data.equals("/about")) {
             return aboutTextStrategy;
+        } else if (data.equals("/about_algorithm")) {
+            return aboutAlgorithmTextStrategy;
+        } else if (data.equals("/about_technologies")) {
+            return aboutUsedTechnologiesTextStrategy;
         } else if (data.equals("/help")) {
             return helpTextStrategy;
         } else if (data.equals("/admin") && wrapper.isAdmin()) {

@@ -2,7 +2,6 @@ package com.agorohov.learnirregverbs_bot.component.learning.test_buttons;
 
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -32,7 +31,7 @@ public class TestButtonsBuilder {
         
         // определяем дубль какой формы будем добавлять
         int extraRightButton = random.nextInt(3);
-        System.out.println("Дубль формы номер " + extraRightButton);
+//        System.out.println("Дубль формы номер " + extraRightButton);
 
         buttons.put(rightButtonIndexes[0], new String[]{verb.getInfinitive(), "/learn_test_ok_infinitive_" + verb.getInfinitive()});
         buttons.put(rightButtonIndexes[1], new String[]{verb.getPast(), "/learn_test_ok_past_" + verb.getPast()});
