@@ -45,28 +45,48 @@ public class LearnSessionKeeper {
     }
 
     public LearnSession createAndPutAndGet(Long userId) {
-
-        // пока просто рандом
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!   надо поменять на !!!!!!!!!!!!!!!!!!!!!
-        // ЧУДО-ЮДО АЛГОРИТМ по рангам
-        VerbDTO[] verbs = new VerbDTO[verbs_amount];
-
-        verbs = Stream.generate(() -> verbService.getRandomVerbDTO())
-                .distinct()
-                .limit(verbs.length)
-                .toArray(VerbDTO[]::new);
-
-        // это чтобы набирало всегда первые 5 глаголов для теста
-//        for (int i = 0; i < 5; i++) {
-//            verbs[i] = verbService.findById(i + 1);
-//            
-//        }
-
+        VerbDTO[] verbs = getRandomVerbDtos();
+//        VerbDTO[] verbs = getRandomVerbDtosByRank();
+//        VerbDTO[] verbs = getAlwaysFirstFiveVerbDtos(5);
+        
         LearnSession result = new LearnSession(userId, verbs, cycles_amount);
 
         log.info("User (id = " + userId + ") received a new batch of verbs");
 
         return put(result);
+    }
+    
+    // verbs_amount случайных глаголов из БД
+    private VerbDTO[] getRandomVerbDtos() {
+        return Stream.generate(() -> verbService.getRandomVerbDTO())
+                .distinct()
+                .limit(verbs_amount)
+                .toArray(VerbDTO[]::new);
+    }
+    
+    // verbs_amount случайных глаголов из БД учитывая ранг (больше мелких рангов)
+    private VerbDTO[] getRandomVerbDtosByRank() {
+        VerbDTO[] result = new VerbDTO[verbs_amount];
+        
+        for(int i = 0; i < verbs_amount; i++) {
+            VerbDTO verb = verbService.getRandomVerbDTO();
+            // вот тут высчитываем с помощью random учитывая ранг берем ли этот глагол
+            // если нет - получаем следующее, и так пока не наберём verbs_amount штук
+        }
+        
+        return result;
+    }
+    
+    // всегда первые amount глаголов для теста
+    private VerbDTO[] getAlwaysFirstFiveVerbDtos(int amount) {
+        VerbDTO[] result = new VerbDTO[5];
+        
+        for (int i = 0; i < 5; i++) {
+            result[i] = verbService.findById(i + 1);
+            
+        }
+        
+        return result;
     }
 
     @Async
