@@ -89,7 +89,7 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
 
     @Override
     public LearningStatisticsDTO findByUserChatIdAndVerbId(Long userChatId, Integer verbId) {
-        return mapper.toDTO(learningStatisticsRepository.findByUserChatIdAndVerbId(userChatId, verbId));
+        return mapper.toDTO(learningStatisticsRepository.findByUserChatIdAndVerbId(userChatId, verbId).get());
     }
 
     @Override
