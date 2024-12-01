@@ -51,9 +51,9 @@ spring:
       enabled: false
   
 bot:
-#  name: ${IRRVERBSBOTNAME}
-#  token: ${IRRVERBSBOTTOKEN}
-#  owner: ${IRRVERBSBOTOWNER}
+  name: ${IRRVERBSBOTNAME}
+  token: ${IRRVERBSBOTTOKEN}
+  owner: ${IRRVERBSBOTOWNER}
 
 cron:
   # секунды / минуты / часы / день / месяц / день недели
