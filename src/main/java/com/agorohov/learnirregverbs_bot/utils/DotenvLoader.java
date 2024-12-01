@@ -8,7 +8,7 @@ public class DotenvLoader {
      * Если профиль не указан при запуске приложения, будет использоваться профиль dev по умолчанию.
      * Переменные из файла .env будут переопределены переменными из файла для активного профиля, если таковые имеются.
      */
-    public static void envConfigure() {
+    public static void loadEnvironmentVariables() {
         String profile = System.getProperty("spring.profiles.active");
         String envFileName = ".env";
 
@@ -18,6 +18,14 @@ public class DotenvLoader {
                 .ignoreIfMissing()
                 .ignoreIfMalformed()
                 .load();
+
+        // Загрузка переменных из базового файла
+        dotenv.entries().forEach(entry -> {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            System.setProperty(key, value);
+        });
+
 
         // Определение файла для активного профиля или использование dev по умолчанию
         String profileEnvFileName = profile != null
@@ -31,20 +39,11 @@ public class DotenvLoader {
                 .ignoreIfMalformed()
                 .load();
 
-        // Переопределение переменных из базового файла
+        // Загрузка переменных из файла профиля
         profileDotenv.entries().forEach(entry -> {
             String key = entry.getKey();
             String value = entry.getValue();
             System.setProperty(key, value);
-        });
-
-        // Добавление переменных окружения в системные свойства
-        dotenv.entries().forEach(entry -> {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            if(System.getProperty(key) == null) {
-                System.setProperty(key, value);
-            }
         });
     }
 }
