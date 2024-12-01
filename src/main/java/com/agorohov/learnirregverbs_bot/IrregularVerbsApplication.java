@@ -12,8 +12,22 @@ public class IrregularVerbsApplication {
         SpringApplication.run(IrregularVerbsApplication.class, args);
     }
 
+    /**
+     * При запуске без профиля будет запускаться использоваться .env.dev
+     */
     private static void envConfigure() {
-        Dotenv dotenv = Dotenv.configure()
+        String profile = System.getProperty("spring.profiles.active");
+        String envFileName = ".env";
+
+        if (profile != null) {
+            envFileName += "." + profile;
+        } else {
+            envFileName += ".dev";
+        }
+
+        Dotenv dotenv = Dotenv
+                .configure()
+                .filename(envFileName)
                 .ignoreIfMissing()
                 .load();
 
