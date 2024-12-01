@@ -1,1 +1,0 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.agorohov.learnirregverbs_bot.config.DotenvConfig
