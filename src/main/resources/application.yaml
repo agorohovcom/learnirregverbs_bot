@@ -51,10 +51,9 @@ spring:
       enabled: false
   
 bot:
-  name: learnirregverbs_bot
-  owner: ${IRRVERBSBOTOWNER}
-  # token: ${IRRVERBSBOTTOKEN}
-  token: ${AGOROHOVTESTBOTTOKEN}
+#  name: ${IRRVERBSBOTNAME}
+#  token: ${IRRVERBSBOTTOKEN}
+#  owner: ${IRRVERBSBOTOWNER}
 
 cron:
   # секунды / минуты / часы / день / месяц / день недели
