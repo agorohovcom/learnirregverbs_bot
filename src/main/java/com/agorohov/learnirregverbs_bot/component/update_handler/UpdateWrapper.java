@@ -11,10 +11,9 @@ public class UpdateWrapper {
 
     private final Update update;
     private final long updateWasReceivedAt;
-    private final boolean isFromBot;
     private final long botStartsAt;
 
-    // для логгирования
+    // для логирования
     private String type;
     private String strategy;
     
@@ -25,15 +24,12 @@ public class UpdateWrapper {
     private boolean isExecutable = true;
 
     public Message getMessage() {
-//        return update.hasMessage()
-//                ? update.getMessage()
-//                : update.getCallbackQuery().getMessage();
         Message result = null;
         if (update.hasMessage()) {
             result = update.getMessage();
         }
         if (update.hasCallbackQuery()) {
-            result = update.getCallbackQuery().getMessage();
+            result = (Message) update.getCallbackQuery().getMessage();
         }
         if (update.hasEditedMessage()) {
             result = update.getEditedMessage();
@@ -53,6 +49,4 @@ public class UpdateWrapper {
                 .setUserFirstName(getMessage().getChat().getUserName())
                 .setLastMessageAt(new Timestamp(updateWasReceivedAt));
     }
-    
-    
 }

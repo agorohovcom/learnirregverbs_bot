@@ -18,7 +18,8 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <telegrambots-spring-boot-starter.version>6.9.0</telegrambots-spring-boot-starter.version>
+<!--        <telegrambots-spring-boot-starter>6.9.0</telegrambots-spring-boot-starter>-->
+        <telegrambots-spring-boot-starter>6.9.7.1</telegrambots-spring-boot-starter>
         <maven-compiler-plugin>3.13.0</maven-compiler-plugin>
         <lombok.version>1.18.36</lombok.version>
         <java-dotenv>5.2.2</java-dotenv>
@@ -38,7 +39,7 @@
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-spring-boot-starter</artifactId>
-            <version>${telegrambots-spring-boot-starter.version}</version>
+            <version>${telegrambots-spring-boot-starter}</version>
                         <exclusions>
                             <exclusion>
                                 <groupId>commons-logging</groupId>
