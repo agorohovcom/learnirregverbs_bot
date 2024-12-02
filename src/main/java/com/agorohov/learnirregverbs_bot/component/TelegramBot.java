@@ -7,7 +7,6 @@ import com.agorohov.learnirregverbs_bot.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -17,7 +16,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 @Slf4j
-@PropertySource("application.yaml")
 @RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
