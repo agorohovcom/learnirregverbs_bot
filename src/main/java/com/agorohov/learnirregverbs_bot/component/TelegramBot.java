@@ -5,7 +5,6 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.config.BotConfig;
 import com.agorohov.learnirregverbs_bot.service.UserService;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -16,7 +15,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     private final UpdateHandlerFactory updateHandlerFactory;
@@ -24,6 +22,13 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     private final UserService userService;
 
     private long botStartsAt;
+
+    public TelegramBot(UpdateHandlerFactory updateHandlerFactory, BotConfig config, UserService userService) {
+        super(config.getBotToken());
+        this.updateHandlerFactory = updateHandlerFactory;
+        this.config = config;
+        this.userService = userService;
+    }
 
     @PostConstruct
     private void init() {
@@ -75,11 +80,6 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
     @Override
     public String getBotUsername() {
         return config.getBotName();
-    }
-
-    @Override
-    public String getBotToken() {
-        return config.getBotToken();
     }
 
     public String getBotOwner() {
