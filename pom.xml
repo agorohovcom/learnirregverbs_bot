@@ -5,8 +5,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.4.0</version>
+        <relativePath/>
     </parent>
     <groupId>com.agorohov.tgbot</groupId>
     <artifactId>irregularverbs</artifactId>
@@ -15,12 +15,14 @@
     <description>AGorohov's Telegram bot for learning irregular verbs</description>
     <properties>
         <java.version>21</java.version>
+
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <telegrambots-spring-boot-starter.version>6.9.0</telegrambots-spring-boot-starter.version>
+
+        <telegrambots-spring-boot-starter>6.9.7.1</telegrambots-spring-boot-starter>
         <maven-compiler-plugin>3.13.0</maven-compiler-plugin>
-        <lombok.version>1.18.36</lombok.version>
+        <lombok>1.18.36</lombok>
         <java-dotenv>5.2.2</java-dotenv>
     </properties>
     <dependencies>
@@ -38,7 +40,7 @@
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-spring-boot-starter</artifactId>
-            <version>${telegrambots-spring-boot-starter.version}</version>
+            <version>${telegrambots-spring-boot-starter}</version>
                         <exclusions>
                             <exclusion>
                                 <groupId>commons-logging</groupId>
@@ -50,7 +52,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
+            <version>${lombok}</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -100,7 +102,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
+                            <version>${lombok}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
