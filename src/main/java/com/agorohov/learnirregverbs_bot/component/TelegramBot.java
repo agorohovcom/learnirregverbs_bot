@@ -26,7 +26,10 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     private long botStartsAt;
 
-    public TelegramBot(UpdateHandlerFactory updateHandlerFactory, BotConfig config, UserService userService) {
+    public TelegramBot(
+            UpdateHandlerFactory updateHandlerFactory,
+            BotConfig config,
+            UserService userService) {
         super(config.getBotToken());
         this.updateHandlerFactory = updateHandlerFactory;
         this.config = config;
@@ -58,7 +61,8 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
         userService.save(wrapper.giveMeUserDTO());
 
-        BotApiMethod<? extends Serializable> updateProcessingResult = updateHandlerFactory.getHandler(wrapper).handle(wrapper);
+        BotApiMethod<? extends Serializable> updateProcessingResult =
+                updateHandlerFactory.getHandler(wrapper).handle(wrapper);
 
         try {
             if (wrapper.isExecutable()) {
