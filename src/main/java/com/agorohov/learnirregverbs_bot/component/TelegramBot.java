@@ -8,10 +8,13 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.io.Serializable;
 
 @Component
 @Slf4j
@@ -55,7 +58,7 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
         userService.save(wrapper.giveMeUserDTO());
 
-        var updateProcessingResult = updateHandlerFactory.getHandler(wrapper).handle(wrapper);
+        BotApiMethod<? extends Serializable> updateProcessingResult = updateHandlerFactory.getHandler(wrapper).handle(wrapper);
 
         try {
             if (wrapper.isExecutable()) {
