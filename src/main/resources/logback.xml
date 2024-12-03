@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true">
-    
-    <property name="LOG_FILE" value="${LOG_FILE:-applog}" />
+<!-- <configuration debug="true">  Это если хочу выводить логи logback -->
+<configuration>
+
+<property name="LOG_FILE" value="${LOG_FILE:-applog}" />
     <property name="LOG_DIR" value="${LOG_DIR:-logs}" />
     
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -45,4 +46,5 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE" />
     </logger>
+
 </configuration>
