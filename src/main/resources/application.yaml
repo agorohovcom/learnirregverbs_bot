@@ -1,11 +1,6 @@
 server:
   port: ${SERVER_PORT}
 
-logging:
-  file:
-    name: ${LOG_FILE}
-  path: ${LOG_DIR}
-
 spring:
   mvc:
     log-request-details: true
