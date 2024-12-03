@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Data
 public class UpdateWrapper {
@@ -24,7 +25,15 @@ public class UpdateWrapper {
     // вызывать ли метод execute
     private boolean isExecutable = true;
 
-    public Message getMessage() {
+    // todo надо реализовать обработку случаев когда метод возвращает null
+    // это может произойти в update.hasCallbackQuery() или в этих случаях:
+    // hasPoll()
+    // hasPollAnswer()
+    // hasInlineQuery()
+    // hasChosenInlineQuery()
+    // Думаю, можно либо возвращать Optional, либо добавить везде перед использованием метода getMessage
+    // проверку на null. Если null - ничего не делать, как-то так.
+    public Optional<Message> getMessage() {
         Message result = null;
         if (update.hasMessage()) {
             result = update.getMessage();
