@@ -34,27 +34,30 @@ public class UpdateWrapper {
     // Думаю, можно либо возвращать Optional, либо добавить везде перед использованием метода getMessage
     // проверку на null. Если null - ничего не делать, как-то так.
     public Optional<Message> getMessage() {
-        Message result = null;
+        Optional<Message> result = Optional.empty();
         if (update.hasMessage()) {
-            result = update.getMessage();
+            result = Optional.of(update.getMessage());
         }
         if (update.hasCallbackQuery()) {
-            // вот это опасный момент, там потенциально может не быть Message
-            result = (Message) update.getCallbackQuery().getMessage();
+            var message = update.getCallbackQuery().getMessage();
+            if (message instanceof Message) {
+                result = Optional.of((Message) update.getCallbackQuery().getMessage());
+            }
         }
         if (update.hasEditedMessage()) {
-            result = update.getEditedMessage();
+            result = Optional.of(update.getEditedMessage());
         }
         if (update.hasChannelPost()) {
-            result = update.getChannelPost();
+            result = Optional.of(update.getChannelPost());
         }
         if (update.hasEditedChannelPost()) {
-            result = update.getEditedChannelPost();
+            result = Optional.of(update.getEditedChannelPost());
         }
         return result;
     }
 
-    public UserDTO giveMeUserDTO() {
+    public Optional<UserDTO> giveMeUserDTO() {
+        Optional<Message> message = getMessage();
         return new UserDTO()
                 .setChatId(getMessage().getChatId())
                 .setUserFirstName(getMessage().getChat().getUserName())
