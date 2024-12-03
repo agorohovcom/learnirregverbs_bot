@@ -33,10 +33,10 @@ public class AdminCalledGCTextStrategy extends ProcessingStrategyAbstractImpl {
 
     private String callGCInfo() {
         int before = getUsedMB();
-        log.info("Admin is calling GC, used memory before: " + before + " MB");
+        log.info("Admin is calling GC, used memory before: {} MB", before);
         System.gc();
         int after = getUsedMB();
-        log.info("GC called, used memory after: " + after + " MB");
+        log.info("GC called, used memory after: {} MB", after);
 
         StringBuilder result = new StringBuilder();
         result

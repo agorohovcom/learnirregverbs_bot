@@ -2,20 +2,21 @@ package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 
 import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
 
 @RequiredArgsConstructor
 public class LearnSession {
-
+    @Getter
     private final long userId;
     private final VerbDTO[] verbs;
     private final int cycles;
+    @Getter
     private final long createdAt = System.currentTimeMillis();
 
     private Integer step;
 
-    private String[] answers = new String[3];
+    private final String[] answers = new String[3];
     private int answersReceived = 0;
     private boolean isThreeAnswersReceived;
 
@@ -87,15 +88,7 @@ public class LearnSession {
         isThreeAnswersReceived = false;
         return getVerb();
     }
-    
-    public long getCreatedAt() {
-        return createdAt;
-    }
-    
-    public long getUserId() {
-        return userId;
-    }
-    
+
     public boolean isThreeAnswersReceived() {
         return isThreeAnswersReceived;
     }

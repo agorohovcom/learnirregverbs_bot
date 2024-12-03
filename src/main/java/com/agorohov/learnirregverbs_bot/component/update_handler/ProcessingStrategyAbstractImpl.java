@@ -4,6 +4,8 @@ import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import jakarta.annotation.PostConstruct;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
+import java.io.Serializable;
+
 public abstract class ProcessingStrategyAbstractImpl implements ProcessingStrategy {
 
     protected String strategyName;
@@ -15,7 +17,7 @@ public abstract class ProcessingStrategyAbstractImpl implements ProcessingStrate
 
     protected abstract MessageBuilder strategyRealization(UpdateWrapper wrapper);
 
-    public final BotApiMethod processUpdate(UpdateWrapper wrapper) {
+    public final BotApiMethod<? extends Serializable> processUpdate(UpdateWrapper wrapper) {
         wrapper.setStrategy(strategyName);
         var sendMessage = strategyRealization(wrapper);
         return updateOrCreateMessage(wrapper, sendMessage);

@@ -6,10 +6,11 @@ import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /** Считаем:
  * 1. Сколько всего пройдено тестов
@@ -37,9 +38,9 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
 
         if (!statistics.isEmpty()) {
             int verbsCount = verbService.getCount();
-            int appemptsTotal = statistics
+            int attemptsTotal = statistics
                     .stream()
-                    .mapToInt(e -> e.getAttempts())
+                    .mapToInt(LearningStatisticsDTO::getAttempts)
                     .sum();
             int learnedVerbsAmount = statistics.size();
             int learnedVerbsPercent = 100 * learnedVerbsAmount / verbsCount;
@@ -58,7 +59,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
                 + "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
                     + wrapper.getMessage().getChat().getUserName()
                     + ", вот твоя статистика:\n\n"
-                    + " • Пройдено тестов: <b>" + appemptsTotal + "</b>\n"
+                    + " • Пройдено тестов: <b>" + attemptsTotal + "</b>\n"
                     + " • Встречено глаголов: <b>" + learnedVerbsAmount + " (" + learnedVerbsPercent + " %)</b>\n"
                     + " • Хорошо изучено: <b>" + hightRateVerbs + " (" + hightRateVerbsPercent + " %)</b>\n"
                     + " • Средне изучено: <b>" + midRateVerbs + " (" + midRateVerbsPercent + " %)</b>\n\n"
@@ -86,7 +87,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
                     .endRow();
         }
 
-        log.info("User (id = " + wrapper.getMessage().getChatId() + ") requested his statistics");
+        log.info("User (id = {}) requested his statistics", wrapper.getMessage().getChatId());
         return sendMessage;
     }
 }

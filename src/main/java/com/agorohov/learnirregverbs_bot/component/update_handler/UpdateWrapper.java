@@ -1,10 +1,11 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler;
 
 import com.agorohov.learnirregverbs_bot.dto.UserDTO;
-import java.sql.Timestamp;
 import lombok.Data;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.sql.Timestamp;
 
 @Data
 public class UpdateWrapper {
@@ -29,6 +30,7 @@ public class UpdateWrapper {
             result = update.getMessage();
         }
         if (update.hasCallbackQuery()) {
+            // вот это опасный момент, там потенциально может не быть Message
             result = (Message) update.getCallbackQuery().getMessage();
         }
         if (update.hasEditedMessage()) {

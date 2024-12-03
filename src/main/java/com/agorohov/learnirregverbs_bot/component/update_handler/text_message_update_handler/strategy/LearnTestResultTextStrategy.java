@@ -8,9 +8,10 @@ import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
     private final LearnSessionKeeper sessionKeeper;
     private final Random random;
 
-    private String[] congrats = new String[]{
+    private final String[] congrats = new String[]{
         "👍 Верно!", // тут эмодзи
         "Правильно!",
         "Это правильный ответ!",

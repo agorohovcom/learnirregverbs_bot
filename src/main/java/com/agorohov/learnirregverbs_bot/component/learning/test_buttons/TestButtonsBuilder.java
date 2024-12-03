@@ -2,12 +2,13 @@ package com.agorohov.learnirregverbs_bot.component.learning.test_buttons;
 
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class TestButtonsBuilder {
         buttons.put(rightButtonIndexes[3], new String[]{randomDuble, "/learn_test_random_double_" + randomDuble});
 
         // получим рандомные неправильные ответы
-        String[] randomFailVerbsForms = getRandomVerbs(verb, TEST_BUTTONS_AMOUNT);
+        String[] randomFailVerbsForms = getRandomVerbs(verb);
 
         for (int i = 0; i < TEST_BUTTONS_AMOUNT; i++) {
             if (buttons.containsKey(i)) {
@@ -54,16 +55,14 @@ public class TestButtonsBuilder {
         return new TestButtons(buttons);
     }
 
-    private String[] getRandomVerbs(VerbDTO verb, int amount) {
+    private String[] getRandomVerbs(VerbDTO verb) {
         // получим массив из рандомных форм глаголов amount штук
-        String[] result = Stream
-                .generate(() -> verbService.getRandomVerbDTO())
+        return Stream
+                .generate(verbService::getRandomVerbDTO)
                 .filter(e -> !e.equals(verb))
                 .distinct()
-                .limit(amount)
+                .limit(TestButtonsBuilder.TEST_BUTTONS_AMOUNT)
                 .map(e -> e.getRandomFormByIndex(random.nextInt(2)))
                 .toArray(String[]::new);
-
-        return result;
     }
 }

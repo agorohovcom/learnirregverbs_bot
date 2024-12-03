@@ -13,7 +13,7 @@ public class BotExceptionHandler {
         VerbFormNotFoundByIndexException.class
     })
     public ResponseEntity<String> handleEmployeeExceptions(RuntimeException e) {
-        e.printStackTrace();
+        e.printStackTrace(System.err);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());

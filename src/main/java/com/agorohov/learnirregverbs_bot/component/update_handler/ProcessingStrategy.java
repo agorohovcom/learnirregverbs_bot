@@ -15,7 +15,9 @@ public interface ProcessingStrategy {
      * и является ли оно CallbackQuery.
      * Если да - редактируем предыдущее, если нет - шлём новое
      */
-    default BotApiMethod<? extends Serializable> updateOrCreateMessage(UpdateWrapper wrapper, MessageBuilder sendMessage) {
+    default BotApiMethod<? extends Serializable> updateOrCreateMessage(
+            UpdateWrapper wrapper,
+            MessageBuilder sendMessage) {
         boolean isNewMsgNotEqOld = wrapper.getMessage().hasText()
                 && !wrapper.getMessage().getText().trim().equals(sendMessage.getText().trim());
         boolean isStillTimeToEdit = (System.currentTimeMillis() - wrapper.getUpdateWasReceivedAt()) < (47 * 3600000);

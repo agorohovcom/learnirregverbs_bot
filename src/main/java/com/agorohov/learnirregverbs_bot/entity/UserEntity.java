@@ -1,15 +1,11 @@
 package com.agorohov.learnirregverbs_bot.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.sql.Timestamp;
-import java.util.List;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -31,7 +27,7 @@ public class UserEntity {
     private Timestamp lastMessageAt;
     
     @Column(name = "is_deleted")
-    private Boolean isDeleled = false;
+    private Boolean isDeleted = false;
     
     // если orphanRemoval = true, то приходится сразу инициализировать statistics
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
