@@ -18,12 +18,12 @@ public interface ProcessingStrategy {
     default BotApiMethod<? extends Serializable> updateOrCreateMessage(
             UpdateWrapper wrapper,
             MessageBuilder sendMessage) {
-        boolean isNewMsgNotEqOld = wrapper.getMessage().hasText()
-                && !wrapper.getMessage().getText().trim().equals(sendMessage.getText().trim());
+        boolean isNewMsgNotEqOld = wrapper.getSupportedMessageOrNull().hasText()
+                && !wrapper.getSupportedMessageOrNull().getText().trim().equals(sendMessage.getText().trim());
         boolean isStillTimeToEdit = (System.currentTimeMillis() - wrapper.getUpdateWasReceivedAt()) < (47 * 3600000);
 
         if (isNewMsgNotEqOld && isStillTimeToEdit && wrapper.getUpdate().hasCallbackQuery()) {
-            return sendMessage.setMessageId(wrapper.getMessage().getMessageId()).buildUpdateMessage();
+            return sendMessage.setMessageId(wrapper.getSupportedMessageOrNull().getMessageId()).buildUpdateMessage();
         } else {
             return sendMessage.buildNewMessage();
         }

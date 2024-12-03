@@ -1,9 +1,9 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
-import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
-import org.springframework.stereotype.Component;
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
+import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DefaultTextUpdateStrategy extends ProcessingStrategyAbstractImpl {
@@ -18,7 +18,7 @@ public class DefaultTextUpdateStrategy extends ProcessingStrategyAbstractImpl {
 
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("Помощь", "/help")

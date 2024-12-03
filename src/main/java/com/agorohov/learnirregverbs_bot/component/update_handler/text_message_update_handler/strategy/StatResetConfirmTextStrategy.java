@@ -15,18 +15,18 @@ public class StatResetConfirmTextStrategy extends ProcessingStrategyAbstractImpl
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
-        learningStatisticsService.deleteAllByUserChatId(wrapper.getMessage().getChatId());
+        learningStatisticsService.deleteAllByUserChatId(wrapper.getSupportedMessageOrNull().getChatId());
 
         String textToSend = "📊 "    // эмодзи
                 + "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
                 + "♻️ "  // эмодзи
-                + wrapper.getMessage().getChat().getUserName() + ", твоя статистика изучения "
+                + wrapper.getSupportedMessageOrNull().getChat().getUserName() + ", твоя статистика изучения "
                 + "неправильных глаголов удалена.\n\n"
                 + "Но ты можешь начать заново!";
 
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("Учить неправильные глаголы", "/learn")

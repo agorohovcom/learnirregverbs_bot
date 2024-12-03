@@ -18,7 +18,7 @@ public class FailCallbackQueryStrategy extends ProcessingStrategyAbstractImpl {
 
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("<< главное меню", "/start")

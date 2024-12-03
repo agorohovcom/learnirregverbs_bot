@@ -1,7 +1,9 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
-import com.agorohov.learnirregverbs_bot.component.learning.learn_session.*;
-import com.agorohov.learnirregverbs_bot.component.learning.test_buttons.*;
+import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSession;
+import com.agorohov.learnirregverbs_bot.component.learning.learn_session.LearnSessionKeeper;
+import com.agorohov.learnirregverbs_bot.component.learning.test_buttons.TestButtons;
+import com.agorohov.learnirregverbs_bot.component.learning.test_buttons.TestButtonsBuilder;
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
@@ -20,9 +22,9 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
         String textToSend = "";
         var sendMessage = MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId());
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId());
 
-        if (!sessionKeeper.isExists(wrapper.getMessage().getChatId())) {
+        if (!sessionKeeper.isExists(wrapper.getSupportedMessageOrNull().getChatId())) {
             textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥\n\n"
                     + "⌛️ " // эмодзи
@@ -37,7 +39,7 @@ public class LearnTestTextStrategy extends ProcessingStrategyAbstractImpl {
                     .button("<< главное меню", "/start")
                     .endRow();
         } else {
-            LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
+            LearnSession session = sessionKeeper.get(wrapper.getSupportedMessageOrNull().getChatId());
             TestButtons testButtons = buttonsBuilder.create(session.getVerb());
 
             textToSend = "🎓 " // эмодзи

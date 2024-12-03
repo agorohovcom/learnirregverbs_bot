@@ -23,7 +23,7 @@ public class UnknownUpdateStrategy extends ProcessingStrategyAbstractImpl {
 
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getFrom().getId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getFrom().getId())
                 .setText(textToSend)
                 .row()
                 .button("Помощь", "/help")

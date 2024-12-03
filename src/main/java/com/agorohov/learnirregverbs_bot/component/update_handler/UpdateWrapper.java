@@ -1,66 +1,72 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler;
 
 import com.agorohov.learnirregverbs_bot.dto.UserDTO;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.telegram.telegrambots.meta.api.objects.MaybeInaccessibleMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.sql.Timestamp;
 import java.util.Optional;
 
-@Data
+@Getter
+@Setter
 public class UpdateWrapper {
-
     private final Update update;
     private final long updateWasReceivedAt;
-    private final long botStartsAt;
+    private final long botStartsAt;     // это для чертогов админа
+
+    private final Message supportedMessageOrNull;
+    private final boolean isAdmin;
 
     // для логирования
     private String type;
     private String strategy;
-    
-    // админ?
-    private boolean isAdmin;
 
     // вызывать ли метод execute
     private boolean isExecutable = true;
 
-    // todo надо реализовать обработку случаев когда метод возвращает null
-    // это может произойти в update.hasCallbackQuery() или в этих случаях:
-    // hasPoll()
-    // hasPollAnswer()
-    // hasInlineQuery()
-    // hasChosenInlineQuery()
-    // Думаю, можно либо возвращать Optional, либо добавить везде перед использованием метода getMessage
-    // проверку на null. Если null - ничего не делать, как-то так.
-    public Optional<Message> getMessage() {
-        Optional<Message> result = Optional.empty();
+    public UpdateWrapper(Update update, long updateWasReceivedAt, long botStartsAt, String botOwner) {
+        this.update = update;
+        this.updateWasReceivedAt = updateWasReceivedAt;
+        this.botStartsAt = botStartsAt;
+        supportedMessageOrNull = tryExtractSupportedMessage();
+        isAdmin = supportedMessageOrNull != null
+                && supportedMessageOrNull.getChatId().equals(Long.valueOf(botOwner));
+    }
+
+    private Message tryExtractSupportedMessage() {
         if (update.hasMessage()) {
-            result = Optional.of(update.getMessage());
+            return update.getMessage();
         }
         if (update.hasCallbackQuery()) {
-            var message = update.getCallbackQuery().getMessage();
+            MaybeInaccessibleMessage message = update.getCallbackQuery().getMessage();
             if (message instanceof Message) {
-                result = Optional.of((Message) update.getCallbackQuery().getMessage());
+                return (Message) update.getCallbackQuery().getMessage();
             }
         }
         if (update.hasEditedMessage()) {
-            result = Optional.of(update.getEditedMessage());
+            return update.getEditedMessage();
         }
         if (update.hasChannelPost()) {
-            result = Optional.of(update.getChannelPost());
+            return update.getChannelPost();
         }
         if (update.hasEditedChannelPost()) {
-            result = Optional.of(update.getEditedChannelPost());
+            return update.getEditedChannelPost();
         }
-        return result;
+        return null;
     }
 
     public Optional<UserDTO> giveMeUserDTO() {
-        Optional<Message> message = getMessage();
-        return new UserDTO()
-                .setChatId(getMessage().getChatId())
-                .setUserFirstName(getMessage().getChat().getUserName())
-                .setLastMessageAt(new Timestamp(updateWasReceivedAt));
+        Optional<UserDTO> result = Optional.empty();
+        if (supportedMessageOrNull != null) {
+            UserDTO userDTO = new UserDTO()
+                    .setChatId(supportedMessageOrNull.getChatId())
+                    .setUserFirstName(supportedMessageOrNull.getChat().getUserName())
+                    .setLastMessageAt(new Timestamp(updateWasReceivedAt));
+            result = Optional.of(userDTO);
+        }
+        return result;
     }
 }

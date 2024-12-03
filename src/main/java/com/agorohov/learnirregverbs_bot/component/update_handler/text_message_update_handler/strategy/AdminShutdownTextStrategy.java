@@ -16,7 +16,7 @@ public class AdminShutdownTextStrategy extends ProcessingStrategyAbstractImpl {
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textBuilder())
                 .row()
                 .button("Выключить бота", "/admin_shutdown_confirm")
