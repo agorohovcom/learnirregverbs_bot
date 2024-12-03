@@ -14,7 +14,7 @@ public class StatResetTextStrategy extends ProcessingStrategyAbstractImpl {
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         String textToSend = "📊 "    // эмодзи
                 + "ℝ𝕖𝕤𝕖𝕥 𝕤𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                + wrapper.getMessage().getChat().getUserName()
+                + wrapper.getSupportedMessageOrNull().getChat().getUserName()
                 + ", ты собираешься обнулить свою статистику.\n\n"
                 + "⚠️ "  // эмодзи
                 + "<b>Это действие невозможно отменить!</b>\n\n️"
@@ -22,7 +22,7 @@ public class StatResetTextStrategy extends ProcessingStrategyAbstractImpl {
 
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("Обнулить", "/stat_reset_confirm")

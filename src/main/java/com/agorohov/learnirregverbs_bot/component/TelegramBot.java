@@ -48,18 +48,23 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
 
     @Override
     public void onUpdateReceived(Update update) {
-
         UpdateWrapper wrapper = new UpdateWrapper(
                 update,
                 System.currentTimeMillis(),
-                botStartsAt
+                botStartsAt,
+                getBotOwner()
         );
-        
-        if(wrapper.getMessage().getChatId().equals(Long.valueOf(getBotOwner()))) {
-            wrapper.setAdmin(true);
+
+        // Если сообщение не поддерживается логикой бота, выходим из метода
+        if (wrapper.getSupportedMessageOrNull() == null) {
+            log.info("Update received, but not supported ({})",
+                    update);
+            return;
         }
 
-        userService.save(wrapper.giveMeUserDTO());
+        if (wrapper.giveMeUserDTO().isPresent()) {
+            userService.save(wrapper.giveMeUserDTO().get());
+        }
 
         BotApiMethod<? extends Serializable> updateProcessingResult =
                 updateHandlerFactory.getHandler(wrapper).handle(wrapper);
@@ -71,13 +76,13 @@ public class TelegramBot extends TelegramLongPollingBot implements BotCommands {
         } catch (TelegramApiException e) {
             if (e.getMessage().contains("message is not modified")) {
                 log.warn("Message is not modified, user (id = {}) presses the buttons too quickly",
-                        wrapper.getMessage().getChatId());
+                        wrapper.getSupportedMessageOrNull().getChatId());
             } else {
                 log.error(e.getMessage());
             }
         } finally {
             log.info("Update received (userId = {}, updateId = {}, type = {}, strategy = {})",
-                    wrapper.getMessage().getChatId(),
+                    wrapper.getSupportedMessageOrNull().getChatId(),
                     wrapper.getUpdate().getUpdateId(),
                     wrapper.getType(),
                     wrapper.getStrategy());

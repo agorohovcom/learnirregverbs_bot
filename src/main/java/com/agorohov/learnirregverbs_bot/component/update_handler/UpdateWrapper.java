@@ -1,54 +1,72 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler;
 
 import com.agorohov.learnirregverbs_bot.dto.UserDTO;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.telegram.telegrambots.meta.api.objects.MaybeInaccessibleMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
-@Data
+@Getter
+@Setter
 public class UpdateWrapper {
-
     private final Update update;
     private final long updateWasReceivedAt;
-    private final long botStartsAt;
+    private final long botStartsAt;     // это для чертогов админа
+
+    private final Message supportedMessageOrNull;
+    private final boolean isAdmin;
 
     // для логирования
     private String type;
     private String strategy;
-    
-    // админ?
-    private boolean isAdmin;
 
     // вызывать ли метод execute
     private boolean isExecutable = true;
 
-    public Message getMessage() {
-        Message result = null;
-        if (update.hasMessage()) {
-            result = update.getMessage();
-        }
-        if (update.hasCallbackQuery()) {
-            // вот это опасный момент, там потенциально может не быть Message
-            result = (Message) update.getCallbackQuery().getMessage();
-        }
-        if (update.hasEditedMessage()) {
-            result = update.getEditedMessage();
-        }
-        if (update.hasChannelPost()) {
-            result = update.getChannelPost();
-        }
-        if (update.hasEditedChannelPost()) {
-            result = update.getEditedChannelPost();
-        }
-        return result;
+    public UpdateWrapper(Update update, long updateWasReceivedAt, long botStartsAt, String botOwner) {
+        this.update = update;
+        this.updateWasReceivedAt = updateWasReceivedAt;
+        this.botStartsAt = botStartsAt;
+        supportedMessageOrNull = tryExtractSupportedMessage();
+        isAdmin = supportedMessageOrNull != null
+                && supportedMessageOrNull.getChatId().equals(Long.valueOf(botOwner));
     }
 
-    public UserDTO giveMeUserDTO() {
-        return new UserDTO()
-                .setChatId(getMessage().getChatId())
-                .setUserFirstName(getMessage().getChat().getUserName())
-                .setLastMessageAt(new Timestamp(updateWasReceivedAt));
+    private Message tryExtractSupportedMessage() {
+        if (update.hasMessage()) {
+            return update.getMessage();
+        }
+        if (update.hasCallbackQuery()) {
+            MaybeInaccessibleMessage message = update.getCallbackQuery().getMessage();
+            if (message instanceof Message) {
+                return (Message) update.getCallbackQuery().getMessage();
+            }
+        }
+        if (update.hasEditedMessage()) {
+            return update.getEditedMessage();
+        }
+        if (update.hasChannelPost()) {
+            return update.getChannelPost();
+        }
+        if (update.hasEditedChannelPost()) {
+            return update.getEditedChannelPost();
+        }
+        return null;
+    }
+
+    public Optional<UserDTO> giveMeUserDTO() {
+        Optional<UserDTO> result = Optional.empty();
+        if (supportedMessageOrNull != null) {
+            UserDTO userDTO = new UserDTO()
+                    .setChatId(supportedMessageOrNull.getChatId())
+                    .setUserFirstName(supportedMessageOrNull.getChat().getUserName())
+                    .setLastMessageAt(new Timestamp(updateWasReceivedAt));
+            result = Optional.of(userDTO);
+        }
+        return result;
     }
 }

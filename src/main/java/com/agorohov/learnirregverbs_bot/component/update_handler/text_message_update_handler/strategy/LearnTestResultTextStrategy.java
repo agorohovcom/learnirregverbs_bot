@@ -6,6 +6,7 @@ import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrat
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
+import com.agorohov.learnirregverbs_bot.exception.UserNotFoundException;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +37,13 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         String textToSend = "";
 
-        if (!sessionKeeper.isExists(wrapper.getMessage().getChatId())) {
+        if (!sessionKeeper.isExists(wrapper.getSupportedMessageOrNull().getChatId())) {
             textToSend = "🎓 " // эмодзи
                     + "𝕋𝕖𝕤𝕥 𝕣𝕖𝕤𝕦𝕝𝕥\n\n"
                     + "⌛️ " // эмодзи
                     + "Текущая сессия окончена, друг.";
         } else {
-            LearnSession session = sessionKeeper.get(wrapper.getMessage().getChatId());
+            LearnSession session = sessionKeeper.get(wrapper.getSupportedMessageOrNull().getChatId());
             session.saveAnswer(wrapper.getUpdate().getCallbackQuery().getData());
 
             VerbDTO verb = session.getVerb();
@@ -52,11 +53,14 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
             if (session.getLearningStatisticsOrNull() != null) {
                 learningStatistics = session.getLearningStatisticsOrNull();
             } else {
-                learningStatistics = learningStatisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
-                        ? learningStatisticsService.findByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
+                learningStatistics = learningStatisticsService.existByUserChatIdAndVerbId(
+                        wrapper.getSupportedMessageOrNull().getChatId(), verb.getId())
+                        ? learningStatisticsService.findByUserChatIdAndVerbId(
+                        wrapper.getSupportedMessageOrNull().getChatId(), verb.getId())
                         : new LearningStatisticsDTO()
                                 .setVerb(verb)
-                                .setUser(wrapper.giveMeUserDTO());
+                        .setUser(wrapper.giveMeUserDTO()
+                                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден")));
             }
 
             // если 3 ответа ещё не выбрано, не выполнять execute()
@@ -84,10 +88,12 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
                             + "К сожалению, ответ неверный.\n\n"
                             + "✖️ " // эмодзи
                             + "Твой ответ:\n\n"
-                            + "<b>" + session.getAnswer(0) + " / " + session.getAnswer(1) + " / " + session.getAnswer(2) + "</b>\n\n"
+                            + "<b>" + session.getAnswer(0) + " / "
+                            + session.getAnswer(1) + " / "
+                            + session.getAnswer(2) + "</b>\n\n"
                             + "✔️ " // эмодзи
                             + "Правильный ответ:\n\n"
-                            //                            + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
+                            // + "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
                             + "<b>" + verb + "</b>\n"
                             + "(" + verb.getTranslation() + ")\n\n"
                             + "- - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -100,7 +106,7 @@ public class LearnTestResultTextStrategy extends ProcessingStrategyAbstractImpl 
 
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("Учить следующий глагол", "/learn")

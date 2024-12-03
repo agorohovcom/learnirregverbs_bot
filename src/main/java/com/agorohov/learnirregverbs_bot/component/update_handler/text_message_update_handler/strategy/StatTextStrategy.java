@@ -29,12 +29,12 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         List<LearningStatisticsDTO> statistics = learningStatisticsService
-                .getAllStatisticsById(wrapper.getMessage().getChatId());
+                .getAllStatisticsById(wrapper.getSupportedMessageOrNull().getChatId());
 
         String textToSend = "";
         var sendMessage = MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId());
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId());
 
         if (!statistics.isEmpty()) {
             int verbsCount = verbService.getCount();
@@ -57,7 +57,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
 
             textToSend = "📊 "    // эмодзи
                 + "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                    + wrapper.getMessage().getChat().getUserName()
+                    + wrapper.getSupportedMessageOrNull().getChat().getUserName()
                     + ", вот твоя статистика:\n\n"
                     + " • Пройдено тестов: <b>" + attemptsTotal + "</b>\n"
                     + " • Встречено глаголов: <b>" + learnedVerbsAmount + " (" + learnedVerbsPercent + " %)</b>\n"
@@ -75,7 +75,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
         } else {
             textToSend = "📊 "    // эмодзи
                 + "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                    + wrapper.getMessage().getChat().getUserName() + ", твоя статистика пока что пуста.\n\n"
+                    + wrapper.getSupportedMessageOrNull().getChat().getUserName() + ", твоя статистика пока что пуста.\n\n"
                     + "Изучай неправильные глаголы, и с каждым ответом твоя статистика будет изменяться.";
 
             sendMessage.setText(textToSend)
@@ -87,7 +87,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
                     .endRow();
         }
 
-        log.info("User (id = {}) requested his statistics", wrapper.getMessage().getChatId());
+        log.info("User (id = {}) requested his statistics", wrapper.getSupportedMessageOrNull().getChatId());
         return sendMessage;
     }
 }

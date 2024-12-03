@@ -17,7 +17,7 @@ public class AdminTextStrategy extends ProcessingStrategyAbstractImpl {
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textBuilder(wrapper))
                 .row()
                 .button("Вызвать GC", "/admin_call_gc")

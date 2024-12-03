@@ -1,10 +1,10 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy;
 
+import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
-import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 
 @Component
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public class StartTextStrategy extends ProcessingStrategyAbstractImpl {
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         String textToSend = "🇬🇧 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟 𝕀𝕣𝕣𝕖𝕘𝕦𝕝𝕒𝕣 𝕍𝕖𝕣𝕓𝕤 𝔹𝕠𝕥\n\n"
-                + "Привет, " + wrapper.getMessage().getChat().getUserName() + "!\n\n"
+                + "Привет, " + wrapper.getSupportedMessageOrNull().getChat().getUserName() + "!\n\n"
                 + "🤖 " // эмодзи
                 + "Это бот для изучения неправильных глаголов английского языка.\n\n"
                 + "Тут ты можешь:\n\n"
@@ -29,7 +29,7 @@ public class StartTextStrategy extends ProcessingStrategyAbstractImpl {
 
         MessageBuilder result = MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("Учить неправильные глаголы", "/learn")

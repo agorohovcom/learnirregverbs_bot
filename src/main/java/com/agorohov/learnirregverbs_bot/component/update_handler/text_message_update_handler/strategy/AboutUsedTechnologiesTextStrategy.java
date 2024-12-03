@@ -25,7 +25,7 @@ public class AboutUsedTechnologiesTextStrategy extends ProcessingStrategyAbstrac
 
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("< о боте", "/about")
