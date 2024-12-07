@@ -29,8 +29,8 @@ public class DotenvLoader {
 
         // Определение файла для активного профиля или использование dev по умолчанию
         String profileEnvFileName = profile != null
-                ? envFileName + "." + profile
-                : envFileName + ".dev";
+                ? "%s.%s".formatted(envFileName, profile)
+                : "%s.dev".formatted(envFileName);
 
         // Загрузка файла для активного профиля
         Dotenv profileDotenv = Dotenv.configure()
