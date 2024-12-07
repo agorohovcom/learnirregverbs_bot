@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.agorohov.tgbot</groupId>
     <artifactId>irregularverbs</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <name>irregularverbs</name>
     <description>AGorohov's Telegram bot for learning irregular verbs</description>
     <properties>
