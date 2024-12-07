@@ -5,12 +5,12 @@ import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.entity.LearningStatisticsEntity;
 import com.agorohov.learnirregverbs_bot.repository.LearningStatisticsRepository;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -20,25 +20,26 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
     private final LearningStatisticsRepository learningStatisticsRepository;
     private final EntityDTOMapper mapper;
 
-//    @Transactional      // ???
+    //    @Transactional      // ???
     @Override
     public void save(LearningStatisticsDTO learningStatistics) {
-        boolean isStatExists = existByUserChatIdAndVerbId(learningStatistics.getUser().getChatId(), learningStatistics.getVerb().getId());
+        boolean isStatExists = existByUserChatIdAndVerbId(
+                learningStatistics.getUser().getChatId(),
+                learningStatistics.getVerb().getId());
 
         LearningStatisticsEntity entity = isStatExists
-                ? mapper.toEntity(findByUserChatIdAndVerbId(learningStatistics.getUser().getChatId(), learningStatistics.getVerb().getId())
+                ? mapper.toEntity(findByUserChatIdAndVerbId(learningStatistics.getUser().getChatId(),
+                        learningStatistics.getVerb().getId())
                         .setAttempts(learningStatistics.getAttempts()))
-                        .setCorrectSeries(learningStatistics.getCorrectSeries())
-                        .setRank(learningStatistics.getRank())
+                .setCorrectSeries(learningStatistics.getCorrectSeries())
+                .setRank(learningStatistics.getRank())
                 : mapper.toEntity(learningStatistics);
 
         learningStatisticsRepository.saveAndFlush(entity);
 
-        log.info("Test result for user (id = "
-                + learningStatistics.getUser().getChatId()
-                + ") and verb (id = "
-                + learningStatistics.getVerb().getId()
-                + ") saved to the DB");
+        log.info("Test result for user (id = {}) and verb (id = {}) saved to the DB",
+                learningStatistics.getUser().getChatId(),
+                learningStatistics.getVerb().getId());
     }
 
     @Override
@@ -96,14 +97,14 @@ public class LearningStatisticsServiceImpl implements LearningStatisticsService 
     public List<LearningStatisticsDTO> getAllStatisticsById(Long userChatId) {
         return learningStatisticsRepository.findAllStatisticsByUserChatId(userChatId)
                 .stream()
-                .map(e -> mapper.toDTO(e))
-                .collect(Collectors.toUnmodifiableList());
+                .map(mapper::toDTO)
+                .toList();
     }
 
     @Transactional  // ???
     @Override
     public void deleteAllByUserChatId(Long userChatId) {
         learningStatisticsRepository.deleteByUserChatId(userChatId);
-        log.info("The user (id = " + userChatId + ") has reset their statistics");
+        log.info("The user (id = {}) has reset their statistics", userChatId);
     }
 }

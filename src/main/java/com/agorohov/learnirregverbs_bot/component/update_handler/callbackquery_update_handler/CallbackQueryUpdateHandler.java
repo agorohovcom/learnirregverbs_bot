@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
+import java.io.Serializable;
+
 @Component
 @RequiredArgsConstructor
 public class CallbackQueryUpdateHandler implements UpdateHandler {
@@ -15,7 +17,7 @@ public class CallbackQueryUpdateHandler implements UpdateHandler {
     private final CallbackQueryProcessingStrategyFactory strategyFactory;
 
     @Override
-    public BotApiMethod handle(UpdateWrapper wrapper) {
+    public BotApiMethod<? extends Serializable> handle(UpdateWrapper wrapper) {
         wrapper.setType(UPDATE_TYPE);
         return strategyFactory.getStrategy(wrapper).processUpdate(wrapper);
     }

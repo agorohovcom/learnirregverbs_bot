@@ -1,5 +1,5 @@
 server:
-  port: 9999
+  port: ${SERVER_PORT}
 
 spring:
   mvc:
@@ -8,29 +8,20 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
   datasource:
-    # url: jdbc:h2:file:./db/db
-    url: jdbc:h2:file:/app/db/db
-    # url: jdbc:h2:file:/var/lib/agorohov.com/irregularverbs/appdb Эту сейчас не юзаю
-    username: u
-    password:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
   jpa:
-    # По умолчанию сценарии data.sql выполняются до инициализации Hibernate.
-    # Нам нужен Hibernate для создания таблиц перед вставкой в ​​них данных.
-    # Чтобы добиться этого, нам нужно отложить инициализацию нашего источника данных.
-    # Для этого мы воспользуемся свойством spring.jpa.defer-datasource-initialization=true
-    #defer-datasource-initialization: true
+    # defer-datasource-initialization: true
     open-in-view: true
     hibernate:
       # ddl-auto: create, update, create-drop, validate, none
       ddl-auto: validate
-#    вывод sql в консоль
-#      show-sql:
-#        false
     properties:
       hibernate:
-        # форматирование вывода запросов в консоль
+        # Форматирование вывода запросов в консоль
         format_sql: true
-        # включает генерирование статистики о запросах на уровне Hibernate
+        # Включает генерирование статистики о запросах на уровне Hibernate
         # generate_statistics: true
         # включает сортировку запросов по имени таблицы.
         # В случае если инсерты не отсортированы по имени таблицы, 
@@ -38,7 +29,7 @@ spring:
         # order_inserts: true
         # jdbc.batch_size: 1000
         # enable_lazy_load_no_trans: true
-  # Обратите внимание, что для любой инициализации на основе сценария,
+  # для любой инициализации на основе сценария,
   # то есть для вставки данных через data.sql или создания схемы через Schema.sql,
   # нам необходимо установить свойство spring.sql.init.mode=always
   #sql:
@@ -47,19 +38,16 @@ spring:
 
   h2:
     console:
-      # enabled: true
-      enabled: false
+      enabled: ${H2_CONSOLE_ENABLED}
   
 bot:
-  name: learnirregverbs_bot
-  owner: ${IRRVERBSBOTOWNER}
-  token: ${IRRVERBSBOTTOKEN}
-  # token: ${AGOROHOVTESTBOTTOKEN}
+  name: ${IRR_VERBS_BOT_NAME}
+  token: ${IRR_VERBS_BOT_TOKEN}
+  owner: ${IRR_VERBS_BOT_OWNER}
 
 cron:
   # секунды / минуты / часы / день / месяц / день недели
   cleanOldLearnSessions: '0 0 */2 * * *'
-  #cleanOldLearnSessions: '0/10 * * * * *'
   
 session:
     verbs_amount: 5

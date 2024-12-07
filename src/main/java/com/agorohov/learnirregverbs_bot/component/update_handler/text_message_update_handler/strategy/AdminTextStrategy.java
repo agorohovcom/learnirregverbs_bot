@@ -17,7 +17,7 @@ public class AdminTextStrategy extends ProcessingStrategyAbstractImpl {
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textBuilder(wrapper))
                 .row()
                 .button("Вызвать GC", "/admin_call_gc")
@@ -59,9 +59,11 @@ public class AdminTextStrategy extends ProcessingStrategyAbstractImpl {
         return String.format("%d д. : %d ч. : %d мин. : %d сек.",
                 days, hours, minutes, seconds);
     }
-    
+
+    /**
+     * @return количество используемых приложением МБ
+     */
     private int getUsedMB() {
-        // считаем используемую память и переводим в МБ
         return (int) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576;
     }
 }

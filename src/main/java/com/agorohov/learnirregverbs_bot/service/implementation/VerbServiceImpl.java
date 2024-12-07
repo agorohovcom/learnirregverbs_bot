@@ -5,9 +5,10 @@ import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.exception.VerbNotFoundByIdException;
 import com.agorohov.learnirregverbs_bot.repository.VerbRepository;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class VerbServiceImpl implements VerbService {
     @Override
     public VerbDTO findById(Integer id) {
         return mapper.toDTO((verbRepository.findById(id))
-                .orElseThrow(() -> new VerbNotFoundByIdException("Глагол с переданым id не найден, id: " + id))
+                .orElseThrow(() -> new VerbNotFoundByIdException("Глагол с переданным id не найден, id: " + id))
         );
     }
 

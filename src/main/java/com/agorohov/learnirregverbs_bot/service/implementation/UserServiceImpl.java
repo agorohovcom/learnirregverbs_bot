@@ -5,11 +5,12 @@ import com.agorohov.learnirregverbs_bot.dto.UserDTO;
 import com.agorohov.learnirregverbs_bot.entity.UserEntity;
 import com.agorohov.learnirregverbs_bot.repository.UserRepository;
 import com.agorohov.learnirregverbs_bot.service.UserService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -22,9 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDTO> findById(Long id) {
         var userEntityOptional = userRepository.findById(id);
-        return userEntityOptional.isPresent()
-                ? Optional.of(mapper.toDTO(userEntityOptional.get()))
-                : Optional.empty();
+        return userEntityOptional.map(mapper::toDTO);
     }
 
     @Override
@@ -37,9 +36,9 @@ public class UserServiceImpl implements UserService {
     public void save(UserDTO dto) {
         boolean isUserExists = existsById(dto.getChatId());
 
-        // если пользователь с таким ID уже есть, используем его,
+        // Если пользователь с таким ID уже есть, используем его,
         // только обновляем имя (вдруг изменилось) и дату последнего сообщения.
-        // если пользователя с таким ID ещё нет, создаём нового
+        // Если пользователя с таким ID ещё нет, создаём нового
         UserEntity entity = isUserExists
                 ? mapper.toEntity(findById(dto.getChatId()).get())
                         .setUserName(dto.getUserFirstName())
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService {
         try {
             userRepository.saveAndFlush(entity);
             if (!isUserExists) {
-                log.info("New user with id = " + entity.getChatId() + " added to the DB");
+                log.info("New user with id = {} added to the DB", entity.getChatId());
             }
         } catch (DataAccessException e) {
             log.error(e.getMessage());

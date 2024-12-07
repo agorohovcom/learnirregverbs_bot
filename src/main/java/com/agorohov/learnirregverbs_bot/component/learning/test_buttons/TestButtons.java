@@ -3,10 +3,10 @@ package com.agorohov.learnirregverbs_bot.component.learning.test_buttons;
 import java.util.Map;
 
 public class TestButtons {
-    
-    private Map<Integer, String[]> buttons;
-    
-    public TestButtons(Map buttons){
+
+    private final Map<Integer, String[]> buttons;
+
+    public TestButtons(Map<Integer, String[]> buttons) {
         this.buttons = buttons;
     }
 

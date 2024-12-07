@@ -3,17 +3,18 @@ package com.agorohov.learnirregverbs_bot.component.learning.learn_session;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @Slf4j
@@ -63,7 +64,7 @@ public class LearnSessionKeeper {
 
     // verbs_amount случайных глаголов из БД
     private VerbDTO[] getRandomVerbDtos() {
-        return Stream.generate(() -> verbService.getRandomVerbDTO())
+        return Stream.generate(verbService::getRandomVerbDTO)
                 .distinct()
                 .limit(verbs_amount)
                 .toArray(VerbDTO[]::new);
@@ -139,12 +140,11 @@ public class LearnSessionKeeper {
                 .entrySet()
                 .stream()
                 .filter(e -> ((now - e.getValue().getCreatedAt()) < 7200000))
-                //                                .filter(e -> ((now - e.getValue().getCreatedAt()) < 5000)) // 5 сек для теста
+                // .filter(e -> ((now - e.getValue().getCreatedAt()) < 5000)) // 5 сек для теста
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        log.info(sizeBefore - learnSessions.size()
-                + " old learn sessions cleared, "
-                + learnSessions.size()
-                + " sessions left");
+        log.info("{} old learn sessions cleared, {} sessions left",
+                sizeBefore - learnSessions.size(),
+                learnSessions.size());
     }
 }

@@ -6,10 +6,11 @@ import com.agorohov.learnirregverbs_bot.dto.LearningStatisticsDTO;
 import com.agorohov.learnirregverbs_bot.service.LearningStatisticsService;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /** Считаем:
  * 1. Сколько всего пройдено тестов
@@ -28,18 +29,18 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
         List<LearningStatisticsDTO> statistics = learningStatisticsService
-                .getAllStatisticsById(wrapper.getMessage().getChatId());
+                .getAllStatisticsById(wrapper.getSupportedMessageOrNull().getChatId());
 
         String textToSend = "";
         var sendMessage = MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId());
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId());
 
         if (!statistics.isEmpty()) {
             int verbsCount = verbService.getCount();
-            int appemptsTotal = statistics
+            int attemptsTotal = statistics
                     .stream()
-                    .mapToInt(e -> e.getAttempts())
+                    .mapToInt(LearningStatisticsDTO::getAttempts)
                     .sum();
             int learnedVerbsAmount = statistics.size();
             int learnedVerbsPercent = 100 * learnedVerbsAmount / verbsCount;
@@ -56,9 +57,9 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
 
             textToSend = "📊 "    // эмодзи
                 + "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                    + wrapper.getMessage().getChat().getUserName()
+                    + wrapper.getSupportedMessageOrNull().getChat().getUserName()
                     + ", вот твоя статистика:\n\n"
-                    + " • Пройдено тестов: <b>" + appemptsTotal + "</b>\n"
+                    + " • Пройдено тестов: <b>" + attemptsTotal + "</b>\n"
                     + " • Встречено глаголов: <b>" + learnedVerbsAmount + " (" + learnedVerbsPercent + " %)</b>\n"
                     + " • Хорошо изучено: <b>" + hightRateVerbs + " (" + hightRateVerbsPercent + " %)</b>\n"
                     + " • Средне изучено: <b>" + midRateVerbs + " (" + midRateVerbsPercent + " %)</b>\n\n"
@@ -74,7 +75,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
         } else {
             textToSend = "📊 "    // эмодзи
                 + "𝕊𝕥𝕒𝕥𝕚𝕔𝕥𝕚𝕔𝕤\n\n"
-                    + wrapper.getMessage().getChat().getUserName() + ", твоя статистика пока что пуста.\n\n"
+                    + wrapper.getSupportedMessageOrNull().getChat().getUserName() + ", твоя статистика пока что пуста.\n\n"
                     + "Изучай неправильные глаголы, и с каждым ответом твоя статистика будет изменяться.";
 
             sendMessage.setText(textToSend)
@@ -86,7 +87,7 @@ public class StatTextStrategy extends ProcessingStrategyAbstractImpl {
                     .endRow();
         }
 
-        log.info("User (id = " + wrapper.getMessage().getChatId() + ") requested his statistics");
+        log.info("User (id = {}) requested his statistics", wrapper.getSupportedMessageOrNull().getChatId());
         return sendMessage;
     }
 }

@@ -7,6 +7,8 @@ Dockerfile
 mvnw
 mvnw.cmd
 secretFile
+.env
+.env.*
 
 !.mvn/wrapper/maven-wrapper.jar
 

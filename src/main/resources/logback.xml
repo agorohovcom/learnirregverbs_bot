@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- <configuration debug="true">  Это если хочу выводить логи logback -->
 <configuration>
-    
-    <property name="LOG_FILE" value="applog" />
-    <!-- <property name="LOG_DIR" value="logs" /> -->
-    <property name="LOG_DIR" value="/app/logs" />
-    <!-- <property name="LOG_DIR" value="/var/log/agorohov.com/irregularverbs" /> Эту сейчас не юзаю --> 
+
+<property name="LOG_FILE" value="${LOG_FILE:-applog}" />
+    <property name="LOG_DIR" value="${LOG_DIR:-logs}" />
     
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -17,11 +16,10 @@
         <rollingPolicy
             class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
-            <maxFileSize>1MB</maxFileSize>
-            <maxHistory>30</maxHistory>
-            <maxFileSize>5MB</maxFileSize>
-            <totalSizeCap>100MB</totalSizeCap>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>   
+            <maxFileSize>100KB</maxFileSize>
+            <maxHistory>1000</maxHistory> <!-- Архивы старше этого диапазона по дням игнорируются! -->
+            <totalSizeCap>10MB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         
         <encoder>
@@ -48,4 +46,5 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE" />
     </logger>
+
 </configuration>

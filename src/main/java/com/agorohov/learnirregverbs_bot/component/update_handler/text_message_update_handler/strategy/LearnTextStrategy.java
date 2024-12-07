@@ -19,13 +19,16 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
-        LearnSession session = sessionKeeper.isExists(wrapper.getMessage().getChatId()) && sessionKeeper.hasNextVerb(wrapper.getMessage().getChatId())
-                ? sessionKeeper.get(wrapper.getMessage().getChatId())
-                : sessionKeeper.createAndPutAndGet(wrapper.getMessage().getChatId());
+        LearnSession session = sessionKeeper.isExists(wrapper.getSupportedMessageOrNull().getChatId())
+                && sessionKeeper.hasNextVerb(wrapper.getSupportedMessageOrNull().getChatId())
+                ? sessionKeeper.get(wrapper.getSupportedMessageOrNull().getChatId())
+                : sessionKeeper.createAndPutAndGet(wrapper.getSupportedMessageOrNull().getChatId());
         
         VerbDTO verb = session.getNextVerb();
-        short starsAmount = statisticsService.existByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId())
-                ? statisticsService.findByUserChatIdAndVerbId(wrapper.getMessage().getChatId(), verb.getId()).getRank()
+        short starsAmount = statisticsService.existByUserChatIdAndVerbId(
+                wrapper.getSupportedMessageOrNull().getChatId(), verb.getId())
+                ? statisticsService.findByUserChatIdAndVerbId(
+                wrapper.getSupportedMessageOrNull().getChatId(), verb.getId()).getRank()
                 : 0;
         
         String startText = "";
@@ -34,7 +37,7 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
         if (starsAmount < 2) {
             startText = "🎓 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟\n\n"
-                + wrapper.getMessage().getChat().getUserName()
+                    + wrapper.getSupportedMessageOrNull().getChat().getUserName()
                 + ", запомни три формы глагола:\n\n";
             verbText = "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
                 + "📖 " // эмодзи
@@ -45,7 +48,7 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
         } else if (starsAmount >= 2 && starsAmount < 5) {
             startText = "🎓 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟\n\n"
-                + wrapper.getMessage().getChat().getUserName()
+                    + wrapper.getSupportedMessageOrNull().getChat().getUserName()
                 + ", вспомни три формы глагола:\n\n";
             verbText = "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
                 + "📖 " // эмодзи
@@ -56,7 +59,7 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
         } else {
             startText = "🎓 " // эмодзи
                 + "𝕃𝕖𝕒𝕣𝕟\n\n"
-                + wrapper.getMessage().getChat().getUserName()
+                    + wrapper.getSupportedMessageOrNull().getChat().getUserName()
                 + ", вспомни все 3 формы глагола:\n\n";
             verbText = "- - - - - - - - - - - - - - - - - - - - - - - - -\n\n"
 //                + "📖 " // эмодзи
@@ -73,7 +76,7 @@ public class LearnTextStrategy extends ProcessingStrategyAbstractImpl {
 
         return MessageBuilder
                 .create()
-                .setChatId(wrapper.getMessage().getChatId())
+                .setChatId(wrapper.getSupportedMessageOrNull().getChatId())
                 .setText(textToSend)
                 .row()
                 .button("Пройти тест", "/learn_test")
