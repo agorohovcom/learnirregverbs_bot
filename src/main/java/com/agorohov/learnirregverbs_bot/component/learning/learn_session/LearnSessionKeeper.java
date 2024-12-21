@@ -52,8 +52,8 @@ public class LearnSessionKeeper {
 
     public LearnSession createAndPutAndGet(Long userId) {
 //        VerbDTO[] verbs = getRandomVerbDtos();
-//        VerbDTO[] verbs = getRandomVerbDtosByRank(userId);
-        VerbDTO[] verbs = getAlwaysFirstVerbDtos(verbs_amount);
+        VerbDTO[] verbs = getRandomVerbDtosByRank(userId);
+//        VerbDTO[] verbs = getAlwaysFirstVerbDtos(verbs_amount);
 
         LearnSession result = new LearnSession(userId, verbs, cycles_amount);
 

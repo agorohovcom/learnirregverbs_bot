@@ -2,6 +2,7 @@ package com.agorohov.learnirregverbs_bot.component.update_handler.text_message_u
 
 import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategyAbstractImpl;
 import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
+import com.agorohov.learnirregverbs_bot.service.CacheService;
 import com.agorohov.learnirregverbs_bot.service.UserService;
 import com.agorohov.learnirregverbs_bot.utils.MessageBuilder;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class AdminTextStrategy extends ProcessingStrategyAbstractImpl {
     
     private final UserService userService;
+    private final CacheService cacheService;
 
     @Override
     protected MessageBuilder strategyRealization(UpdateWrapper wrapper) {
@@ -43,7 +45,10 @@ public class AdminTextStrategy extends ProcessingStrategyAbstractImpl {
                 .append("\n\n")
                 .append("Приложение использует памяти:\n")
                 .append(getUsedMB())
-                .append(" Мб\n\n");
+                .append(" Мб\n\n")
+                .append("Размер кэша глаголов:\n")
+                .append(cacheService.getCacheSize("verbs"))
+                .append("\n\n");
         
         
         return result.toString();
