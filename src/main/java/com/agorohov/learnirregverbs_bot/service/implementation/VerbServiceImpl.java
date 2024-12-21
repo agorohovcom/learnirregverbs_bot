@@ -20,13 +20,10 @@ public class VerbServiceImpl implements VerbService {
     private final EntityDTOMapper mapper;
     private final Random random;
 
-    // todo поменять на что-то другое
-//    private final ApplicationContext applicationContext;
-
     @Override
     public VerbDTO findById(Integer id) {
 //        System.out.println("В кэше нет глагола с id " + id);
-//        log.info("В кэше нет глагола с id {}", id);
+        log.info("В кэше нет глагола с id {}", id);
 //        System.out.println("Текущий размер кэша: " + cacheService.getCacheSize("verbs"));
         return mapper.toDTO((verbRepository.findById(id))
                 .orElseThrow(() -> new VerbNotFoundByIdException("Глагол с переданным id не найден, id: " + id))
@@ -35,12 +32,7 @@ public class VerbServiceImpl implements VerbService {
 
     @Override
     public Integer getCount() {
+        log.info("Вызов метода getCount() для получения количества глаголов (значит, его нет в кэше)");
         return (int) verbRepository.count();
     }
-
-//    @Override
-//    public VerbDTO getRandomVerbDTO() {
-//        VerbService verbService = applicationContext.getBean(VerbService.class);
-//        return verbService.findById(random.nextInt(getCount()) + 1);
-//    }
 }

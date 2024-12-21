@@ -8,7 +8,6 @@ public interface VerbService {
     @Cacheable("verbs")
     VerbDTO findById(Integer id);
 
+    @Cacheable("verbCount")
     Integer getCount();
-
-//    VerbDTO getRandomVerbDTO();
 }
