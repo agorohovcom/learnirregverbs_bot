@@ -2,7 +2,7 @@ package com.agorohov.learnirregverbs_bot.service;
 
 public interface CacheService {
 
-    void printCacheContent(String cacheName);
+//    void printCacheContent(String cacheName);
 
     int getCacheSize(String cacheName);
 

@@ -23,7 +23,7 @@ public class VerbServiceImpl implements VerbService {
     @Override
     public VerbDTO findById(Integer id) {
 //        System.out.println("В кэше нет глагола с id " + id);
-        log.info("В кэше нет глагола с id {}", id);
+//        log.info("В кэше нет глагола с id {}", id);
 //        System.out.println("Текущий размер кэша: " + cacheService.getCacheSize("verbs"));
         return mapper.toDTO((verbRepository.findById(id))
                 .orElseThrow(() -> new VerbNotFoundByIdException("Глагол с переданным id не найден, id: " + id))
