@@ -58,7 +58,7 @@ public class TestButtonsBuilder {
     private String[] getRandomVerbs(VerbDTO verb) {
         // получим массив из рандомных форм глаголов amount штук
         return Stream
-                .generate(verbService::getRandomVerbDTO)
+                .generate(() -> verbService.findById(random.nextInt(verbService.getCount()) + 1))
                 .filter(e -> !e.equals(verb))
                 .distinct()
                 .limit(TestButtonsBuilder.TEST_BUTTONS_AMOUNT)

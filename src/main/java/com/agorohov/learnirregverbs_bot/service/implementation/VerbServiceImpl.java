@@ -4,12 +4,9 @@ import com.agorohov.learnirregverbs_bot.component.mapper.EntityDTOMapper;
 import com.agorohov.learnirregverbs_bot.dto.VerbDTO;
 import com.agorohov.learnirregverbs_bot.exception.VerbNotFoundByIdException;
 import com.agorohov.learnirregverbs_bot.repository.VerbRepository;
-import com.agorohov.learnirregverbs_bot.service.CacheService;
 import com.agorohov.learnirregverbs_bot.service.VerbService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -23,13 +20,10 @@ public class VerbServiceImpl implements VerbService {
     private final EntityDTOMapper mapper;
     private final Random random;
 
-    private final CacheService cacheService;
-
     // todo поменять на что-то другое
-    private final ApplicationContext applicationContext;
+//    private final ApplicationContext applicationContext;
 
     @Override
-    @Cacheable("verbs")
     public VerbDTO findById(Integer id) {
 //        System.out.println("В кэше нет глагола с id " + id);
 //        log.info("В кэше нет глагола с id {}", id);
@@ -44,9 +38,9 @@ public class VerbServiceImpl implements VerbService {
         return (int) verbRepository.count();
     }
 
-    @Override
-    public VerbDTO getRandomVerbDTO() {
-        VerbService verbService = applicationContext.getBean(VerbService.class);
-        return verbService.findById(random.nextInt(getCount()) + 1);
-    }
+//    @Override
+//    public VerbDTO getRandomVerbDTO() {
+//        VerbService verbService = applicationContext.getBean(VerbService.class);
+//        return verbService.findById(random.nextInt(getCount()) + 1);
+//    }
 }

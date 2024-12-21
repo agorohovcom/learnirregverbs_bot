@@ -57,14 +57,14 @@ public class LearnSessionKeeper {
 
         LearnSession result = new LearnSession(userId, verbs, cycles_amount);
 
-        log.info("User (id = " + userId + ") received a new batch of verbs");
+        log.info("User (id = {}) received a new batch of verbs", userId);
 
         return put(result);
     }
 
     // verbs_amount случайных глаголов из БД
     private VerbDTO[] getRandomVerbDtos() {
-        return Stream.generate(verbService::getRandomVerbDTO)
+        return Stream.generate(() -> verbService.findById(random.nextInt(verbService.getCount()) + 1))
                 .distinct()
                 .limit(verbs_amount)
                 .toArray(VerbDTO[]::new);
@@ -76,7 +76,7 @@ public class LearnSessionKeeper {
         VerbDTO[] result = new VerbDTO[verbs_amount];
 
         for (int i = 0; i < verbs_amount;) {
-            VerbDTO verb = verbService.getRandomVerbDTO();
+            VerbDTO verb = verbService.findById(random.nextInt(verbService.getCount()) + 1);
 //            System.out.println("Слово: " + verb.getInfinitive());
 
             int rank = learningStatisticsService.existByUserChatIdAndVerbId(userId, verb.getId())
