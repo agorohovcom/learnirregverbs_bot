@@ -52,8 +52,8 @@ public class LearnSessionKeeper {
 
     public LearnSession createAndPutAndGet(Long userId) {
 //        VerbDTO[] verbs = getRandomVerbDtos();
-        VerbDTO[] verbs = getRandomVerbDtosByRank(userId);
-//        VerbDTO[] verbs = getAlwaysFirstFiveVerbDtos(5);
+//        VerbDTO[] verbs = getRandomVerbDtosByRank(userId);
+        VerbDTO[] verbs = getAlwaysFirstVerbDtos(verbs_amount);
 
         LearnSession result = new LearnSession(userId, verbs, cycles_amount);
 
@@ -119,10 +119,10 @@ public class LearnSessionKeeper {
     }
 
     // всегда первые amount глаголов для теста
-    private VerbDTO[] getAlwaysFirstFiveVerbDtos(int amount) {
-        VerbDTO[] result = new VerbDTO[5];
+    private VerbDTO[] getAlwaysFirstVerbDtos(int amount) {
+        VerbDTO[] result = new VerbDTO[amount];
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < amount; i++) {
             result[i] = verbService.findById(i + 1);
 
         }
