@@ -1,11 +1,12 @@
 package com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update_handler;
 
-import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update_handler.strategy.*;
+import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
+import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update_handler.strategy.DismissCallbackQueryStrategy;
+import com.agorohov.learnirregverbs_bot.component.update_handler.callbackquery_update_handler.strategy.FailCallbackQueryStrategy;
 import com.agorohov.learnirregverbs_bot.component.update_handler.text_message_update_handler.strategy.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import com.agorohov.learnirregverbs_bot.component.update_handler.ProcessingStrategy;
-import com.agorohov.learnirregverbs_bot.component.update_handler.UpdateWrapper;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class CallbackQueryProcessingStrategyFactory {
     private final HelpTextStrategy helpTextStrategy;
     private final AdminTextStrategy adminTextStrategy;
     private final AdminCalledGCTextStrategy adminCalledGCTextStrategy;
+    private final AdminClearVerbsCacheStrategy adminClearVerbsCacheStrategy;
     private final AdminShutdownTextStrategy adminShutdownTextStrategy;
     private final AdminShutdownConfirmTextStrategy adminShutdownConfirmTextStrategy;
 
@@ -41,8 +43,8 @@ public class CallbackQueryProcessingStrategyFactory {
             return learnTextStrategy;
         } else if (data.equals("/learn_test")) {
             return learnTestTextStrategy;
-        } else if (data.startsWith("/learn_test_fail_") 
-                || data.startsWith("/learn_test_ok_") 
+        } else if (data.startsWith("/learn_test_fail_")
+                || data.startsWith("/learn_test_ok_")
                 || data.startsWith("/learn_test_random_double_")) {
             return learnTestResultTextStrategy;
         } else if (data.equals("/stat")) {
@@ -63,6 +65,8 @@ public class CallbackQueryProcessingStrategyFactory {
             return adminTextStrategy;
         } else if (data.equals("/admin_call_gc") && wrapper.isAdmin()) {
             return adminCalledGCTextStrategy;
+        } else if (data.equals("/admin_clear_verbs_cache") && wrapper.isAdmin()) {
+            return adminClearVerbsCacheStrategy;
         } else if (data.equals("/admin_shutdown") && wrapper.isAdmin()) {
             return adminShutdownTextStrategy;
         } else if (data.equals("/admin_shutdown_confirm") && wrapper.isAdmin()) {
